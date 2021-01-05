@@ -1,0 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+svg {
+    margin: 0 auto 10px;
+    display: block;
+    background-color: grey;
+    width: 100%;
+}
+
+.curr{
+    fill: red;
+}
+
+.edge{
+    fill: green;
+}
+
+.middle{
+    fill: blue;
+}
+
+rect{
+    fill: white;
+    stroke: black;
+    transition-duration: .5s;
+    transition-timing-function: ease-in;
+}
+
+rect.start{
+    fill: green;
+}
+
+rect.end{
+    fill: red;
+}
+
+rect.wall{
+    fill: #0c3547;
+}
+
+rect.path{
+    fill: #fffe6a;
+}
+
+rect.visited{
+    fill: #c572ff;
+}
