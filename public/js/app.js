@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const INIT_COL_COUNT = 100;
+    const INIT_COL_COUNT = 50;
     const INIT_START_COL = 1;
     const INIT_END_COL = 49;
-    const INIT_ROW = 5;
+    const INIT_ROW = 2;
+    const RANDOM_MAZE_FREQUENCY = 3;
     let currArr,
         svg = document.querySelector('svg'),
         width = parseInt(window.getComputedStyle(svg).getPropertyValue('width')),
-        height = window.innerHeight * .8,
+        height = window.innerHeight * .7,
         cellSize = width / INIT_COL_COUNT,
         rowCount = Math.floor(height / cellSize),
         colCount = INIT_COL_COUNT,
@@ -29,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#launch')
         .addEventListener('click', launch);
 
+    document.querySelector('#apply')
+        .addEventListener('click', apply);
+
 
     // UTILITY METHODS ============================================================
     function drawGrid() {
@@ -46,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rect.setAttribute('col', col);
                 rect.setAttribute('id', `${row}_${col}`);
 
+                rect.addEventListener('click', changeRectType);
                 rect.addEventListener('mouseover', changeRectType);
 
                 document.querySelector('svg').appendChild(rect);
@@ -63,6 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function pause(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function getSelectedRadioValue(name) {
+        var buttons = document.getElementsByName(name);
+
+        for (let b of buttons) {
+            if (b.checked) return b.value;
+        }
+
+        return undefined;
     }
 
     function changeRectType(e) {
@@ -105,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function launch() {
         let path = [];
-        let algoType = document.getElementById('algoType').value;
+        let algoType = getSelectedRadioValue("algo");
 
         // buildUnweightedGraph();
         // await unweightedGraph.generateMaze();
@@ -138,6 +153,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         await buildPath(path);
+    }
+
+    // function for maze generation
+    async function apply() {
+        let path = [];
+        let mazeType = getSelectedRadioValue("maze");
+
+        buildWeightedGraph();
+
+        cleanField();
+
+        if (mazeType === 'recursive_division') {
+            path = await generateRecursiveDivisionMaze();
+        } else if (mazeType === 'binary') {
+            path = await generateBinaryMaze();
+        } else if (mazeType === 'random') {
+            path = await generateRandomMaze();
+        }
+
+        // await buildMaze(path);
     }
 
     function buildWeightedGraph() {
@@ -480,7 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return oldFirst.val;
         }
     }
-
     class UnweightedGraph {
         constructor() {
             this.adjacencyList = {};
@@ -518,11 +552,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         async bfs(start, end, speed = 10) {
-            let arr = [];
-            let visited = {};
-            let queue = new Queue();
+            let arr = [],
+                visited = {},
+                queue = new Queue();
+
             queue.enqueue(start);
             visited[start] = true;
+
             while (queue.size > 0) {
                 let next = queue.dequeue();
                 arr.push(next);
@@ -597,145 +633,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return arr;
         }
 
-        async generateMaze(start = "0_0", speed = 50) {
-            let visited = {},
-                stack = new Stack(),
-                curr = start, idx, next, neighbors,
-                coord = this.getCoordinates(start),
-                currElem = document.getElementById(start);
-
-            // put walls
-            for (let row = 0; row < rowCount; row++) {
-                if (row % 2 == 0) {
-                    for (let col = 0; col < colCount; col++) {
-                        if (col % 2 == 1) {
-                            currArr[row][col].classList = 'wall';
-                            currArr[row][col] = null;
-                        }
-                    }
-                }
-                else {
-                    for (let col = 0; col < colCount; col++) {
-                        currArr[row][col].classList = 'wall';
-                        currArr[row][col] = null;
-                    }
-                }
-            }
-
-            visited[curr] = true;
-
-            // await pause(speed);
-            // currElem.classList.remove('wall');
-            // currArr[coord[0]][coord[1]] = currElem;
-
-            while (true) {
-                let unvisited = [];
-
-                neighbors = this.getMazeNeighbors(curr);
-                for (let v of neighbors) {
-                    if (!visited[v.val]) {
-                        unvisited.push(v);
-                    }
-                }
-
-                idx = Math.floor(Math.random() * unvisited.length);
-                next = unvisited[idx];
-
-                if (next != undefined) {
-                    visited[next.val] = true;
-
-                    stack.push(curr);
-
-                    coord = this.getCoordinates(next.val);
-
-                    if (next.dir == 'up') coord[0]++;
-                    else if (next.dir == 'down') coord[0]--;
-                    else if (next.dir == 'left') coord[1]++;
-                    else if (next.dir == 'right') coord[1]--;
-
-                    currElem = document.getElementById(`${coord[0]}_${coord[1]}`);
-
-                    await pause(speed);
-                    currElem.classList.remove('wall');
-                    currArr[coord[0]][coord[1]] = currElem;
-
-                    curr = next.val;
-                }
-                else if (stack.size > 0) {
-                    curr = stack.pop();
-                }
-                else break;
-            }
-        }
-
-        getMazeNeighbors(node) {
-            let coord = this.getCoordinates(node);
-            let currRow = coord[0];
-            let currCol = coord[1];
-            let adjacentNodes = [];
-
-            if (currRow > 1 && currArr[currRow - 2][currCol] != null) adjacentNodes.push({ val: currArr[currRow - 2][currCol].getAttribute('id'), dir: 'up' });
-            if (currRow < rowCount - 2 && currArr[currRow + 2][currCol] != null) adjacentNodes.push({ val: currArr[currRow + 2][currCol].getAttribute('id'), dir: 'down' });
-            if (currCol > 1 && currArr[currRow][currCol - 2] != null) adjacentNodes.push({ val: currArr[currRow][currCol - 2].getAttribute('id'), dir: 'left' });
-            if (currCol < colCount - 2 && currArr[currRow][currCol + 2] != null) adjacentNodes.push({ val: currArr[currRow][currCol + 2].getAttribute('id'), dir: 'right' });
-
-            return adjacentNodes;
-        }
-
-        // async generateMaze(start = "1_1", speed = 10) {
-        //     let visited = {},
-        //         stack = new Stack(),
-        //         curr = start, idx, next,
-        //         coord = this.getCoordinates(start),
-        //         currElem = document.getElementById(start);
-
-        //     // make everything a wall
-        //     for (let row = 0; row < rowCount; row++) {
-        //         for (let col = 0; col < colCount; col++) {
-        //             currArr[row][col].classList = 'wall';
-        //             currArr[row][col] = null;
-        //         }
-        //     }
-
-        //     visited[curr] = true;
-
-        //     await pause(speed);
-        //     currElem.classList.remove('wall');
-        //     currArr[coord[0]][coord[1]] = currElem;
-
-        //     while (true) {
-        //         let unvisited = [];
-        //         for (let v of this.adjacencyList[curr]) {
-        //             if (!visited[v]) {
-        //                 unvisited.push(v);
-        //             }
-        //         }
-
-        //         idx = Math.floor(Math.random() * unvisited.length);
-        //         next = unvisited[idx];
-
-        //         if (next != undefined) {
-        //             visited[next] = true;
-
-        //             stack.push(curr);
-
-        //             coord = this.getCoordinates(next);
-        //             currElem = document.getElementById(next);
-
-        //             await pause(speed);
-        //             currElem.classList.remove('wall');
-        //             currArr[coord[0]][coord[1]] = currElem;
-
-        //             curr = next;
-        //         }
-        //         else if(stack.size > 0){
-        //             curr = stack.pop();
-        //         }
-        //         else break;
-        //     }
-        //     return arr;
-        // }
-
         getCoordinates(node) {
             let coord = node.split('_');
             coord[0] = parseInt(coord[0]);
@@ -743,4 +640,185 @@ document.addEventListener('DOMContentLoaded', () => {
             return coord;
         }
     }
+
+
+
+
+    // Mazes ======================================================================
+    async function generateRecursiveDivisionMaze(start = "0_0", speed = 50) {
+        let visited = {},
+            stack = new Stack(),
+            curr = start, idx, next, neighbors,
+            coord = weightedGraph.getCoordinates(start),
+            currElem = document.getElementById(start);
+
+        // put walls
+        for (let row = 0; row < rowCount; row++) {
+            if (row % 2 == 0) {
+                for (let col = 0; col < colCount; col++) {
+                    if (col % 2 == 1) {
+                        currArr[row][col].classList = 'wall';
+                        currArr[row][col] = null;
+                    }
+                }
+            }
+            else {
+                for (let col = 0; col < colCount; col++) {
+                    currArr[row][col].classList = 'wall';
+                    currArr[row][col] = null;
+                }
+            }
+        }
+
+        visited[curr] = true;
+
+        // await pause(speed);
+        // currElem.classList.remove('wall');
+        // currArr[coord[0]][coord[1]] = currElem;
+
+        while (true) {
+            let unvisited = [];
+
+            neighbors = getAllMazeNeighbors(curr);
+            for (let v of neighbors) {
+                if (!visited[v.val]) {
+                    unvisited.push(v);
+                }
+            }
+
+            idx = Math.floor(Math.random() * unvisited.length);
+            next = unvisited[idx];
+
+            if (next != undefined) {
+                visited[next.val] = true;
+
+                stack.push(curr);
+
+                coord = weightedGraph.getCoordinates(next.val);
+
+                if (next.dir == 'up') coord[0]++;
+                else if (next.dir == 'down') coord[0]--;
+                else if (next.dir == 'left') coord[1]++;
+                else if (next.dir == 'right') coord[1]--;
+
+                currElem = document.getElementById(`${coord[0]}_${coord[1]}`);
+
+                await pause(speed);
+                currElem.classList.remove('wall');
+                currArr[coord[0]][coord[1]] = currElem;
+
+                curr = next.val;
+            }
+            else if (stack.size > 0) {
+                curr = stack.pop();
+            }
+            else break;
+        }
+    }
+
+
+    async function generateBinaryMaze(start = "0_0", speed = 50) {
+        let idx, next, neighbors, availNodes = [],
+            coord = weightedGraph.getCoordinates(start),
+            currElem = document.getElementById(start);
+
+        // put walls
+        for (let row = 0; row < rowCount; row++) {
+            if (row % 2 == 0) {
+                for (let col = 0; col < colCount; col++) {
+                    if (col % 2 == 1) {
+                        currArr[row][col].classList = 'wall';
+                        currArr[row][col] = null;
+                    }
+                }
+            }
+            else {
+                for (let col = 0; col < colCount; col++) {
+                    currArr[row][col].classList = 'wall';
+                    currArr[row][col] = null;
+                }
+            }
+        }
+
+        for (let row = 0; row < rowCount; row++) {
+            for (let col = 0; col < colCount; col++) {
+                if (currArr[row][col] != null) {
+                    availNodes.push(currArr[row][col]);
+                }
+            }
+        }
+
+        for (let node of availNodes) {
+            neighbors = getRightDownMazeNeighbors(node.getAttribute('id'));
+
+            idx = Math.floor(Math.random() * neighbors.length);
+            next = neighbors[idx];
+
+            if (next != undefined) {
+                coord = weightedGraph.getCoordinates(next.val);
+
+                if (next.dir == 'down') coord[0]--;
+                else if (next.dir == 'right') coord[1]--;
+
+                currElem = document.getElementById(`${coord[0]}_${coord[1]}`);
+
+                await pause(speed);
+                currElem.classList.remove('wall');
+                currArr[coord[0]][coord[1]] = currElem;
+            }
+        }
+    }
+
+    async function generateRandomMaze(speed = 50) {
+        let currSet = [], idx, coord, currElem;
+
+        // put walls
+        for (let row = 0; row < rowCount; row++) {
+            for (let col = 0; col < colCount; col++) {
+                currSet.push(currArr[row][col].getAttribute('id'));
+                if (currSet.length % RANDOM_MAZE_FREQUENCY == 0 || col == colCount - 1) {
+                    idx = Math.floor(Math.random() * currSet.length);
+                    coord = weightedGraph.getCoordinates(currSet[idx]);
+                    currElem = document.getElementById(currSet[idx]);
+
+                    await pause(speed);
+                    currElem.classList = 'wall';
+                    currArr[coord[0]][coord[1]] = null;
+
+                    currSet = [];
+                }
+            }
+        }
+    }
+
+    function getAllMazeNeighbors(node) {
+        let coord = weightedGraph.getCoordinates(node);
+        let currRow = coord[0];
+        let currCol = coord[1];
+        let adjacentNodes = [];
+
+        if (currRow > 1 && currArr[currRow - 2][currCol] != null) adjacentNodes.push({ val: currArr[currRow - 2][currCol].getAttribute('id'), dir: 'up' });
+        if (currRow < rowCount - 2 && currArr[currRow + 2][currCol] != null) adjacentNodes.push({ val: currArr[currRow + 2][currCol].getAttribute('id'), dir: 'down' });
+        if (currCol > 1 && currArr[currRow][currCol - 2] != null) adjacentNodes.push({ val: currArr[currRow][currCol - 2].getAttribute('id'), dir: 'left' });
+        if (currCol < colCount - 2 && currArr[currRow][currCol + 2] != null) adjacentNodes.push({ val: currArr[currRow][currCol + 2].getAttribute('id'), dir: 'right' });
+
+        return adjacentNodes;
+    }
+
+
+
+    function getRightDownMazeNeighbors(node) {
+        let coord = weightedGraph.getCoordinates(node);
+        let currRow = coord[0];
+        let currCol = coord[1];
+        let adjacentNodes = [];
+
+        if (currRow < rowCount - 2 && currArr[currRow + 2][currCol] != null) adjacentNodes.push({ val: currArr[currRow + 2][currCol].getAttribute('id'), dir: 'down' });
+        if (currCol < colCount - 2 && currArr[currRow][currCol + 2] != null) adjacentNodes.push({ val: currArr[currRow][currCol + 2].getAttribute('id'), dir: 'right' });
+
+        return adjacentNodes;
+    }
+
+
+
 });

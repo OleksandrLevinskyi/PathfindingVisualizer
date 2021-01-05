@@ -1,8 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    /* overflow: scroll; */
+    /* overflow-x: hidden; */
     font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* font-size: .9rem; */
 }
 
 svg {
@@ -12,41 +14,46 @@ svg {
     width: 100%;
 }
 
-.curr{
+.curr {
     fill: red;
 }
 
-.edge{
+.edge {
     fill: green;
 }
 
-.middle{
+.middle {
     fill: blue;
 }
 
-rect{
+rect {
     fill: white;
     stroke: black;
-    transition-duration: .5s;
-    transition-timing-function: ease-in;
+    /* transition-duration: .2s; */
+    /* transition-timing-function: cubic-bezier(0,1.58,1,-1.37); */
 }
 
-rect.start{
+rect.start {
     fill: green;
 }
 
-rect.end{
+rect.end {
     fill: red;
 }
 
-rect.wall{
+rect.wall {
     fill: #0c3547;
 }
 
-rect.path{
+rect.path {
     fill: #fffe6a;
 }
 
-rect.visited{
+rect.visited {
     fill: #c572ff;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }

@@ -1,0 +1,99 @@
+/* initial radio button idea: https://codepen.io/echosoft/pen/RaVEvG */
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    display: inline-block;
+}
+
+input.special[type="radio"][id^="obstacle"], input.special[type="radio"][id^="mode"] {
+    display: none;
+}
+
+label.special {
+    border: 1px solid #fff;
+    padding: 5px 5px;
+    display: block;
+    position: relative;
+    margin: 2px;
+    cursor: pointer;
+}
+
+label.special:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    border: 1px solid grey;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    line-height: 10px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+}
+
+label.special img {
+    height: 40px;
+    width: 40px;
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+}
+
+:checked+label.special {
+    border-color: #ddd;
+}
+
+:checked+label.special:before {
+    content: "✓";
+    background-color: grey;
+    transform: scale(1);
+}
+
+:checked+label.special img {
+    transform: scale(0.9);
+    /*   box-shadow: 0 0 5px #333; */
+    z-index: -1;
+}
+
+/* other */
+
+hr {
+    margin: 5px 0;
+}
+
+input#dimension, input#delay {
+    width: 90%;
+}
+
+.left_padded {
+    padding: 0 0 0 30px;
+    margin: 0px;
+}
+
+.not_padded {
+    padding: 0px;
+    margin: 0px;
+}
+
+.form-check-input {
+    margin-left: -.25rem;
+}
+
+button#clean {
+    height: 90%;
+}
+
+button#launch, button#apply {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 90%;
+    transform: translate(-50%, -50%);
+}
