@@ -11,26 +11,11 @@ body {
     position: relative;
     width: 100%;
     min-width: 1140px;
+}
+
+.night_mode {
     background-color: #1e1e1e;
     color: white;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #0EB1D2;
-    border-color: #0EB1D2;
-}
-
-.btn{
-    border-radius: .1rem;
-}
-
-.night_mode{
-    background-color: #1e1e1e;
-    color: white;
-}
-hr{
-    background-color: white;
 }
 
 svg {
@@ -69,11 +54,11 @@ rect.visited.weight {
     fill: url(#gradient_visited);
 }
 
-rect.start, rect.path.weight.start {
+rect.start, rect.path.weight.start, rect.visited.weight.start {
     fill: #54ff34;
 }
 
-rect.end, rect.visited.weight.end {
+rect.end, rect.path.weight.end, rect.visited.weight.end {
     fill: #ff367a;
 }
 

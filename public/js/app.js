@@ -55,27 +55,38 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#reset')
         .addEventListener('click', resetField);
 
+    document.getElementById('mode_day')
+        .addEventListener('click', () => {
+            document.querySelector('body').classList = '';
+        });
 
+    document.getElementById('mode_night')
+        .addEventListener('click', () => {
+            document.querySelector('body').classList = 'night_mode';
+        });
 
-    document.getElementById('delay').addEventListener("input", () => {
-        speed = parseInt(document.getElementById('delay').value);
-        document.getElementById('animation_delay').innerText = speed;
-    });
+    document.getElementById('delay')
+        .addEventListener("input", () => {
+            speed = parseInt(document.getElementById('delay').value);
+            document.getElementById('animation_delay').innerText = speed;
+        });
 
-    document.getElementById('dimension').addEventListener("input", () => {
-        colCount = parseInt(document.getElementById('dimension').value);
-        document.getElementById('grid_dimension').innerText = colCount;
-    });
+    document.getElementById('dimension')
+        .addEventListener("input", () => {
+            colCount = parseInt(document.getElementById('dimension').value);
+            document.getElementById('grid_dimension').innerText = colCount;
+        });
 
-    document.getElementById('dimension').addEventListener("change", () => {
-        let defs = document.querySelector('defs');
-        svg.innerHTML = `<defs>${defs.innerHTML}</defs>`;
-        cellSize = width / colCount;
-        tempCount = Math.floor(height / cellSize);
-        rowCount = tempCount % 2 == 1 ? tempCount : tempCount - 1;
-        svg.setAttribute('height', rowCount * cellSize);
-        drawGrid();
-    });
+    document.getElementById('dimension')
+        .addEventListener("change", () => {
+            let defs = document.querySelector('defs');
+            svg.innerHTML = `<defs>${defs.innerHTML}</defs>`;
+            cellSize = width / colCount;
+            tempCount = Math.floor(height / cellSize);
+            rowCount = tempCount % 2 == 1 ? tempCount : tempCount - 1;
+            svg.setAttribute('height', rowCount * cellSize);
+            drawGrid();
+        });
 
     svg.addEventListener('mousedown', dragStart);
 
@@ -373,12 +384,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDisplayData(algorithmName) {
         document.getElementById('description').innerHTML = descriptions[algorithmName];
 
-        if (totalCost > 0) {
-            document.getElementById('cost').innerHTML = `<u>Cost: <mark>${totalCost}</mark></u>`;
-        }
-        if (totalNodesVisited > 0) {
-            document.getElementById('nodes_visited').innerHTML = `<u>Nodes Visited: <mark>${totalNodesVisited}</mark></u>`;
-        }
+        document.getElementById('cost').innerHTML = totalCost > 0 ? `<u>Cost: ${totalCost}</u>` : `<u>Cost: N/A</u>`;
+
+        document.getElementById('nodes_visited').innerHTML = totalNodesVisited > 0 ? `<u>Nodes Visited: ${totalNodesVisited}</u>` : `<u>Nodes Visited: N/A</u>`;
     }
 
     // function for maze generation
