@@ -31,7 +31,7 @@ class WeightedGraph {
         return false;
     }
 
-    async dijkstraAlgorithm(start, end, speed = 10) {
+    async dijkstraAlgorithm(start, end) {
         let distances = {},
             previous = {},
             pq = new PriorityQueue(),
@@ -62,7 +62,7 @@ class WeightedGraph {
         return undefined;
     }
 
-    async aStar(start, end, speed = 10) {
+    async aStar(start, end) {
         let distances = {}, // stores G, H, and F costs
             previous = {},
             pq = new PriorityQueue(),

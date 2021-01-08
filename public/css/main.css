@@ -7,6 +7,12 @@
     /* font-size: .9rem; */
 }
 
+body{
+    position: relative;
+    width: 100%;
+    min-width: 1140px;
+}
+
 svg {
     margin: 0 auto 10px;
     display: block;

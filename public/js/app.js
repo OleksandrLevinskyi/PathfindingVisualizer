@@ -1,24 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const NODE_COST = 1;
-    const WEIGHTED_NODE_COST = 2;
-    const INIT_END_COL = 49;
-    const INIT_ROW = 2;
-    const RANDOM_MAZE_FREQUENCY = 3;
-    let currArr, linierGradient,
-        svg = document.querySelector('svg'),
-        width = parseInt(window.getComputedStyle(svg).getPropertyValue('width')),
-        height = window.innerHeight * .7,
-        colCount = parseInt(document.getElementById('dimension').value),
-        cellSize = width / colCount,
-        tempCount = Math.floor(height / cellSize),
-        rowCount = tempCount % 2 == 1 ? tempCount - 1 : tempCount,
+    const NODE_COST = 1,
+        WEIGHTED_NODE_COST = 2,
+        RANDOM_MAZE_FREQUENCY = 5;
+
+    let currArr, pathSearchFinished, svg, width, height,
+        colCount, cellSize, tempCount, rowCount,
         startNode, endNode, weightedGraph, unweightedGraph,
         span_start, span_end, dragged, draggedNeighbor, draggedClass,
-        changeRectTypeEnabled = true, speed = parseInt(document.getElementById('delay').value),
-        currObstacle = getSelectedRadioValue("obstacle");
+        changeRectTypeEnabled, speed, currObstacle;
+
+    pathSearchFinished = false;
+    svg = document.querySelector('svg');
+    width = parseInt(window.getComputedStyle(svg).getPropertyValue('width'));
+    height = window.innerHeight * .7;
+    colCount = parseInt(document.getElementById('dimension').value);
+    cellSize = width / colCount;
+    tempCount = Math.floor(height / cellSize);
+    rowCount = tempCount % 2 == 1 ? tempCount : tempCount - 1;
+    changeRectTypeEnabled = true, speed = parseInt(document.getElementById('delay').value);
+    currObstacle = getSelectedRadioValue("obstacle");
 
 
-    linearGradientDefinition = "<defs><linearGradient id='gradient' x1='14.1%' y1='14.1%' x2='0' spreadMethod='repeat'><stop class='init-1'/><stop class='init-1' offset='.504'/><stop offset='.504' stop-color='#000'/><stop offset='1' stop-color='#000'/></linearGradient></defs>"
 
     document.getElementById('grid_dimension').innerText = colCount;
     document.getElementById('animation_delay').innerText = speed;
@@ -41,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#reset')
         .addEventListener('click', resetField);
 
-    svg.addEventListener("mousedown", dragStart);
+
 
     document.getElementById('delay').addEventListener("input", () => {
         speed = parseInt(document.getElementById('delay').value);
@@ -54,12 +56,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('dimension').addEventListener("change", () => {
-        svg.innerHTML = linearGradientDefinition;
+        let defs = document.querySelector('defs');
+        svg.innerHTML = `<defs>${defs.innerHTML}</defs>`;
         cellSize = width / colCount;
-        rowCount = Math.floor(height / cellSize);
+        tempCount = Math.floor(height / cellSize);
+        rowCount = tempCount % 2 == 1 ? tempCount : tempCount - 1;
         svg.setAttribute('height', rowCount * cellSize);
         drawGrid();
     });
+
+    svg.addEventListener('mousedown', dragStart);
 
     function dragStart(event) {
         if (event.target.classList.contains('draggable')) {
@@ -72,31 +78,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function dragEnter(e) {
         if (e.which == 1 && dragged != null) {
-            let x = e.clientX,
-                y = e.clientY,
-                currElem = document.elementFromPoint(x, y);
+            let currElem = getCurrElement(e);
 
             // highlight potential drop target when the draggable element enters it
             // and reset background of potential drop target when the draggable element leaves it
             if (currElem.nodeName === "rect") {
                 draggedNeighbor.classList.remove(draggedClass);
-                // if(draggedNeighbor.classList.contains(currObstacle)) currArr[draggedNeighbor.getAttribute('row')][draggedNeighbor.getAttribute('col')] = null; // resets currArr rect in case of a wall
+                if (draggedNeighbor.classList.contains('wall')) {
+                    currArr[draggedNeighbor.getAttribute('row')][draggedNeighbor.getAttribute('col')] = null; // restores a wall
+                }
+
                 currElem.classList.add(draggedClass);
                 draggedNeighbor = currElem;
+                if (currElem.classList.contains('wall')) {
+                    currArr[currElem.getAttribute('row')][currElem.getAttribute('col')] = currElem; // resets currArr rect in case of a wall
+                }
+
+                if (pathSearchFinished) {
+                    if (draggedClass == 'start') startNode = currElem.getAttribute('id');
+                    else if (draggedClass == 'end') endNode = currElem.getAttribute('id');
+
+                    launch(e, true);
+                }
             }
         }
     }
 
     function drop(e) {
-        // prevent default action (open as link for some elements)
-        // event.preventDefault();
         if (e.which == 1 && dragged != null) {
-            let x = e.clientX,
-                y = e.clientY,
-                currElem = document.elementFromPoint(x, y);
-            let temp = currElem.parentNode.querySelector('[id*="_"]');
+            let currElem = getCurrElement(e),
+            temp = currElem.parentNode.querySelector('[id*="_"]');
 
             changeRectTypeEnabled = true;
+
             // highlight potential drop target when the draggable element enters it
             if (currElem.nodeName === "rect") {
                 dragged.setAttribute('x', temp.getAttribute('x'));
@@ -121,9 +135,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function getCurrElement(e) {
+        let x = e.clientX,
+            y = e.clientY,
+            currElem = document.elementFromPoint(x, y);
+
+        return currElem;
+    }
+
     // UTILITY METHODS ============================================================
     function drawGrid() {
         currArr = new Array(rowCount);
+        pathSearchFinished = false;
 
         for (let row = 0; row < rowCount; row++) {
             currArr[row] = new Array(colCount);
@@ -141,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 rect.addEventListener('click', changeRectType);
                 rect.addEventListener('mouseover', changeRectType);
                 rect.addEventListener("mouseenter", dragEnter);
-                // rect.addEventListener("mouseleave", dragLeave);
                 rect.addEventListener("mouseup", drop);
 
                 g.appendChild(rect);
@@ -150,12 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 currArr[row][col] = rect;
             }
         }
-
-        // startNode = currArr[INIT_ROW][INIT_START_COL].getAttribute('id');
-        // endNode = currArr[INIT_ROW][INIT_END_COL].getAttribute('id');
-
-        // currArr[INIT_ROW][INIT_START_COL].classList.add("start");
-        // currArr[INIT_ROW][INIT_END_COL].classList.add("end");
 
         placeStartEndNodes();
     }
@@ -176,9 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function changeRectType(e) {
         if (e.which == 1 && changeRectTypeEnabled) {
-            let x = e.clientX,
-                y = e.clientY,
-                currElem = document.elementFromPoint(x, y);
+            let currElem = getCurrElement(e);
 
             currObstacle = getSelectedRadioValue("obstacle");
 
@@ -224,6 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
+
+        pathSearchFinished = false;
     }
 
     // removes everything from the field
@@ -297,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         end.parentNode.appendChild(span_end);
     }
 
-    async function launch() {
+    async function launch(e, ignorePause = false) {
         let path = [];
         let algoType = getSelectedRadioValue("algo");
 
@@ -305,6 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // await unweightedGraph.generateMaze();
 
         cleanPath();
+        if (ignorePause) pathSearchFinished = true;
 
         // algorithms on weighted graphs
         if (algoType === 'dijkstras' || algoType === 'a_star') {
@@ -312,10 +329,11 @@ document.addEventListener('DOMContentLoaded', () => {
             buildWeightedGraph();
 
             if (algoType === 'dijkstras') {
-                path = await weightedGraph.dijkstraAlgorithm(startNode, endNode);
+                path = await weightedGraph.dijkstraAlgorithm(startNode, endNode, ignorePause);
             } else if (algoType === 'a_star') {
-                path = await weightedGraph.aStar(startNode, endNode);
+                path = await weightedGraph.aStar(startNode, endNode, ignorePause);
             }
+            await buildPath(path, ignorePause);
         }
         // algorithms on unweighted graphs
         else if (algoType === 'bfs' || algoType === 'dfs_iterative' || algoType === 'dfs_recursive') {
@@ -323,25 +341,24 @@ document.addEventListener('DOMContentLoaded', () => {
             buildUnweightedGraph();
 
             if (algoType === 'bfs') {
-                path = await unweightedGraph.bfs(startNode, endNode);
+                path = await unweightedGraph.bfs(startNode, endNode, ignorePause);
             } else if (algoType === 'dfs_iterative') {
-                path = await unweightedGraph.dfsIterative(startNode, endNode);
+                path = await unweightedGraph.dfsIterative(startNode, endNode, ignorePause);
             } else if (algoType === 'dfs_recursive') {
-                path = await unweightedGraph.dfsRecursive(startNode, endNode);
+                path = await unweightedGraph.dfsRecursive(startNode, endNode, ignorePause);
             }
+            await confirmPath(path);
         }
 
-        await buildPath(path);
     }
 
     // function for maze generation
     async function apply(e) {
-        let path = [];
         let mazeType = getSelectedRadioValue("maze");
 
-        buildWeightedGraph();
-
         resetField(e, true);
+
+        buildWeightedGraph();
 
         if (mazeType === 'recursive_division') {
             path = await generateRecursiveDivisionMaze();
@@ -375,7 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-        console.log(weightedGraph);
     }
 
     function buildUnweightedGraph() {
@@ -396,11 +412,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function buildPath(path) {
+    async function buildPath(path, ignorePause) {
         for (let nodeId of path) {
             if (nodeId != startNode && nodeId != endNode) {
                 let node = document.getElementById(nodeId);
-                await pause(speed);
+                if (!ignorePause) await pause(speed);
+                node.classList = node.classList.contains('weight') ? 'path weight' : 'path';
+            }
+        }
+    }
+
+    function confirmPath(path) {
+        for (let nodeId of path) {
+            if (nodeId != startNode && nodeId != endNode) {
+                let node = document.getElementById(nodeId);
                 node.classList = node.classList.contains('weight') ? 'path weight' : 'path';
             }
         }
@@ -516,7 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
 
-        async dijkstraAlgorithm(start, end) {
+        async dijkstraAlgorithm(start, end, ignorePause) {
             let distances = {},
                 previous = {},
                 pq = new PriorityQueue(),
@@ -531,10 +556,13 @@ document.addEventListener('DOMContentLoaded', () => {
             while (pq.values.length !== 0) {
                 vtx = pq.dequeue();
                 if (vtx != startNode && vtx != endNode) {
-                    await pause(speed);
+                    if (!ignorePause) await pause(speed);
                     document.getElementById(vtx).classList.add('visited');
                 }
-                if (vtx === end) return this.makePath(previous, end);
+                if (vtx === end) {
+                    pathSearchFinished = true;
+                    return this.makePath(previous, end);
+                }
                 for (let v of this.adjacencyList[vtx]) {
                     distance = distances[vtx] + v.weight;
                     if (distance < distances[v.val]) {
@@ -544,10 +572,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+
             return undefined;
         }
 
-        async aStar(start, end) {
+        async aStar(start, end, ignorePause) {
             let distances = {}, // stores G, H, and F costs
                 previous = {},
                 pq = new PriorityQueue(),
@@ -572,10 +601,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 pq.adjustPriorityQueue(distances);
                 vtx = pq.dequeue();
                 if (vtx != startNode && vtx != endNode) {
-                    await pause(speed);
+                    if (!ignorePause) await pause(speed);
                     document.getElementById(vtx).classList.add('visited');
                 }
-                if (vtx === end) return this.makePath(previous, end);
+                if (vtx === end) {
+                    pathSearchFinished = true;
+                    return this.makePath(previous, end);
+                }
                 for (let v of this.adjacencyList[vtx]) {
                     distance = distances[vtx]['G'] + v.weight; // G cost of the v
                     if (distance < distances[v.val]['G']) {
@@ -587,6 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+
             return undefined;
         }
 
@@ -606,17 +639,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return coord;
         }
 
-
         makePath(previous, end) {
-            let arr = [];
-            let next = end;
+            let arr = [], next = end;
+
             while (next !== null) {
                 arr.push(next);
                 next = previous[next];
             }
+
             for (let i = 0; i < Math.floor(arr.length / 2); i++) {
                 [arr[i], arr[arr.length - i - 1]] = [arr[arr.length - i - 1], arr[i]];
             }
+
             return arr;
         }
     }
@@ -694,6 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return oldFirst.val;
         }
     }
+
     class UnweightedGraph {
         constructor() {
             this.adjacencyList = {};
@@ -730,7 +765,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        async bfs(start, end) {
+        async bfs(start, end, ignorePause) {
             let arr = [],
                 visited = {},
                 queue = new Queue();
@@ -743,7 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 arr.push(next);
 
                 if (next != startNode && next != endNode) {
-                    await pause(speed);
+                    if (!ignorePause) await pause(speed);
                     document.getElementById(next).classList.add('visited');
                 }
 
@@ -755,10 +790,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+
+            pathSearchFinished = true;
             return arr;
         }
 
-        async dfsIterative(start, end) {
+        async dfsIterative(start, end, ignorePause) {
             let arr = [],
                 visited = {},
                 stack = new Stack(),
@@ -771,7 +808,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 arr.push(next);
 
                 if (next != startNode && next != endNode) {
-                    await pause(speed);
+                    if (!ignorePause) await pause(speed);
                     document.getElementById(next).classList.add('visited');
                 }
 
@@ -783,10 +820,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+
+            pathSearchFinished = true;
             return arr;
         }
 
-        async dfsRecursive(start, end) {
+        async dfsRecursive(start, end, ignorePause) {
             let arr = [],
                 visited = {},
                 found = false;
@@ -797,7 +836,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 visited[vtx] = true;
 
                 if (vtx != startNode && vtx != endNode) {
-                    await pause(speed);
+                    if (!ignorePause) await pause(speed);
                     document.getElementById(vtx).classList.add('visited');
                 }
 
@@ -809,6 +848,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             await dfs(start, this.adjacencyList);
+
+            pathSearchFinished = true;
             return arr;
         }
 
@@ -829,38 +870,14 @@ document.addEventListener('DOMContentLoaded', () => {
             stack = new Stack(),
             curr = start, idx, next, neighbors,
             coord = weightedGraph.getCoordinates(start),
-            currElem = document.getElementById(start),
-            currObstacle = getSelectedRadioValue("obstacle");
+            currElem = document.getElementById(start);
+
+        currObstacle = getSelectedRadioValue("obstacle");
 
         // put walls
-        for (let row = 0; row < rowCount; row++) {
-            if (row % 2 == 0) {
-                for (let col = 0; col < colCount; col++) {
-                    if (col % 2 == 1) {
-                        if (currObstacle == 'wall') {
-                            currArr[row][col] = null;
-                        }
-                        else if (currObstacle == 'weight') {
-                            currArr[row][col] = document.getElementById(`${row}_${col}`);
-                        }
-
-                        currElem.classList = currObstacle; // applied to all obstacle types
-                    }
-                }
-            }
-            else {
-                for (let col = 0; col < colCount; col++) {
-                    currArr[row][col].classList = currObstacle;
-                    currArr[row][col] = null;
-                }
-            }
-        }
+        putObstacles();
 
         visited[curr] = true;
-
-        // await pause(speed);
-        // currElem.classList.remove(currObstacle);
-        // currArr[coord[0]][coord[1]] = currElem;
 
         while (true) {
             let unvisited = [];
@@ -902,40 +919,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     async function generateBinaryMaze(start = "0_0") {
         let idx, next, neighbors, availNodes = [],
             coord = weightedGraph.getCoordinates(start),
-            currElem = document.getElementById(start),
-            currObstacle = getSelectedRadioValue("obstacle");
+            currElem = document.getElementById(start);
+
+        currObstacle = getSelectedRadioValue("obstacle");
 
         // put walls
-        for (let row = 0; row < rowCount; row++) {
-            if (row % 2 == 0) {
-                for (let col = 0; col < colCount; col++) {
-                    if (col % 2 == 1) {
-                        if (currObstacle == 'wall') {
-                            currArr[row][col] = null;
-                        }
-                        else if (currObstacle == 'weight') {
-                            currArr[row][col] = document.getElementById(`${row}_${col}`);
-                        }
-
-                        currElem.classList = currObstacle; // applied to all obstacle types
-                    }
-                }
-            }
-            else {
-                for (let col = 0; col < colCount; col++) {
-                    currArr[row][col].classList = currObstacle;
-                    currArr[row][col] = null;
-                }
-            }
-        }
+        putObstacles();
 
         for (let row = 0; row < rowCount; row++) {
             for (let col = 0; col < colCount; col++) {
-                if (currArr[row][col] != null) {
+                if (currArr[row][col] != null && !currArr[row][col].classList.contains('weight')) {
                     availNodes.push(currArr[row][col]);
                 }
             }
@@ -963,8 +959,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function generateRandomMaze() {
-        let currSet = [], idx, coord, currElem,
-            currObstacle = getSelectedRadioValue("obstacle");
+        let currSet = [], idx, coord, currElem;
+
+        currObstacle = getSelectedRadioValue("obstacle");
 
         // put walls
         for (let row = 0; row < rowCount; row++) {
@@ -980,7 +977,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         currArr[coord[0]][coord[1]] = null;
                     }
                     else if (currObstacle == 'weight') {
-                        currArr[coord[0]][coord[1]] = document.getElementById(`${row}_${col}`);
+                        currArr[coord[0]][coord[1]] = document.getElementById(`${coord[0]}_${coord[1]}`);
                     }
 
                     currElem.classList = currObstacle; // applied to all obstacle types
@@ -1017,5 +1014,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currCol < colCount - 2 && currArr[currRow][currCol + 2] != null) adjacentNodes.push({ val: currArr[currRow][currCol + 2].getAttribute('id'), dir: 'right' });
 
         return adjacentNodes;
+    }
+
+    function putObstacles() {
+        for (let row = 0; row < rowCount; row++) {
+            if (row % 2 == 0) {
+                for (let col = 0; col < colCount; col++) {
+                    if (col % 2 == 1) {
+                        adjustNode(row, col);
+                    }
+                }
+            }
+            else {
+                for (let col = 0; col < colCount; col++) {
+                    adjustNode(row, col);
+                }
+            }
+        }
+    }
+
+    function adjustNode(row, col) {
+        document.getElementById(`${row}_${col}`).classList = currObstacle; // applied to all obstacle types
+
+        if (currObstacle == 'wall') {
+            currArr[row][col] = null;
+        }
+        else if (currObstacle == 'weight') {
+            currArr[row][col] = document.getElementById(`${row}_${col}`);
+        }
     }
 });
