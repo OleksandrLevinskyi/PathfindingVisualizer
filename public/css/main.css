@@ -29,20 +29,22 @@ svg {
 rect {
     fill: white;
     stroke: black;
-    /* transition-duration: .2s; */
-    /* transition-timing-function: cubic-bezier(0,1.58,1,-1.37); */
-}
-
-rect.start {
-    fill: green;
-}
-
-rect.end {
-    fill: red;
 }
 
 rect.wall {
     fill: #0c3547;
+    /* animation-name: stateChange; */
+    /* animation-duration: 0.3s; */
+    /* animation-timing-function: ease-in; */
+    /* animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running; */
+}
+
+rect.weight {
+    fill: url(#gradient);
 }
 
 rect.path {
@@ -53,7 +55,22 @@ rect.visited {
     fill: #c572ff;
 }
 
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+rect.path.weight {
+    fill: url(#gradient_path);
+}
+
+rect.visited.weight {
+    fill: url(#gradient_visited);
+}
+
+rect.start, rect.path.weight.start {
+    fill: green;
+}
+
+rect.end, rect.visited.weight.end {
+    fill: red;
+}
+
+rect.draggable {
+    fill: rgba(255, 255, 255, 0);
 }

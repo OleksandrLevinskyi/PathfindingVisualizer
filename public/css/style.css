@@ -40,8 +40,8 @@ label.special:before {
 }
 
 label.special img {
-    height: 40px;
-    width: 40px;
+    height: 2rem;
+    width: 2rem;
     transition-duration: 0.2s;
     transform-origin: 50% 50%;
 }
@@ -73,7 +73,7 @@ input#dimension, input#delay {
 }
 
 .left_padded {
-    padding: 0 0 0 30px;
+    padding: 0 0 5px 30px;
     margin: 0px;
 }
 
@@ -86,14 +86,31 @@ input#dimension, input#delay {
     margin-left: -.25rem;
 }
 
-button#clean {
-    height: 90%;
-}
-
 button#launch, button#apply {
     position: absolute;
     bottom: 0;
     left: 50%;
     width: 90%;
     transform: translate(-50%, -50%);
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+p.heading {
+    font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+span.data {
+    font-size: .9rem;
+    font-weight: 100;
+}
+
+input, button {
+    background-color: #0c3547;
 }
