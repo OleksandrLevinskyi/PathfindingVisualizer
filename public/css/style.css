@@ -19,6 +19,7 @@ label.special {
     position: relative;
     margin: 2px;
     cursor: pointer;
+    background-color: white;
 }
 
 label.special:before {
@@ -88,7 +89,7 @@ input#dimension, input#delay {
 
 button#launch, button#apply {
     position: absolute;
-    bottom: 0;
+    bottom: -9%;
     left: 50%;
     width: 90%;
     transform: translate(-50%, -50%);

@@ -182,3 +182,6 @@ function adjustNode(row, col) {
         currArr[row][col] = document.getElementById(`${row}_${col}`);
     }
 }
+
+
+module.exports = WeightedGraph;

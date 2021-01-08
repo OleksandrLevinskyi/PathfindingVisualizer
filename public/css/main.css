@@ -7,10 +7,30 @@
     /* font-size: .9rem; */
 }
 
-body{
+body {
     position: relative;
     width: 100%;
     min-width: 1140px;
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0EB1D2;
+    border-color: #0EB1D2;
+}
+
+.btn{
+    border-radius: .1rem;
+}
+
+.night_mode{
+    background-color: #1e1e1e;
+    color: white;
+}
+hr{
+    background-color: white;
 }
 
 svg {
@@ -20,18 +40,6 @@ svg {
     width: 100%;
 }
 
-.curr {
-    fill: red;
-}
-
-.edge {
-    fill: green;
-}
-
-.middle {
-    fill: blue;
-}
-
 rect {
     fill: white;
     stroke: black;
@@ -39,14 +47,6 @@ rect {
 
 rect.wall {
     fill: #0c3547;
-    /* animation-name: stateChange; */
-    /* animation-duration: 0.3s; */
-    /* animation-timing-function: ease-in; */
-    /* animation-delay: 0;
-    animation-direction: alternate;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation-play-state: running; */
 }
 
 rect.weight {
@@ -70,11 +70,11 @@ rect.visited.weight {
 }
 
 rect.start, rect.path.weight.start {
-    fill: green;
+    fill: #54ff34;
 }
 
 rect.end, rect.visited.weight.end {
-    fill: red;
+    fill: #ff367a;
 }
 
 rect.draggable {

@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         colCount, cellSize, tempCount, rowCount,
         startNode, endNode, weightedGraph, unweightedGraph,
         span_start, span_end, dragged, draggedNeighbor, draggedClass,
-        changeRectTypeEnabled, speed, currObstacle;
+        changeRectTypeEnabled, speed, currObstacle,
+        totalCost, totalNodesVisited, descriptions;
 
     pathSearchFinished = false;
     svg = document.querySelector('svg');
@@ -19,7 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
     rowCount = tempCount % 2 == 1 ? tempCount : tempCount - 1;
     changeRectTypeEnabled = true, speed = parseInt(document.getElementById('delay').value);
     currObstacle = getSelectedRadioValue("obstacle");
-
+    totalCost = 0;
+    totalNodesVisited = 0;
+    descriptions = {
+        'dijkstras': "<b>Dijkstra's Algorithm</b> exploits BFS, checks nodes consequently",
+        'a_star': "<b>A*</b> heads towards the target, counts on G/H/F costs",
+        'bfs': "<b>Breadth-First Search</b> relies on a <i>queue</i>",
+        'dfs_iterative': "<b>Deapth-First Search (Iterative)</b> relies on a <i>stack</i>",
+        'dfs_recursive': "<b>Deapth-First Search (Recursive)</b> relies on a <i>call stack</i>",
+        'recursive_division': "<b>Recursive Division</b> exploits backtracking and DFS",
+        'binary': "<b>Binary Maze</b> algorithm randomly carves a passage either down or right",
+        'random': "<b>Random Maze</b> selects random spots for obstacles"
+    }
 
 
     document.getElementById('grid_dimension').innerText = colCount;
@@ -107,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function drop(e) {
         if (e.which == 1 && dragged != null) {
             let currElem = getCurrElement(e),
-            temp = currElem.parentNode.querySelector('[id*="_"]');
+                temp = currElem.parentNode.querySelector('[id*="_"]');
 
             changeRectTypeEnabled = true;
 
@@ -174,6 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         placeStartEndNodes();
+
+        document.getElementById('description').innerHTML = "<b>Choose Algorithm/Maze To Animate</b>";
     }
 
     function pause(ms) {
@@ -240,6 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         pathSearchFinished = false;
+        document.getElementById('description').innerHTML = "<b>Choose Algorithm/Maze To Animate</b>";
     }
 
     // removes everything from the field
@@ -322,6 +337,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cleanPath();
         if (ignorePause) pathSearchFinished = true;
+        totalCost = 0;
+        totalNodesVisited = 0;
 
         // algorithms on weighted graphs
         if (algoType === 'dijkstras' || algoType === 'a_star') {
@@ -347,9 +364,21 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (algoType === 'dfs_recursive') {
                 path = await unweightedGraph.dfsRecursive(startNode, endNode, ignorePause);
             }
-            await confirmPath(path);
+            confirmPath(path);
         }
 
+        updateDisplayData(algoType);
+    }
+
+    function updateDisplayData(algorithmName) {
+        document.getElementById('description').innerHTML = descriptions[algorithmName];
+
+        if (totalCost > 0) {
+            document.getElementById('cost').innerHTML = `<u>Cost: <mark>${totalCost}</mark></u>`;
+        }
+        if (totalNodesVisited > 0) {
+            document.getElementById('nodes_visited').innerHTML = `<u>Nodes Visited: <mark>${totalNodesVisited}</mark></u>`;
+        }
     }
 
     // function for maze generation
@@ -360,6 +389,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         buildWeightedGraph();
 
+        totalCost = 0;
+        totalNodesVisited = 0;
+
         if (mazeType === 'recursive_division') {
             path = await generateRecursiveDivisionMaze();
         } else if (mazeType === 'binary') {
@@ -369,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         placeStartEndNodes();
+        updateDisplayData(mazeType);
     }
 
     function buildWeightedGraph() {
@@ -561,6 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (vtx === end) {
                     pathSearchFinished = true;
+                    totalCost = distances[end];
                     return this.makePath(previous, end);
                 }
                 for (let v of this.adjacencyList[vtx]) {
@@ -606,6 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (vtx === end) {
                     pathSearchFinished = true;
+                    totalCost = distances[end]['F'];
                     return this.makePath(previous, end);
                 }
                 for (let v of this.adjacencyList[vtx]) {
@@ -650,6 +685,8 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < Math.floor(arr.length / 2); i++) {
                 [arr[i], arr[arr.length - i - 1]] = [arr[arr.length - i - 1], arr[i]];
             }
+
+            totalNodesVisited = arr.length;
 
             return arr;
         }
@@ -792,6 +829,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             pathSearchFinished = true;
+            totalNodesVisited = arr.length;
             return arr;
         }
 
@@ -822,6 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             pathSearchFinished = true;
+            totalNodesVisited = arr.length;
             return arr;
         }
 
@@ -850,6 +889,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await dfs(start, this.adjacencyList);
 
             pathSearchFinished = true;
+            totalNodesVisited = arr.length;
             return arr;
         }
 

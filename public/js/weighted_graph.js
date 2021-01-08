@@ -1,10 +1,5 @@
 const PriorityQueue = require('./priority_queue.js');
 
-const exp = require('./main.js');
-const startNode = exp.startNode;
-const endNode = exp.endNode;
-const pause = exp.pause;
-
 class WeightedGraph {
     constructor() {
         this.adjacencyList = {};
