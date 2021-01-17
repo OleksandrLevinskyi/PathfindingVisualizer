@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
         WEIGHTED_NODE_COST = 2,
         RANDOM_MAZE_FREQUENCY = 5;
 
-    let currArr, pathSearchFinished, svg, width, height,
+    let currArr, pathSearchFinished, algoFinished, svg, width, height,
         colCount, cellSize, tempCount, rowCount,
         startNode, endNode, weightedGraph, unweightedGraph,
         span_start, span_end, dragged, draggedNeighbor, draggedClass,
@@ -11,9 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
         totalCost, totalNodesVisited, descriptions;
 
     pathSearchFinished = false;
+    algoFinished = true;
     svg = document.querySelector('svg');
     width = parseInt(window.getComputedStyle(svg).getPropertyValue('width'));
-    height = window.innerHeight * .7;
+    height = window.innerHeight * .8;
     colCount = parseInt(document.getElementById('dimension').value);
     cellSize = width / colCount;
     tempCount = Math.floor(height / cellSize);
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     totalNodesVisited = 0;
     descriptions = {
         'dijkstras': "<b>Dijkstra's Algorithm</b> exploits BFS, checks nodes consequently",
-        'a_star': "<b>A*</b> heads towards the target, counts on G/H/F costs",
+        'a_star': "<b>A*</b> heads towards the target, relies on G/H/F costs",
         'bfs': "<b>Breadth-First Search</b> relies on a <i>queue</i>",
         'dfs_iterative': "<b>Deapth-First Search (Iterative)</b> relies on a <i>stack</i>",
         'dfs_recursive': "<b>Deapth-First Search (Recursive)</b> relies on a <i>call stack</i>",
@@ -90,17 +91,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     svg.addEventListener('mousedown', dragStart);
 
+    function enableControls(enabled) {
+        document.getElementsByName('obstacle').forEach(e => e.disabled = !enabled);
+        
+        document.getElementById('dimension').disabled = !enabled;
+
+        document.getElementById('clean').disabled = !enabled;
+        document.getElementById('reset').disabled = !enabled;
+        document.getElementById('launch').disabled = !enabled;
+        document.getElementById('apply').disabled = !enabled;
+
+        algoFinished = enabled;
+    }
+
     function dragStart(event) {
-        if (event.target.classList.contains('draggable')) {
+        if (event.target.classList.contains('draggable') && algoFinished) {
             dragged = event.target;
             draggedNeighbor = dragged.parentNode.querySelector('[id*="_"]');
-            if (draggedNeighbor.classList.length > 0) draggedClass = draggedNeighbor.classList[0]; // can be start/end
+            if (draggedNeighbor.classList.length > 0) {
+                if (draggedNeighbor.classList.contains('start')) draggedClass = 'start';
+                else if (draggedNeighbor.classList.contains('end')) draggedClass = 'end';
+            }
+            // if (draggedNeighbor.classList.length > 0) draggedClass = draggedNeighbor.classList[0]; // can be start/end
             changeRectTypeEnabled = false;
         }
     }
 
     function dragEnter(e) {
-        if (e.which == 1 && dragged != null) {
+        if (e.which == 1 && dragged != null && algoFinished) {
             let currElem = getCurrElement(e);
 
             // highlight potential drop target when the draggable element enters it
@@ -128,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function drop(e) {
-        if (e.which == 1 && dragged != null) {
+        if (e.which == 1 && dragged != null && algoFinished) {
             let currElem = getCurrElement(e),
                 temp = currElem.parentNode.querySelector('[id*="_"]');
 
@@ -198,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         placeStartEndNodes();
 
-        document.getElementById('description').innerHTML = "<b>Choose Algorithm/Maze To Animate</b>";
+        updateDisplayData(null, "<b>Choose Algorithm/Maze To Animate</b>");
     }
 
     function pause(ms) {
@@ -216,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function changeRectType(e) {
-        if (e.which == 1 && changeRectTypeEnabled) {
+        if (e.which == 1 && changeRectTypeEnabled && algoFinished) {
             let currElem = getCurrElement(e);
 
             currObstacle = getSelectedRadioValue("obstacle");
@@ -265,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         pathSearchFinished = false;
-        document.getElementById('description').innerHTML = "<b>Choose Algorithm/Maze To Animate</b>";
+        updateDisplayData(null, "<b>Choose Algorithm/Maze To Animate</b>");
     }
 
     // removes everything from the field
@@ -343,8 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let path = [];
         let algoType = getSelectedRadioValue("algo");
 
-        // buildUnweightedGraph();
-        // await unweightedGraph.generateMaze();
+        enableControls(false);
 
         cleanPath();
         if (ignorePause) pathSearchFinished = true;
@@ -361,7 +378,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (algoType === 'a_star') {
                 path = await weightedGraph.aStar(startNode, endNode, ignorePause);
             }
-            await buildPath(path, ignorePause);
+
+            if (path == undefined) updateDisplayData(null, `<span class="text-danger"><b>No Path Exists</b><span>`);
+            else {
+                await buildPath(path, ignorePause);
+                updateDisplayData(algoType);
+            }
         }
         // algorithms on unweighted graphs
         else if (algoType === 'bfs' || algoType === 'dfs_iterative' || algoType === 'dfs_recursive') {
@@ -375,23 +397,31 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (algoType === 'dfs_recursive') {
                 path = await unweightedGraph.dfsRecursive(startNode, endNode, ignorePause);
             }
-            confirmPath(path);
-        }
 
-        updateDisplayData(algoType);
+            if (path[path.length - 1] != endNode) updateDisplayData(null, `<span class="text-danger"><b>No Path Exists</b><span>`);
+            else {
+                confirmPath(path);
+                updateDisplayData(algoType);
+            }
+        }
+        
+        enableControls(true);
     }
 
-    function updateDisplayData(algorithmName) {
-        document.getElementById('description').innerHTML = descriptions[algorithmName];
+    function updateDisplayData(algorithmName = null, desc = null) {
+        if (algorithmName != null) document.getElementById('description').innerHTML = descriptions[algorithmName];
+        else document.getElementById('description').innerHTML = desc;
 
-        document.getElementById('cost').innerHTML = totalCost > 0 ? `<u>Cost: ${totalCost}</u>` : `<u>Cost: N/A</u>`;
+        document.getElementById('cost').innerHTML = totalCost > 0 ? `${totalCost}` : `N/A`;
 
-        document.getElementById('nodes_visited').innerHTML = totalNodesVisited > 0 ? `<u>Nodes Visited: ${totalNodesVisited}</u>` : `<u>Nodes Visited: N/A</u>`;
+        document.getElementById('nodes_visited').innerHTML = totalNodesVisited > 0 ? `${totalNodesVisited}` : `N/A`;
     }
 
     // function for maze generation
     async function apply(e) {
         let mazeType = getSelectedRadioValue("maze");
+        
+        enableControls(false);
 
         resetField(e, true);
 
@@ -410,6 +440,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         placeStartEndNodes();
         updateDisplayData(mazeType);
+        
+        enableControls(true);
     }
 
     function buildWeightedGraph() {
@@ -587,10 +619,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 previous = {},
                 pq = new PriorityQueue(),
                 vtx, distance;
+
+            pq.enqueue(start, distances[start]);
+
             // set up
             for (let v in this.adjacencyList) {
                 v === start ? distances[v] = 0 : distances[v] = Infinity;
-                pq.enqueue(v, distances[v]);
                 previous[v] = null;
             }
             // algorithm
@@ -615,6 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            pathSearchFinished = true;
             return undefined;
         }
 
@@ -630,12 +665,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     distances[v]['G'] = 0;
                     distances[v]['H'] = this.getDistance(v, endNode);
                     distances[v]['F'] = distances[v]['H'];
+                    pq.enqueue(v, distances[v]['F']);
                 } else {
                     distances[v]['G'] = Infinity;
                     distances[v]['H'] = Infinity;
                     distances[v]['F'] = Infinity;
                 }
-                pq.enqueue(v, distances[v]['F']);
                 previous[v] = null;
             }
             // algorithm
@@ -663,6 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            pathSearchFinished = true;
             return undefined;
         }
 
