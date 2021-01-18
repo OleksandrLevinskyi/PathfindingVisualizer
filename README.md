@@ -9,3 +9,9 @@ Pathfiding Visualizer is an interactive application for visualizing pathfinding 
 You can access this app on: https://pathfinding-vizualizer.herokuapp.com/
 
 *please read the instructions above on how to use it
+
+NOTE: 
+* please launch this app in Chrome browser only
+* for the best experience, please use the monitor with at least 14" diagonal
+
+Currently, working to enhance the UX and responsiveness. Thank you for viewing Sorting Visualizer by Oleksandr Levinskyi!
