@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // EVENT HANDLERS ============================================================
+
+    
+    // EVENT HANDLERS =============================================================
     document.querySelector('#launch')
         .addEventListener('click', launch);
 
@@ -183,6 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return currElem;
     }
+    
+
+
+
 
     // UTILITY METHODS ============================================================
     function drawGrid() {
@@ -517,6 +523,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return adjacentNodes;
     }
 
+    function adjustNode(row, col) {
+        document.getElementById(`${row}_${col}`).classList = currObstacle; // applied to all obstacle types
+
+        if (currObstacle == 'wall') {
+            currArr[row][col] = null;
+        }
+        else if (currObstacle == 'weight') {
+            currArr[row][col] = document.getElementById(`${row}_${col}`);
+        }
+    }
+
+
+
+
+    
+    // PRIORITY QUEUE =============================================================
     class Node {
         constructor(val, priority) {
             this.val = val;
@@ -588,6 +610,87 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+
+
+    
+    // STACK ======================================================================
+    class SNode {
+        constructor(val) {
+            this.val = val;
+            this.next = null;
+        }
+    }
+
+    class Stack {
+        constructor() {
+            this.first = null;
+            this.last = null;
+            this.size = 0;
+        }
+
+        push(val) {
+            let node = new SNode(val);
+            this.size === 0 ? this.last = node : node.next = this.first;
+            this.first = node;
+            this.size++;
+            return this;
+        }
+
+        pop() {
+            if (this.size === 0) return undefined;
+            let oldFirst = this.first;
+            this.first = oldFirst.next;
+            oldFirst.next = null;
+            this.size--;
+            if (this.size === 0) this.last = null;
+            return oldFirst.val;
+        }
+    }
+
+
+
+
+    
+    // QUEUE ======================================================================
+    class QNode {
+        constructor(val) {
+            this.val = val;
+            this.next = null;
+        }
+    }
+
+    class Queue {
+        constructor() {
+            this.first = null;
+            this.last = null;
+            this.size = 0;
+        }
+
+        enqueue(val) {
+            let node = new QNode(val);
+            this.size === 0 ? this.first = node : this.last.next = node;
+            this.last = node;
+            this.size++;
+            return this;
+        }
+
+        dequeue() {
+            if (this.size === 0) return undefined;
+            let oldFirst = this.first;
+            this.first = oldFirst.next;
+            oldFirst.next = null;
+            this.size--;
+            if (this.size === 0) this.last = null;
+            return oldFirst.val;
+        }
+    }
+
+
+
+
+    
+    // WEIGHTED GRAPH =============================================================
     class WeightedGraph {
         constructor() {
             this.adjacencyList = {};
@@ -738,78 +841,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+    
 
-
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    class SNode {
-        constructor(val) {
-            this.val = val;
-            this.next = null;
-        }
-    }
-
-    class Stack {
-        constructor() {
-            this.first = null;
-            this.last = null;
-            this.size = 0;
-        }
-
-        push(val) {
-            let node = new SNode(val);
-            this.size === 0 ? this.last = node : node.next = this.first;
-            this.first = node;
-            this.size++;
-            return this;
-        }
-
-        pop() {
-            if (this.size === 0) return undefined;
-            let oldFirst = this.first;
-            this.first = oldFirst.next;
-            oldFirst.next = null;
-            this.size--;
-            if (this.size === 0) this.last = null;
-            return oldFirst.val;
-        }
-    }
-
-    class QNode {
-        constructor(val) {
-            this.val = val;
-            this.next = null;
-        }
-    }
-
-    class Queue {
-        constructor() {
-            this.first = null;
-            this.last = null;
-            this.size = 0;
-        }
-
-        enqueue(val) {
-            let node = new QNode(val);
-            this.size === 0 ? this.first = node : this.last.next = node;
-            this.last = node;
-            this.size++;
-            return this;
-        }
-
-        dequeue() {
-            if (this.size === 0) return undefined;
-            let oldFirst = this.first;
-            this.first = oldFirst.next;
-            oldFirst.next = null;
-            this.size--;
-            if (this.size === 0) this.last = null;
-            return oldFirst.val;
-        }
-    }
-
+    // UNWEIGHTED GRAPH ===========================================================
     class UnweightedGraph {
         constructor() {
             this.adjacencyList = {};
@@ -948,7 +982,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // Mazes ======================================================================
+
+    // MAZES ======================================================================
     async function generateRecursiveDivisionMaze(start = "0_0") {
         let visited = {},
             stack = new Stack(),
@@ -1114,17 +1149,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     adjustNode(row, col);
                 }
             }
-        }
-    }
-
-    function adjustNode(row, col) {
-        document.getElementById(`${row}_${col}`).classList = currObstacle; // applied to all obstacle types
-
-        if (currObstacle == 'wall') {
-            currArr[row][col] = null;
-        }
-        else if (currObstacle == 'weight') {
-            currArr[row][col] = document.getElementById(`${row}_${col}`);
         }
     }
 });

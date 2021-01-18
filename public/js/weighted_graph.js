@@ -26,25 +26,31 @@ class WeightedGraph {
         return false;
     }
 
-    async dijkstraAlgorithm(start, end) {
+    async dijkstraAlgorithm(start, end, ignorePause) {
         let distances = {},
             previous = {},
             pq = new PriorityQueue(),
             vtx, distance;
+
+        pq.enqueue(start, distances[start]);
+
         // set up
         for (let v in this.adjacencyList) {
             v === start ? distances[v] = 0 : distances[v] = Infinity;
-            pq.enqueue(v, distances[v]);
             previous[v] = null;
         }
         // algorithm
         while (pq.values.length !== 0) {
             vtx = pq.dequeue();
             if (vtx != startNode && vtx != endNode) {
-                await pause(speed);
+                if (!ignorePause) await pause(speed);
                 document.getElementById(vtx).classList.add('visited');
             }
-            if (vtx === end) return this.makePath(previous, end);
+            if (vtx === end) {
+                pathSearchFinished = true;
+                totalCost = distances[end];
+                return this.makePath(previous, end);
+            }
             for (let v of this.adjacencyList[vtx]) {
                 distance = distances[vtx] + v.weight;
                 if (distance < distances[v.val]) {
@@ -54,10 +60,12 @@ class WeightedGraph {
                 }
             }
         }
+
+        pathSearchFinished = true;
         return undefined;
     }
 
-    async aStar(start, end) {
+    async aStar(start, end, ignorePause) {
         let distances = {}, // stores G, H, and F costs
             previous = {},
             pq = new PriorityQueue(),
@@ -69,12 +77,12 @@ class WeightedGraph {
                 distances[v]['G'] = 0;
                 distances[v]['H'] = this.getDistance(v, endNode);
                 distances[v]['F'] = distances[v]['H'];
+                pq.enqueue(v, distances[v]['F']);
             } else {
                 distances[v]['G'] = Infinity;
                 distances[v]['H'] = Infinity;
                 distances[v]['F'] = Infinity;
             }
-            pq.enqueue(v, distances[v]['F']);
             previous[v] = null;
         }
         // algorithm
@@ -82,10 +90,14 @@ class WeightedGraph {
             pq.adjustPriorityQueue(distances);
             vtx = pq.dequeue();
             if (vtx != startNode && vtx != endNode) {
-                await pause(speed);
+                if (!ignorePause) await pause(speed);
                 document.getElementById(vtx).classList.add('visited');
             }
-            if (vtx === end) return this.makePath(previous, end);
+            if (vtx === end) {
+                pathSearchFinished = true;
+                totalCost = distances[end]['F'];
+                return this.makePath(previous, end);
+            }
             for (let v of this.adjacencyList[vtx]) {
                 distance = distances[vtx]['G'] + v.weight; // G cost of the v
                 if (distance < distances[v.val]['G']) {
@@ -97,6 +109,8 @@ class WeightedGraph {
                 }
             }
         }
+
+        pathSearchFinished = true;
         return undefined;
     }
 
@@ -116,17 +130,20 @@ class WeightedGraph {
         return coord;
     }
 
-
     makePath(previous, end) {
-        let arr = [];
-        let next = end;
+        let arr = [], next = end;
+
         while (next !== null) {
             arr.push(next);
             next = previous[next];
         }
+
         for (let i = 0; i < Math.floor(arr.length / 2); i++) {
             [arr[i], arr[arr.length - i - 1]] = [arr[arr.length - i - 1], arr[i]];
         }
+
+        totalNodesVisited = arr.length;
+
         return arr;
     }
 }

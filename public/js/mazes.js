@@ -1,4 +1,3 @@
-// Mazes ======================================================================
 async function generateRecursiveDivisionMaze(start = "0_0") {
     let visited = {},
         stack = new Stack(),
@@ -12,10 +11,6 @@ async function generateRecursiveDivisionMaze(start = "0_0") {
     putObstacles();
 
     visited[curr] = true;
-
-    // await pause(speed);
-    // currElem.classList.remove(currObstacle);
-    // currArr[coord[0]][coord[1]] = currElem;
 
     while (true) {
         let unvisited = [];
@@ -57,7 +52,6 @@ async function generateRecursiveDivisionMaze(start = "0_0") {
     }
 }
 
-
 async function generateBinaryMaze(start = "0_0") {
     let idx, next, neighbors, availNodes = [],
         coord = weightedGraph.getCoordinates(start),
@@ -70,7 +64,7 @@ async function generateBinaryMaze(start = "0_0") {
 
     for (let row = 0; row < rowCount; row++) {
         for (let col = 0; col < colCount; col++) {
-            if (currArr[row][col] != null) {
+            if (currArr[row][col] != null && !currArr[row][col].classList.contains('weight')) {
                 availNodes.push(currArr[row][col]);
             }
         }
@@ -116,7 +110,7 @@ async function generateRandomMaze() {
                     currArr[coord[0]][coord[1]] = null;
                 }
                 else if (currObstacle == 'weight') {
-                    currArr[coord[0]][coord[1]] = document.getElementById(`${row}_${col}`);
+                    currArr[coord[0]][coord[1]] = document.getElementById(`${coord[0]}_${coord[1]}`);
                 }
 
                 currElem.classList = currObstacle; // applied to all obstacle types
@@ -171,17 +165,3 @@ function putObstacles() {
         }
     }
 }
-
-function adjustNode(row, col) {
-    document.getElementById(`${row}_${col}`).classList = currObstacle; // applied to all obstacle types
-
-    if (currObstacle == 'wall') {
-        currArr[row][col] = null;
-    }
-    else if (currObstacle == 'weight') {
-        currArr[row][col] = document.getElementById(`${row}_${col}`);
-    }
-}
-
-
-module.exports = WeightedGraph;

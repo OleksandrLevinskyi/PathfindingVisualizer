@@ -1,11 +1,6 @@
 const Queue = require('./queue.js');
 const Stack = require('./stack.js');
 
-const exp = require('./main.js');
-const startNode = exp.startNode;
-const endNode = exp.endNode;
-const pause = exp.pause;
-
 class UnweightedGraph {
     constructor() {
         this.adjacencyList = {};
@@ -42,7 +37,7 @@ class UnweightedGraph {
         }
     }
 
-    async bfs(start, end) {
+    async bfs(start, end, ignorePause) {
         let arr = [],
             visited = {},
             queue = new Queue();
@@ -55,7 +50,7 @@ class UnweightedGraph {
             arr.push(next);
 
             if (next != startNode && next != endNode) {
-                await pause(speed);
+                if (!ignorePause) await pause(speed);
                 document.getElementById(next).classList.add('visited');
             }
 
@@ -67,10 +62,13 @@ class UnweightedGraph {
                 }
             }
         }
+
+        pathSearchFinished = true;
+        totalNodesVisited = arr.length;
         return arr;
     }
 
-    async dfsIterative(start, end) {
+    async dfsIterative(start, end, ignorePause) {
         let arr = [],
             visited = {},
             stack = new Stack(),
@@ -83,7 +81,7 @@ class UnweightedGraph {
             arr.push(next);
 
             if (next != startNode && next != endNode) {
-                await pause(speed);
+                if (!ignorePause) await pause(speed);
                 document.getElementById(next).classList.add('visited');
             }
 
@@ -95,10 +93,13 @@ class UnweightedGraph {
                 }
             }
         }
+
+        pathSearchFinished = true;
+        totalNodesVisited = arr.length;
         return arr;
     }
 
-    async dfsRecursive(start, end) {
+    async dfsRecursive(start, end, ignorePause) {
         let arr = [],
             visited = {},
             found = false;
@@ -109,7 +110,7 @@ class UnweightedGraph {
             visited[vtx] = true;
 
             if (vtx != startNode && vtx != endNode) {
-                await pause(speed);
+                if (!ignorePause) await pause(speed);
                 document.getElementById(vtx).classList.add('visited');
             }
 
@@ -121,6 +122,9 @@ class UnweightedGraph {
             }
         }
         await dfs(start, this.adjacencyList);
+
+        pathSearchFinished = true;
+        totalNodesVisited = arr.length;
         return arr;
     }
 
