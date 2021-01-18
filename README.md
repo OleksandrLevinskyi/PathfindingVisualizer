@@ -7,4 +7,5 @@ Pathfiding Visualizer is an interactive application for visualizing pathfinding 
 
 # Try It
 You can access this app on: https://pathfinding-vizualizer.herokuapp.com/
+
 *please read the instructions above on how to use it
