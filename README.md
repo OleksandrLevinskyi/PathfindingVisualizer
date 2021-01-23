@@ -15,8 +15,8 @@ Pathfiding Visualizer is an interactive application for visualizing pathfinding 
 
 ---
 
-* Grid dimension - how many cells you have in a row.
-* Animation delay - how many seconds the delay for animation is.
+* Grid dimension - how many cells you have in a row
+* Animation delay - how many seconds the delay for animation is
 
 ---
 
@@ -46,5 +46,6 @@ You can access this app on: https://pathfinding-vizualizer.herokuapp.com/ (pleas
 NOTE: 
 * please launch this app in Chrome browser only
 * for the best experience, please use the monitor with at least 14" diagonal
+* to interact with the grid, use your computer mice (touchscreen will not work)
 
 Thank you for viewing Sorting Visualizer by Oleksandr Levinskyi!
