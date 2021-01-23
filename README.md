@@ -13,9 +13,6 @@ Pathfiding Visualizer is an interactive application for visualizing pathfinding 
   1) wall - no way though
   2) wighted node - node with increased cost to get in/out of it
 
-
-* You can select day/night mode.
-
 ---
 
 * Grid dimension - how many cells you have in a row.
@@ -38,8 +35,10 @@ At the bottom of the screen, you can find a report including:
   * Cost - how much it costs to get from start to end (to infuence it, put weighted nodes)
   * Nodes Visited - how many nodes the final path includes
 
+---
 
-YOU CAN DRAG START/END NODES. If the algorithms is implemented already, it will re-calculate the path in real time.
+* YOU CAN DRAG START/END NODES. If the algorithms is implemented already, it will re-calculate the path in real time.
+* You can select day/night mode.
 
 # Try It
 You can access this app on: https://pathfinding-vizualizer.herokuapp.com/ (please read the instructions above on how to use it)
