@@ -10,7 +10,7 @@ Pathfiding Visualizer is an interactive application for visualizing pathfinding 
 ---
 
 2 obstacle types (just press right mouse key to put obstacles on the grid):
-  1) wall - no way though
+  1) wall - no way through
   2) wighted node - node with increased cost to get in/out of it
 
 ---
