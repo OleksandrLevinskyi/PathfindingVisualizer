@@ -1,60 +1,72 @@
-const Queue = require('./queue.js');
-const Stack = require('./stack.js');
+import {Queue} from "./Queue";
+import {Stack} from "./Stack";
+import {UGAdjacencyList, VisitedList} from "./Types";
 
-class UnweightedGraph {
+export class UnweightedGraph {
+    adjacencyList: UGAdjacencyList;
+
     constructor() {
         this.adjacencyList = {};
     }
 
-    addVertex(vertex) {
+    addVertex(vertex: string): void {
         if (!this.adjacencyList[vertex]) {
             this.adjacencyList[vertex] = [];
         }
     }
 
-    addEdge(vertex1, vertex2) {
-        if (this.adjacencyList[vertex1] && this.adjacencyList[vertex2] &&
-            !this.adjacencyList[vertex1].includes(vertex2) && !this.adjacencyList[vertex2].includes(vertex1)) {
+    addEdge(vertex1: string, vertex2: string): void {
+        if (
+            this.adjacencyList[vertex1] && this.adjacencyList[vertex2] &&
+            !this.adjacencyList[vertex1].includes(vertex2) &&
+            !this.adjacencyList[vertex2].includes(vertex1)
+        ) {
             this.adjacencyList[vertex1].push(vertex2);
             this.adjacencyList[vertex2].push(vertex1);
         }
     }
 
-    removeEdge(vertex1, vertex2) {
-        if (this.adjacencyList[vertex1] && this.adjacencyList[vertex2] &&
-            this.adjacencyList[vertex1].includes(vertex2) && this.adjacencyList[vertex2].includes(vertex1)) {
+    removeEdge(vertex1: string, vertex2: string): void {
+        if (
+            this.adjacencyList[vertex1] && this.adjacencyList[vertex2] &&
+            this.adjacencyList[vertex1].includes(vertex2) &&
+            this.adjacencyList[vertex2].includes(vertex1)
+        ) {
             this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter(vtx => vtx !== vertex2);
             this.adjacencyList[vertex2] = this.adjacencyList[vertex2].filter(vtx => vtx !== vertex1);
         }
     }
 
-    removeVertex(vertex) {
+    removeVertex(vertex: string): void {
         if (this.adjacencyList[vertex]) {
             for (let vtx of this.adjacencyList[vertex]) {
                 this.removeEdge(vertex, vtx);
             }
+
             delete this.adjacencyList[vertex];
         }
     }
 
-    async bfs(start, end, ignorePause) {
-        let arr = [],
-            visited = {},
-            queue = new Queue();
+    async bfs(start: string, end: string, ignorePause: boolean): Promise<Array<string>> {
+        let arr: Array<string> = [],
+            visited: VisitedList = {},
+            queue: Queue = new Queue();
 
         queue.enqueue(start);
         visited[start] = true;
 
         while (queue.size > 0) {
-            let next = queue.dequeue();
+            let next: string = queue.dequeue();
             arr.push(next);
 
             if (next != startNode && next != endNode) {
                 if (!ignorePause) await pause(speed);
+
                 document.getElementById(next).classList.add('visited');
             }
 
             if (next == end) break;
+
             for (let vtx of this.adjacencyList[next]) {
                 if (!visited[vtx]) {
                     visited[vtx] = true;
@@ -65,17 +77,19 @@ class UnweightedGraph {
 
         pathSearchFinished = true;
         totalNodesVisited = arr.length;
+
         return arr;
     }
 
-    async dfsIterative(start, end, ignorePause) {
-        let arr = [],
-            visited = {},
-            stack = new Stack(),
-            next;
+    async dfsIterative(start: string, end: string, ignorePause: boolean): Promise<Array<string>> {
+        let arr: Array<string> = [],
+            visited: VisitedList = {},
+            stack: Stack = new Stack(),
+            next: string;
 
         stack.push(start);
         visited[start] = true;
+
         while (stack.size > 0) {
             next = stack.pop();
             arr.push(next);
@@ -86,6 +100,7 @@ class UnweightedGraph {
             }
 
             if (next == end) break;
+
             for (let v of this.adjacencyList[next]) {
                 if (!visited[v]) {
                     stack.push(v);
@@ -96,21 +111,24 @@ class UnweightedGraph {
 
         pathSearchFinished = true;
         totalNodesVisited = arr.length;
+
         return arr;
     }
 
-    async dfsRecursive(start, end, ignorePause) {
-        let arr = [],
-            visited = {},
-            found = false;
+    async dfsRecursive(start: string, end: string, ignorePause: boolean): Promise<Array<string>> {
+        let arr: Array<string> = [],
+            visited: VisitedList = {},
+            found: boolean = false;
 
-        async function dfs(vtx, adjList) {
+        async function dfs(vtx: string, adjList: UGAdjacencyList): Promise<void> {
             if (!vtx) return;
+
             arr.push(vtx);
             visited[vtx] = true;
 
             if (vtx != startNode && vtx != endNode) {
                 if (!ignorePause) await pause(speed);
+
                 document.getElementById(vtx).classList.add('visited');
             }
 
@@ -118,22 +136,22 @@ class UnweightedGraph {
 
             for (let i = 0; i < adjList[vtx].length; i++) {
                 let v = adjList[vtx][i];
+
                 if (!(v in visited) && !found) await dfs(v, adjList);
             }
         }
+
         await dfs(start, this.adjacencyList);
 
         pathSearchFinished = true;
         totalNodesVisited = arr.length;
+
         return arr;
     }
 
-    getCoordinates(node) {
-        let coord = node.split('_');
-        coord[0] = parseInt(coord[0]);
-        coord[1] = parseInt(coord[1]);
-        return coord;
+    getCoordinates(node: string): Array<number> {
+        let coords: Array<string> = node.split('_');
+
+        return [parseInt(coords[0]), parseInt(coords[1])];
     }
 }
-
-module.exports = UnweightedGraph;

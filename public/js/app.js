@@ -886,6 +886,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 queue = new Queue();
 
             queue.enqueue(start);
+            console.log('queue',queue)
             visited[start] = true;
 
             while (queue.size > 0) {

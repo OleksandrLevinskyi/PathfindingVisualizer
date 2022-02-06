@@ -1,36 +1,45 @@
-const PriorityQueue = require('./priority_queue.js');
+import {PriorityQueue} from "./PriorityQueue";
+import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "./Types";
 
-class WeightedGraph {
+export class WeightedGraph {
+    adjacencyList: WGAdjacencyList;
+
     constructor() {
         this.adjacencyList = {};
     }
 
-    addVertex(vtx) {
+    addVertex(vtx: string): void {
         if (!this.adjacencyList[vtx]) {
             this.adjacencyList[vtx] = [];
         }
     }
 
-    addEdge(vtx1, vtx2, weight) {
-        if (this.adjacencyList[vtx1] && this.adjacencyList[vtx2] &&
-            !this.includes(vtx1, vtx2) && !this.includes(vtx2, vtx1)) {
-            this.adjacencyList[vtx1].push({ val: vtx2, weight });
-            this.adjacencyList[vtx2].push({ val: vtx1, weight });
+    addEdge(vtx1: string, vtx2: string, weight: number): void {
+        if (
+            this.adjacencyList[vtx1] &&
+            this.adjacencyList[vtx2] &&
+            !this.includes(vtx1, vtx2) &&
+            !this.includes(vtx2, vtx1)
+        ) {
+            this.adjacencyList[vtx1].push({val: vtx2, weight});
+            this.adjacencyList[vtx2].push({val: vtx1, weight});
         }
     }
 
-    includes(vtx1, vtx2) {
+    includes(vtx1: string, vtx2: string): boolean {
         for (let vtx of this.adjacencyList[vtx1]) {
             if (vtx.val === vtx2) return true;
         }
+
         return false;
     }
 
-    async dijkstraAlgorithm(start, end, ignorePause) {
-        let distances = {},
-            previous = {},
-            pq = new PriorityQueue(),
-            vtx, distance;
+    async dijkstraAlgorithm(start: string, end: string, ignorePause: boolean): Promise<Array<string> | undefined> {
+        let distances: DistancesList = {},
+            previous: PreviousList = {},
+            pq: PriorityQueue = new PriorityQueue(),
+            vtx: string,
+            distance: number;
 
         pq.enqueue(start, distances[start]);
 
@@ -39,99 +48,124 @@ class WeightedGraph {
             v === start ? distances[v] = 0 : distances[v] = Infinity;
             previous[v] = null;
         }
+
         // algorithm
         while (pq.values.length !== 0) {
             vtx = pq.dequeue();
+
             if (vtx != startNode && vtx != endNode) {
                 if (!ignorePause) await pause(speed);
+
                 document.getElementById(vtx).classList.add('visited');
             }
+
             if (vtx === end) {
                 pathSearchFinished = true;
                 totalCost = distances[end];
+
                 return this.makePath(previous, end);
             }
+
             for (let v of this.adjacencyList[vtx]) {
                 distance = distances[vtx] + v.weight;
+
                 if (distance < distances[v.val]) {
                     distances[v.val] = distance;
                     previous[v.val] = vtx;
+
                     pq.enqueue(v.val, distances[v.val]);
                 }
             }
         }
 
         pathSearchFinished = true;
+
         return undefined;
     }
 
-    async aStar(start, end, ignorePause) {
-        let distances = {}, // stores G, H, and F costs
-            previous = {},
-            pq = new PriorityQueue(),
-            vtx, distance;
+    async aStar(start: string, end: string, ignorePause: boolean): Promise<Array<string> | undefined> {
+        let distances: ListOfGHFCosts = {},
+            previous: PreviousList = {},
+            pq: PriorityQueue = new PriorityQueue(),
+            vtx: string,
+            distance: number;
+
         // set up
         for (let v in this.adjacencyList) {
-            distances[v] = {};
+            distances[v] = {G: 0, H: 0, F: 0};
+
             if (v === start) {
                 distances[v]['G'] = 0;
                 distances[v]['H'] = this.getDistance(v, endNode);
                 distances[v]['F'] = distances[v]['H'];
+
                 pq.enqueue(v, distances[v]['F']);
             } else {
                 distances[v]['G'] = Infinity;
                 distances[v]['H'] = Infinity;
                 distances[v]['F'] = Infinity;
             }
+
             previous[v] = null;
         }
+
         // algorithm
         while (pq.values.length !== 0) {
             pq.adjustPriorityQueue(distances);
             vtx = pq.dequeue();
+
             if (vtx != startNode && vtx != endNode) {
                 if (!ignorePause) await pause(speed);
+
                 document.getElementById(vtx).classList.add('visited');
             }
+
             if (vtx === end) {
                 pathSearchFinished = true;
                 totalCost = distances[end]['F'];
+
                 return this.makePath(previous, end);
             }
+
             for (let v of this.adjacencyList[vtx]) {
                 distance = distances[vtx]['G'] + v.weight; // G cost of the v
+
                 if (distance < distances[v.val]['G']) {
                     distances[v.val]['G'] = distance;
                     distances[v.val]['H'] = this.getDistance(v.val, endNode);
                     distances[v.val]['F'] = distances[v.val]['G'] + distances[v.val]['H'];
+
                     previous[v.val] = vtx;
+
                     pq.enqueue(v.val, distances[v.val]['F']);
                 }
             }
         }
 
         pathSearchFinished = true;
+
         return undefined;
     }
 
     // distance to the end node
-    getDistance(node, endNode) {
-        let coord1 = this.getCoordinates(node);
-        let coord2 = this.getCoordinates(endNode);
-        let distX = Math.abs(coord1[1] - coord2[1]);
-        let distY = Math.abs(coord1[0] - coord2[0]);
+    getDistance(node: string, endNode: string): number {
+        let coord1: Array<number> = this.getCoordinates(node),
+            coord2: Array<number> = this.getCoordinates(endNode),
+            distX: number = Math.abs(coord1[1] - coord2[1]),
+            distY: number = Math.abs(coord1[0] - coord2[0]);
+
         return distX + distY;
     }
 
-    getCoordinates(node) {
-        let coord = node.split('_');
-        coord[0] = parseInt(coord[0]);
-        coord[1] = parseInt(coord[1]);
-        return coord;
+    getCoordinates(node: string): Array<number> {
+        let coords: Array<string> = node.split('_');
+
+        return [parseInt(coords[0]), parseInt(coords[1])];
     }
 
-    makePath(previous, end) {
-        let arr = [], next = end;
+    makePath(previous: PreviousList, end: string): Array<string> {
+        let arr: Array<string> = [],
+            next: string = end;
 
         while (next !== null) {
             arr.push(next);
@@ -147,5 +181,3 @@ class WeightedGraph {
         return arr;
     }
 }
-
-module.exports = WeightedGraph;

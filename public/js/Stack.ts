@@ -1,34 +1,36 @@
-class SNode {
-    constructor(val) {
-        this.val = val;
-        this.next = null;
-    }
-}
+import {Node} from "./Nodes/Node";
 
-class Stack {
+export class Stack {
+    first: Node;
+    last: Node;
+    size: number;
+
     constructor() {
         this.first = null;
         this.last = null;
         this.size = 0;
     }
 
-    push(val) {
-        let node = new SNode(val);
+    push(val: string): Stack {
+        let node: Node = new Node(val);
+
         this.size === 0 ? this.last = node : node.next = this.first;
         this.first = node;
         this.size++;
+
         return this;
     }
 
-    pop() {
+    pop(): string {
         if (this.size === 0) return undefined;
-        let oldFirst = this.first;
+
+        let oldFirst: Node = this.first;
         this.first = oldFirst.next;
         oldFirst.next = null;
         this.size--;
+
         if (this.size === 0) this.last = null;
+
         return oldFirst.val;
     }
 }
-
-module.exports = Stack;
