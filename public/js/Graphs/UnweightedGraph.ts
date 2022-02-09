@@ -1,6 +1,6 @@
-import {Queue} from "./Queue";
-import {Stack} from "./Stack";
-import {UGAdjacencyList, VisitedList} from "./Types";
+import {Queue} from "../Utils/Queue";
+import {Stack} from "../Utils/Stack";
+import {UGAdjacencyList, VisitedList} from "../Types";
 
 export class UnweightedGraph {
     adjacencyList: UGAdjacencyList;

@@ -1,10 +1,10 @@
 import {Maze} from "./Maze";
-import {Stack} from "./Stack";
-import {Node} from "./Nodes/Node";
-import {AdjacentNode} from "./Types";
+import {Stack} from "../Utils/Stack";
+import {Node} from "../Nodes/Node";
+import {AdjacentNode, DIRECTION} from "../Types";
 
-export class RecursiveDivision extends Maze {
-    generate(): void {
+export class RecursiveDivisionMaze extends Maze {
+    async generate(): Promise<void> {
         const start: string = "0_0";
 
         let visited = {},
@@ -72,19 +72,19 @@ export class RecursiveDivision extends Maze {
 
         if (currRow > 1 && currArr[currRow - 2][currCol] != null) adjacentNodes.push({
             val: currArr[currRow - 2][currCol].getAttribute('id'),
-            dir: 'up'
+            dir: DIRECTION.UP
         });
         if (currRow < rowCount - 2 && currArr[currRow + 2][currCol] != null) adjacentNodes.push({
             val: currArr[currRow + 2][currCol].getAttribute('id'),
-            dir: 'down'
+            dir: DIRECTION.DOWN
         });
         if (currCol > 1 && currArr[currRow][currCol - 2] != null) adjacentNodes.push({
             val: currArr[currRow][currCol - 2].getAttribute('id'),
-            dir: 'left'
+            dir: DIRECTION.LEFT
         });
         if (currCol < colCount - 2 && currArr[currRow][currCol + 2] != null) adjacentNodes.push({
             val: currArr[currRow][currCol + 2].getAttribute('id'),
-            dir: 'right'
+            dir: DIRECTION.RIGHT
         });
 
         return adjacentNodes;

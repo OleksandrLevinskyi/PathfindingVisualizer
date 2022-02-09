@@ -35,11 +35,11 @@ export type UGAdjacencyList = {
 
 export type AdjacentNode = {
     val: string,
-    direction: DIRECTION
+    dir: DIRECTION
 }
 
 export enum DIRECTION {
-    TOP = 'top',
+    UP = 'up',
     DOWN = 'down',
     RIGHT = 'right',
     LEFT = 'left'

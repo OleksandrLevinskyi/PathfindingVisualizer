@@ -1,5 +1,5 @@
-import {PriorityQueue} from "./PriorityQueue";
-import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "./Types";
+import {PriorityQueue} from "../Utils/PriorityQueue";
+import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "../Types";
 
 export class WeightedGraph {
     adjacencyList: WGAdjacencyList;

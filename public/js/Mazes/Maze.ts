@@ -1,5 +1,13 @@
+import {Context} from "../Context";
+
 export abstract class Maze {
-    abstract generate(): void;
+    context: Context;
+
+    constructor(context: Context) {
+        this.context = context;
+    }
+
+    abstract generate(): Promise<void>;
 
     putObstacles() {
         for (let row = 0; row < rowCount; row++) {
@@ -9,8 +17,7 @@ export abstract class Maze {
                         adjustNode(row, col);
                     }
                 }
-            }
-            else {
+            } else {
                 for (let col = 0; col < colCount; col++) {
                     adjustNode(row, col);
                 }

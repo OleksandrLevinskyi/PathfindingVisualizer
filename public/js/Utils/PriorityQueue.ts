@@ -1,4 +1,4 @@
-import {PQNode} from "./Nodes/PQNode";
+import {PQNode} from "../Nodes/PQNode";
 
 export class PriorityQueue {
     values: Array<PQNode>;
