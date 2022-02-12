@@ -1,12 +1,16 @@
 import {Queue} from "../Utils/Queue";
 import {Stack} from "../Utils/Stack";
 import {UGAdjacencyList, VisitedList} from "../Types";
+import {Context} from "../Context";
+import {pause} from "../utils";
 
 export class UnweightedGraph {
+    context: Context;
     adjacencyList: UGAdjacencyList;
 
-    constructor() {
+    constructor(context: Context) {
         this.adjacencyList = {};
+        this.context = context;
     }
 
     addVertex(vertex: string): void {
@@ -48,6 +52,7 @@ export class UnweightedGraph {
     }
 
     async bfs(start: string, end: string, ignorePause: boolean): Promise<Array<string>> {
+        let context = this.context;
         let arr: Array<string> = [],
             visited: VisitedList = {},
             queue: Queue = new Queue();
@@ -56,13 +61,13 @@ export class UnweightedGraph {
         visited[start] = true;
 
         while (queue.size > 0) {
-            let next: string = queue.dequeue();
+            let next: string = queue.dequeue()!;
             arr.push(next);
 
-            if (next != startNode && next != endNode) {
-                if (!ignorePause) await pause(speed);
+            if (next != context.startNode && next != context.endNode) {
+                if (!ignorePause) await pause(context.speed);
 
-                document.getElementById(next).classList.add('visited');
+                document.getElementById(next)?.classList.add('visited');
             }
 
             if (next == end) break;
@@ -75,13 +80,14 @@ export class UnweightedGraph {
             }
         }
 
-        pathSearchFinished = true;
-        totalNodesVisited = arr.length;
+        context.pathSearchFinished = true;
+        context.totalNodesVisited = arr.length;
 
         return arr;
     }
 
     async dfsIterative(start: string, end: string, ignorePause: boolean): Promise<Array<string>> {
+        let context = this.context;
         let arr: Array<string> = [],
             visited: VisitedList = {},
             stack: Stack = new Stack(),
@@ -91,12 +97,12 @@ export class UnweightedGraph {
         visited[start] = true;
 
         while (stack.size > 0) {
-            next = stack.pop();
+            next = stack.pop()!;
             arr.push(next);
 
-            if (next != startNode && next != endNode) {
-                if (!ignorePause) await pause(speed);
-                document.getElementById(next).classList.add('visited');
+            if (next != context.startNode && next != context.endNode) {
+                if (!ignorePause) await pause(context.speed);
+                document.getElementById(next)?.classList.add('visited');
             }
 
             if (next == end) break;
@@ -109,27 +115,28 @@ export class UnweightedGraph {
             }
         }
 
-        pathSearchFinished = true;
-        totalNodesVisited = arr.length;
+        context.pathSearchFinished = true;
+        context.totalNodesVisited = arr.length;
 
         return arr;
     }
 
     async dfsRecursive(start: string, end: string, ignorePause: boolean): Promise<Array<string>> {
+        let context = this.context;
         let arr: Array<string> = [],
             visited: VisitedList = {},
             found: boolean = false;
 
-        async function dfs(vtx: string, adjList: UGAdjacencyList): Promise<void> {
+        async function dfs(vtx: string, adjList: UGAdjacencyList) {
             if (!vtx) return;
 
             arr.push(vtx);
             visited[vtx] = true;
 
-            if (vtx != startNode && vtx != endNode) {
-                if (!ignorePause) await pause(speed);
+            if (vtx != context.startNode && vtx != context.endNode) {
+                if (!ignorePause) await pause(context.speed);
 
-                document.getElementById(vtx).classList.add('visited');
+                document.getElementById(vtx)?.classList.add('visited');
             }
 
             if (vtx == end) found = true;
@@ -143,8 +150,8 @@ export class UnweightedGraph {
 
         await dfs(start, this.adjacencyList);
 
-        pathSearchFinished = true;
-        totalNodesVisited = arr.length;
+        context.pathSearchFinished = true;
+        context.totalNodesVisited = arr.length;
 
         return arr;
     }

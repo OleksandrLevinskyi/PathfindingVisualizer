@@ -1,11 +1,15 @@
 import {PriorityQueue} from "../Utils/PriorityQueue";
 import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "../Types";
+import {Context} from "../Context";
+import {pause} from "../utils";
 
 export class WeightedGraph {
+    context: Context;
     adjacencyList: WGAdjacencyList;
 
-    constructor() {
+    constructor(context: Context) {
         this.adjacencyList = {};
+        this.context = context;
     }
 
     addVertex(vtx: string): void {
@@ -35,6 +39,7 @@ export class WeightedGraph {
     }
 
     async dijkstraAlgorithm(start: string, end: string, ignorePause: boolean): Promise<Array<string> | undefined> {
+        let context = this.context;
         let distances: DistancesList = {},
             previous: PreviousList = {},
             pq: PriorityQueue = new PriorityQueue(),
@@ -51,17 +56,17 @@ export class WeightedGraph {
 
         // algorithm
         while (pq.values.length !== 0) {
-            vtx = pq.dequeue();
+            vtx = pq.dequeue()!;
 
-            if (vtx != startNode && vtx != endNode) {
-                if (!ignorePause) await pause(speed);
+            if (vtx != context.startNode && vtx != context.endNode) {
+                if (!ignorePause) await pause(context.speed);
 
-                document.getElementById(vtx).classList.add('visited');
+                document.getElementById(vtx)?.classList.add('visited');
             }
 
             if (vtx === end) {
-                pathSearchFinished = true;
-                totalCost = distances[end];
+                context.pathSearchFinished = true;
+                context.totalCost = distances[end];
 
                 return this.makePath(previous, end);
             }
@@ -78,12 +83,13 @@ export class WeightedGraph {
             }
         }
 
-        pathSearchFinished = true;
+        context.pathSearchFinished = true;
 
         return undefined;
     }
 
     async aStar(start: string, end: string, ignorePause: boolean): Promise<Array<string> | undefined> {
+        let context = this.context;
         let distances: ListOfGHFCosts = {},
             previous: PreviousList = {},
             pq: PriorityQueue = new PriorityQueue(),
@@ -96,7 +102,7 @@ export class WeightedGraph {
 
             if (v === start) {
                 distances[v]['G'] = 0;
-                distances[v]['H'] = this.getDistance(v, endNode);
+                distances[v]['H'] = this.getDistance(v, context.endNode!);
                 distances[v]['F'] = distances[v]['H'];
 
                 pq.enqueue(v, distances[v]['F']);
@@ -112,17 +118,17 @@ export class WeightedGraph {
         // algorithm
         while (pq.values.length !== 0) {
             pq.adjustPriorityQueue(distances);
-            vtx = pq.dequeue();
+            vtx = pq.dequeue()!;
 
-            if (vtx != startNode && vtx != endNode) {
-                if (!ignorePause) await pause(speed);
+            if (vtx != context.startNode && vtx != context.endNode) {
+                if (!ignorePause) await pause(context.speed);
 
-                document.getElementById(vtx).classList.add('visited');
+                document.getElementById(vtx)?.classList.add('visited');
             }
 
             if (vtx === end) {
-                pathSearchFinished = true;
-                totalCost = distances[end]['F'];
+                context.pathSearchFinished = true;
+                context.totalCost = distances[end]['F'];
 
                 return this.makePath(previous, end);
             }
@@ -132,7 +138,7 @@ export class WeightedGraph {
 
                 if (distance < distances[v.val]['G']) {
                     distances[v.val]['G'] = distance;
-                    distances[v.val]['H'] = this.getDistance(v.val, endNode);
+                    distances[v.val]['H'] = this.getDistance(v.val, context.endNode!);
                     distances[v.val]['F'] = distances[v.val]['G'] + distances[v.val]['H'];
 
                     previous[v.val] = vtx;
@@ -142,7 +148,7 @@ export class WeightedGraph {
             }
         }
 
-        pathSearchFinished = true;
+        context.pathSearchFinished = true;
 
         return undefined;
     }
@@ -164,8 +170,9 @@ export class WeightedGraph {
     }
 
     makePath(previous: PreviousList, end: string): Array<string> {
+        let context = this.context;
         let arr: Array<string> = [],
-            next: string = end;
+            next: string | null = end;
 
         while (next !== null) {
             arr.push(next);
@@ -176,7 +183,7 @@ export class WeightedGraph {
             [arr[i], arr[arr.length - i - 1]] = [arr[arr.length - i - 1], arr[i]];
         }
 
-        totalNodesVisited = arr.length;
+        context.totalNodesVisited = arr.length;
 
         return arr;
     }

@@ -18,200 +18,202 @@
     <meta name="description" content="Pathfinding Visualizations">
     <meta name="author" content="Oleksandr Levinskyi">
 
-    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
-    <link href="css/style.css" type="text/css" rel="stylesheet">
-    <link href="css/main.css" type="text/css" rel="stylesheet">
+    <link href="./public/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="./public/css/style.css" type="text/css" rel="stylesheet">
+    <link href="./public/css/main.css" type="text/css" rel="stylesheet">
 
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 not_padded">
-                <svg>
-                    <defs>
-                        <linearGradient id='gradient' x1='14.1%' y1='14.1%' x2='0' spreadMethod='repeat'>
-                            <stop stop-color='#fff' />
-                            <stop offset='.504' stop-color='#fff' />
-                            <stop offset='1' stop-color='#000' />
-                            <stop offset='1' stop-color='#000' />
-                        </linearGradient>
-                        <linearGradient id='gradient_visited' x1='14.1%' y1='14.1%' x2='0' spreadMethod='repeat'>
-                            <stop stop-color='#c572ff' />
-                            <stop offset='.504' stop-color='#c572ff' />
-                            <stop offset='.504' stop-color='#000' />
-                            <stop offset='1' stop-color='#000' />
-                        </linearGradient>
-                        <linearGradient id='gradient_path' x1='14.1%' y1='14.1%' x2='0' spreadMethod='repeat'>
-                            <stop stop-color='#fffe6a' />
-                            <stop offset='.504' stop-color='#fffe6a' />
-                            <stop offset='.504' stop-color='#000' />
-                            <stop offset='1' stop-color='#000' />
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <p class="heading text-center">Algorithms</p>
-                <div class="row">
-                    <div class="col-md-6 left_padded">
-                        <h6>Find Path</h6>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="algo" id="dijkstras" value="dijkstras"
-                                checked>
-                            <label class="form-check-label" for="dijkstras">Dijkstra's</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="algo" id="a_star" value="a_star">
-                            <label class="form-check-label" for="a_star">A*</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6 left_padded">
-                        <h6>Check if Reachable</h6>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="algo" id="bfs" value="bfs">
-                            <label class="form-check-label" for="bfs">BFS</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="algo" id="dfs_iterative"
-                                value="dfs_iterative">
-                            <label class="form-check-label" for="dfs_iterative">DFS (Iterative)</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="algo" id="dfs_recursive"
-                                value="dfs_recursive">
-                            <label class="form-check-label" for="dfs_recursive">DFS (Recursive)</label>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary btn-md" id="launch">Launch</button>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="row">
-                            <div class="col-md-6 left_padded">
-                                <p class="heading">Obstacle Type</p>
-                            </div>
-                            <div class="col-md-6 not_padded">
-                                <ul>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input special" type="radio" name="obstacle"
-                                                id="obstacle_wall" value="wall" checked>
-                                            <label class="special" for="obstacle_wall"><img
-                                                    src="images/wall.png" /></label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input special" type="radio" name="obstacle"
-                                                id="obstacle_weight" value="weight">
-                                            <label class="special" for="obstacle_weight"><img
-                                                    src="images/weight.png" /></label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 left_padded">
-                                <p class="heading">Mode</p>
-                            </div>
-                            <div class="col-md-6 not_padded">
-                                <ul>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input special" type="radio" name="mode"
-                                                id="mode_day" value="day" checked>
-                                            <label class="special" for="mode_day"><img src="images/sun.png" /></label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <input class="form-check-input special" type="radio" name="mode"
-                                                id="mode_night" value="night">
-                                            <label class="special" for="mode_night"><img
-                                                    src="images/moon.png" /></label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 not_padded">
-                        <button type="button" class="btn btn-primary btn-block align-middle"
-                            id="clean">Clean<br>Field</button>
-                        <button type="button" class="btn btn-primary btn-block align-middle"
-                            id="reset">Reset<br>Field</button>
-                    </div>
-                    <div class="col-md-5 left_padded">
-                        <p class="heading">Grid Dimension <span class="data">(<span id="grid_dimension"></span>
-                                cells/row)</span></p>
-                        <input type="range" class="form-range" min="15" max="201" step="2" id="dimension">
-
-                        <p class="heading">Animation Delay <span class="data">(<span id="animation_delay"></span>
-                                ms)</span></p>
-                        <input type="range" min="5" max="500" step="5" id="delay">
-                    </div>
-                </div>
-
-                <hr />
-
-                <p class="text-center not_padded" id="description"><b>Choose Algorithm/Maze To Animate</b></p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="text-center not_padded">
-                            <u>Cost: <span id="cost">N/A</span></u>
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="text-center not_padded">
-                            <u>Nodes Visited: <span id="nodes_visited">N/A</span></u>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <p class="heading text-center">Mazes</p>
-                <div class="row">
-                    <div class="col-md-12 left_padded">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="maze" id="recursive_division"
-                                value="recursive_division" checked>
-                            <label class="form-check-label" for="recursive_division">Recursive
-                                Division</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="maze" id="binary" value="binary">
-                            <label class="form-check-label" for="binary">Binary Maze</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="maze" id="random" value="random">
-                            <label class="form-check-label" for="random">Random Obstacles</label>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary" id="apply">Apply</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <hr />
-                <p class="text-center">&copy; 2021 Oleksandr Levinskyi - Pathfinding Visualizer</p>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 not_padded">
+            <svg>
+                <defs>
+                    <linearGradient id='gradient' x1='14.1%' y1='14.1%' x2='0' spreadMethod='repeat'>
+                        <stop stop-color='#fff'/>
+                        <stop offset='.504' stop-color='#fff'/>
+                        <stop offset='1' stop-color='#000'/>
+                        <stop offset='1' stop-color='#000'/>
+                    </linearGradient>
+                    <linearGradient id='gradient_visited' x1='14.1%' y1='14.1%' x2='0' spreadMethod='repeat'>
+                        <stop stop-color='#c572ff'/>
+                        <stop offset='.504' stop-color='#c572ff'/>
+                        <stop offset='.504' stop-color='#000'/>
+                        <stop offset='1' stop-color='#000'/>
+                    </linearGradient>
+                    <linearGradient id='gradient_path' x1='14.1%' y1='14.1%' x2='0' spreadMethod='repeat'>
+                        <stop stop-color='#fffe6a'/>
+                        <stop offset='.504' stop-color='#fffe6a'/>
+                        <stop offset='.504' stop-color='#000'/>
+                        <stop offset='1' stop-color='#000'/>
+                    </linearGradient>
+                </defs>
+            </svg>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-3">
+            <p class="heading text-center">Algorithms</p>
+            <div class="row">
+                <div class="col-md-6 left_padded">
+                    <h6>Find Path</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="algo" id="dijkstras" value="dijkstras"
+                               checked>
+                        <label class="form-check-label" for="dijkstras">Dijkstra's</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="algo" id="a_star" value="a_star">
+                        <label class="form-check-label" for="a_star">A*</label>
+                    </div>
+                </div>
+                <div class="col-md-6 left_padded">
+                    <h6>Check if Reachable</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="algo" id="bfs" value="bfs">
+                        <label class="form-check-label" for="bfs">BFS</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="algo" id="dfs_iterative"
+                               value="dfs_iterative">
+                        <label class="form-check-label" for="dfs_iterative">DFS (Iterative)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="algo" id="dfs_recursive"
+                               value="dfs_recursive">
+                        <label class="form-check-label" for="dfs_recursive">DFS (Recursive)</label>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-md" id="launch">Launch</button>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-6 left_padded">
+                            <p class="heading">Obstacle Type</p>
+                        </div>
+                        <div class="col-md-6 not_padded">
+                            <ul>
+                                <li>
+                                    <div class="form-check">
+                                        <input class="form-check-input special" type="radio" name="obstacle"
+                                               id="obstacle_wall" value="wall" checked>
+                                        <label class="special" for="obstacle_wall"><img
+                                                src="images/wall.png"/></label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input class="form-check-input special" type="radio" name="obstacle"
+                                               id="obstacle_weight" value="weight">
+                                        <label class="special" for="obstacle_weight"><img
+                                                src="images/weight.png"/></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
-    <script src="js/libraries/jquery.min.js"></script>
-    <script src="js/libraries/bootstrap.min.js"></script>
+                    <div class="row">
+                        <div class="col-md-6 left_padded">
+                            <p class="heading">Mode</p>
+                        </div>
+                        <div class="col-md-6 not_padded">
+                            <ul>
+                                <li>
+                                    <div class="form-check">
+                                        <input class="form-check-input special" type="radio" name="mode"
+                                               id="mode_day" value="day" checked>
+                                        <label class="special" for="mode_day"><img src="images/sun.png"/></label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input class="form-check-input special" type="radio" name="mode"
+                                               id="mode_night" value="night">
+                                        <label class="special" for="mode_night"><img
+                                                src="images/moon.png"/></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 not_padded">
+                    <button type="button" class="btn btn-primary btn-block align-middle"
+                            id="clean">Clean<br>Field
+                    </button>
+                    <button type="button" class="btn btn-primary btn-block align-middle"
+                            id="reset">Reset<br>Field
+                    </button>
+                </div>
+                <div class="col-md-5 left_padded">
+                    <p class="heading">Grid Dimension <span class="data">(<span id="grid_dimension"></span>
+                                cells/row)</span></p>
+                    <input type="range" class="form-range" min="15" max="201" step="2" id="dimension">
 
-    <script src="js/app.js"></script>
-    <!-- <script src="js/main.js"></script> -->
-    <!-- <script src="js/bundle.js"></script> -->
+                    <p class="heading">Animation Delay <span class="data">(<span id="animation_delay"></span>
+                                ms)</span></p>
+                    <input type="range" min="5" max="500" step="5" id="delay">
+                </div>
+            </div>
+
+            <hr/>
+
+            <p class="text-center not_padded" id="description"><b>Choose Algorithm/Maze To Animate</b></p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-center not_padded">
+                        <u>Cost: <span id="cost">N/A</span></u>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-center not_padded">
+                        <u>Nodes Visited: <span id="nodes_visited">N/A</span></u>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <p class="heading text-center">Mazes</p>
+            <div class="row">
+                <div class="col-md-12 left_padded">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="maze" id="recursive_division"
+                               value="recursive_division" checked>
+                        <label class="form-check-label" for="recursive_division">Recursive
+                            Division</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="maze" id="binary" value="binary">
+                        <label class="form-check-label" for="binary">Binary Maze</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="maze" id="random" value="random">
+                        <label class="form-check-label" for="random">Random Obstacles</label>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="apply">Apply</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <hr/>
+            <p class="text-center">&copy; 2021 Oleksandr Levinskyi - Pathfinding Visualizer</p>
+        </div>
+    </div>
+</div>
+
+<script src="./public/js/_libraries/jquery.min.js" type="module"></script>
+<script src="./public/js/_libraries/bootstrap.min.js" type="module"></script>
+
+<script src="./public/js/app_beta.ts" type="module"></script>
+<!-- <script src="js/main.js"></script> -->
+<!-- <script src="js/bundle.js"></script> -->
 </body>
 
 </html>

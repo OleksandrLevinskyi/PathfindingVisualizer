@@ -1,8 +1,8 @@
 import {Node} from "../Nodes/Node";
 
 export class Stack {
-    first: Node;
-    last: Node;
+    first: Node | null;
+    last: Node | null;
     size: number;
 
     constructor() {
@@ -21,10 +21,10 @@ export class Stack {
         return this;
     }
 
-    pop(): string {
+    pop(): string|undefined {
         if (this.size === 0) return undefined;
 
-        let oldFirst: Node = this.first;
+        let oldFirst: Node = this.first!;
         this.first = oldFirst.next;
         oldFirst.next = null;
         this.size--;

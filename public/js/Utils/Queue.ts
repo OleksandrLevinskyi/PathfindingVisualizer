@@ -1,8 +1,8 @@
 import {Node} from "../Nodes/Node";
 
 export class Queue {
-    first: Node;
-    last: Node;
+    first: Node|null;
+    last: Node|null;
     size: number;
 
     constructor() {
@@ -14,17 +14,17 @@ export class Queue {
     enqueue(val: string): Queue {
         let node: Node = new Node(val);
 
-        this.size === 0 ? this.first = node : this.last.next = node;
+        this.size === 0 ? this.first = node : this.last!.next = node;
         this.last = node;
         this.size++;
 
         return this;
     }
 
-    dequeue(): string {
+    dequeue(): string|undefined {
         if (this.size === 0) return undefined;
 
-        let oldFirst: Node = this.first;
+        let oldFirst: Node = this.first!;
 
         this.first = oldFirst.next;
         oldFirst.next = null;

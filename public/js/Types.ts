@@ -16,7 +16,7 @@ export type DistancesList = {
 }
 
 export type PreviousList = {
-    [key: string]: string
+    [key: string]: string | null
 }
 
 export type ListOfGHFCosts = {
@@ -43,4 +43,8 @@ export enum DIRECTION {
     DOWN = 'down',
     RIGHT = 'right',
     LEFT = 'left'
+}
+
+export type Descriptions = {
+    [key: string]: string
 }

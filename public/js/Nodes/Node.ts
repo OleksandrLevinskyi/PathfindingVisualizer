@@ -1,6 +1,6 @@
 export class Node {
     val: string;
-    next: Node;
+    next: Node | null;
 
     constructor(val: string) {
         this.val = val;

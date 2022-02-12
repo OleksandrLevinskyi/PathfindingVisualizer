@@ -1,4 +1,5 @@
 import {PQNode} from "../Nodes/PQNode";
+import {ListOfGHFCosts} from "../Types";
 
 export class PriorityQueue {
     values: Array<PQNode>;
@@ -26,17 +27,17 @@ export class PriorityQueue {
         return this;
     }
 
-    dequeue(): string {
+    dequeue(): string | undefined {
         let parentIdx: number = 0,
             leftIdx: number,
             rightIdx: number,
-            minIdx: number,
+            minIdx: number | null = 0,
             del: PQNode,
             arr: Array<PQNode> = this.values;
 
         if (arr.length === 0) return undefined;
         [arr[0], arr[arr.length - 1]] = [arr[arr.length - 1], arr[0]];
-        del = arr.pop();
+        del = arr.pop()!;
 
         while (minIdx !== null) {
             leftIdx = 2 * parentIdx + 1;
@@ -54,7 +55,7 @@ export class PriorityQueue {
                 }
             }
             if (minIdx !== null) [arr[parentIdx], arr[minIdx]] = [arr[minIdx], arr[parentIdx]];
-            parentIdx = minIdx;
+            parentIdx = minIdx === null ? parentIdx : minIdx;
         }
 
         this.values = arr;
@@ -64,7 +65,7 @@ export class PriorityQueue {
 
     // if there are many nodes with the same priority,
     // choose one with lowest H cost
-    adjustPriorityQueue(distances): void {
+    adjustPriorityQueue(distances:ListOfGHFCosts): void {
         let topNode: PQNode = this.values[0],
             topPriority: number = topNode.priority,
             minIdx: number = 0;
