@@ -7,11 +7,8 @@ import {Context} from "./Context";
 import {adjustAllClasses, getSelectedRadioValue, pause} from "./utils";
 import {DESCRIPTIONS, NODE_COST, WEIGHTED_NODE_COST} from "./constants";
 
-console.log('hello, I am working now')
-
 document.addEventListener('DOMContentLoaded', () => {
     let context = new Context();
-
 
     document.getElementById('grid_dimension')!.innerText = String(context.colCount);
     document.getElementById('animation_delay')!.innerText = String(context.speed);

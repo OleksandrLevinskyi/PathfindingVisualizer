@@ -1,3 +1,7 @@
+Images' References:
+sun - https://iconscout.com/icon/bright-button-sun-dim-rays
+moon - https://iconscout.com/icon/moon-2130761
+
 # Pathfinding Visualizer
 
 Pathfiding Visualizer is an interactive application for visualizing pathfinding and maze-generation algorithms. It includes A* Search, Dijkstra’s, Breadth-First Search, Depth-First Search, Recursive Division algorithms applying backtracking, divide-and-conquer, and other techniques.
