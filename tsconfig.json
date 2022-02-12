@@ -1,14 +1,21 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "target": "es5",
-    "sourceMap": true
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["esnext", "DOM"],
+    "moduleResolution": "Node",
+    "strict": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true
   },
+  "include": ["public"],
   "exclude": [
-    "node_modules"
+    "server.cjs"
   ]
 }
