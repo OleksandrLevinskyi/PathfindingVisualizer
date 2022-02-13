@@ -56,29 +56,33 @@
 
     <!-- control panel -->
     <div class="row">
-        <div class="col-md-4">
 
-            <div class="btn-group w-75" role="group" aria-label="obstacle type group">
+        <div class="col-md-1 pe-0">
+
+            <div class="btn-group-vertical w-100" role="group" aria-label="obstacle type group">
                 <input type="radio" class="btn-check w-50" name="obstacle"
                        id="obstacle_wall" value="wall" autocomplete="off" checked>
                 <label class="btn btn-outline-primary not_padded" for="obstacle_wall">
-                    wall
                     <img class="sized-icon"
                          src="https://img.icons8.com/color/48/000000/brick-wall.png"
-                         alt="wall"/>
+                         alt="wall"/> wall
                 </label>
 
                 <input type="radio" class="btn-check w-50" name="obstacle"
                        id="obstacle_weight" value="weight" autocomplete="off">
                 <label class="btn btn-outline-primary not_padded" for="obstacle_weight">
-                    weight
                     <img class="sized-icon"
                          src="https://img.icons8.com/ios-glyphs/30/000000/weight-1.png"
-                         alt="weight"/>
+                         alt="weight"/> weight
                 </label>
             </div>
 
-            <div class="btn-group w-75 mt-1" role="group" aria-label="algorithms">
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="btn-group w-100" role="group" aria-label="algorithms">
                 <select class="w-50" name="algo" id="algo">
                     <!-- find path -->
                     <option value="dijkstras">Dijkstra's</option>
@@ -91,7 +95,7 @@
                 <button type="button" class="btn btn-primary" id="launch">Launch Algorithm</button>
             </div>
 
-            <div class="btn-group w-75 mt-1" role="group" aria-label="mazes">
+            <div class="btn-group w-100 mt-1" role="group" aria-label="mazes">
                 <select class="w-50" name="maze" id="maze">
                     <option value="recursive_division">Recursive
                         Division
@@ -105,12 +109,12 @@
         </div>
 
         <div class="col-md-4">
+
             <div class="btn-group w-100" role="group" aria-label="clean options">
                 <button type="button" class="btn btn-outline-primary w-25" id="clean">Clean Field</button>
                 <button type="button" class="btn btn-outline-primary w-25" id="reset">Reset Field</button>
                 <button type="button" class="btn btn-outline-primary w-25">Cancel Animation</button>
             </div>
-
 
             <div class="d-inline-flex w-100">
                 <span class="w-50">
@@ -128,21 +132,21 @@
                     Animation Delay
                     <span class="data">(<span id="animation_delay"></span> ms)</span>
                 </label>
-                <input type="range" min="5" max="500" step="5" id="delay">
+                <input type="range" class="form-range" min="5" max="500" step="5" id="delay">
                 </span>
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <!--         report -->
-            <p class="heading fs-5"><b>Report</b></p>
+        <div class="col-md-3 text-center">
+            <!-- report -->
             <p class="not_padded fst-italic" id="description">Choose Algorithm/Maze To Animate></p>
             <p class="not_padded">Cost: <span id="cost">N/A</span></p>
             <p class="not_padded">Nodes Visited: <span id="nodes_visited">N/A</span></p>
         </div>
 
         <div class="col-md-1">
-            <div class="d-inline-flex flex-md-column">
+            <div class="d-flex align-items-end flex-column">
                 <!-- mode switcher -->
                 <button type="button" class="btn not_padded" id="mode">
                     <img class="sized-icon" src="https://img.icons8.com/material/48/4a90e2/moon--v1.png" alt="moon"/>

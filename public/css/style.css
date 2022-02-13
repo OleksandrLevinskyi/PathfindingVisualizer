@@ -9,7 +9,8 @@ hr {
 }
 
 input#dimension, input#delay {
-    width: 90%;
+    width: 95%;
+    height: 15px;
 }
 
 .central-button{
