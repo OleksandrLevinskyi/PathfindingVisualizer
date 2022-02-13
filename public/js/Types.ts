@@ -48,3 +48,8 @@ export enum DIRECTION {
 export type Descriptions = {
     [key: string]: string
 }
+
+export enum MODE_IMAGE{
+    SUN= "https://img.icons8.com/color/48/000000/sun--v1.png",
+    MOON = "https://img.icons8.com/material/48/4a90e2/moon--v1.png"
+}

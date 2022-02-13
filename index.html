@@ -60,29 +60,29 @@
     <!--    control panel -->
     <div class="row">
         <div class="col-md-4">
-            <!--            algorithm picker -->
-            <label for="algo">Algorithm:</label>
-            <select name="algo" id="algo">
-                <!--                find path -->
-                <option value="dijkstras">Dijkstra's</option>
-                <option value="a_star">A*</option>
-                <!--                check if reachable -->
-                <option value="bfs">BFS</option>
-                <option value="dfs_iterative">DFS (Iterative)</option>
-                <option value="dfs_recursive">DFS (Recursive)</option>
-            </select>
-            <button type="button" class="btn btn-primary" id="launch">Launch</button>
+            <div class="btn-group" role="group" aria-label="algorithms">
+                <select name="algo" id="algo">
+                    <!-- find path -->
+                    <option value="dijkstras">Dijkstra's</option>
+                    <option value="a_star">A*</option>
+                    <!-- check if reachable -->
+                    <option value="bfs">BFS</option>
+                    <option value="dfs_iterative">DFS (Iterative)</option>
+                    <option value="dfs_recursive">DFS (Recursive)</option>
+                </select>
+                <button type="button" class="btn btn-primary" id="launch">Launch Algorithm</button>
+            </div>
 
-            <!-- maze picker -->
-            <label for="maze">Maze:</label>
-            <select name="maze" id="maze">
-                <option value="recursive_division">Recursive
-                    Division
-                </option>
-                <option value="binary">Binary Maze</option>
-                <option value="random">Random Obstacles</option>
-            </select>
-            <button type="button" class="btn btn-primary" id="apply">Apply</button>
+            <div class="btn-group" role="group" aria-label="mazes">
+                <select name="maze" id="maze">
+                    <option value="recursive_division">Recursive
+                        Division
+                    </option>
+                    <option value="binary">Binary Maze</option>
+                    <option value="random">Random Obstacles</option>
+                </select>
+                <button type="button" class="btn btn-primary" id="apply">Generate Maze</button>
+            </div>
 
             <!--            obstacle type -->
 
@@ -100,23 +100,6 @@
                     <label class="special" for="obstacle_weight"><img
                             src="https://img.icons8.com/ios-glyphs/30/000000/weight-1.png"
                             alt="weight"/></label>
-                </div>
-            </div>
-
-            <!--            mode -->
-            <div class="d-inline-flex">
-                <p class="heading">Mode</p>
-                <div class="form-check">
-                    <input class="form-check-input special" type="radio" name="mode"
-                           id="mode_day" value="day" checked>
-                    <label class="special" for="mode_day"><img
-                            src="https://img.icons8.com/color/48/000000/sun--v1.png" alt="sun"/></label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input special" type="radio" name="mode"
-                           id="mode_night" value="night">
-                    <label class="special" for="mode_night"><img
-                            src="https://img.icons8.com/material/48/4a90e2/moon--v1.png" alt="moon"/></label>
                 </div>
             </div>
         </div>
@@ -138,28 +121,26 @@
             <input type="range" min="5" max="500" step="5" id="delay">
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <!--            report -->
             <h4>Report</h4>
-            <p class="text-center not_padded" id="description"><b>Choose Algorithm/Maze To Animate</b></p>
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="text-center not_padded">
-                        <u>Cost: <span id="cost">N/A</span></u>
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p class="text-center not_padded">
-                        <u>Nodes Visited: <span id="nodes_visited">N/A</span></u>
-                    </p>
-                </div>
-            </div>
+            <p class="not_padded" id="description"><b>Choose Algorithm/Maze To Animate</b></p>
+            <p class="not_padded">Cost: <span id="cost">N/A</span></p>
+            <p class="not_padded">Nodes Visited: <span id="nodes_visited">N/A</span></p>
+        </div>
+
+        <div class="col-md-1">
+            <!-- mode switcher -->
+            <button type="button" class="btn not_padded" id="mode">
+                <img class="sized-icon" src="https://img.icons8.com/material/48/4a90e2/moon--v1.png" alt="moon"/>
+            </button>
 
             <!-- about modal trigger -->
-            <span data-bs-toggle="modal" data-bs-target="#about-modal"><img
-                    src="https://img.icons8.com/material-outlined/24/000000/info.png" alt="about"/></span>
+            <button type="button" class="btn not_padded" data-bs-toggle="modal" data-bs-target="#about-modal">
+                <img class="sized-icon" src="https://img.icons8.com/material-outlined/96/ffffff/info.png" alt="about"/>
+            </button>
 
-            <!-- Modal -->
+            <!-- about modal -->
             <div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">

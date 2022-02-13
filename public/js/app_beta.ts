@@ -6,6 +6,7 @@ import {RandomMaze} from "./Mazes/RandomMaze";
 import {Context} from "./Context";
 import {adjustAllClasses, getSelectedRadioValue, pause} from "./utils";
 import {DESCRIPTIONS, NODE_COST, WEIGHTED_NODE_COST} from "./constants";
+import {MODE_IMAGE} from "./Types";
 
 document.addEventListener('DOMContentLoaded', () => {
     let context = new Context();
@@ -26,13 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('#reset')?.addEventListener('click', resetField);
 
-    document.getElementById('mode_day')?.addEventListener('click', () => {
-        adjustAllClasses(document.querySelector('body') as HTMLElement);
+    document.getElementById('mode')?.addEventListener('click', (e: any) => {
+        let isLightMode = e.target.alt.toUpperCase() === 'SUN';
+
+        e.target.alt = isLightMode ? 'moon' : 'sun';
+        e.target.src = isLightMode ? MODE_IMAGE.MOON : MODE_IMAGE.SUN;
+        adjustAllClasses(document.querySelector('body') as HTMLElement, isLightMode ? [] : ['night_mode']);
+
+        console.log(e.target.alt)
     });
 
-    document.getElementById('mode_night')?.addEventListener('click', () => {
-        adjustAllClasses(document.querySelector('body') as HTMLElement, ['night_mode']);
-    });
 
     document.getElementById('delay')?.addEventListener("input", () => {
         context.speed = parseInt((document.getElementById('delay') as HTMLInputElement).value);
