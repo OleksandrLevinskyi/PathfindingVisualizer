@@ -49,6 +49,10 @@ input#dimension, input#delay {
     width: 90%;
 }
 
+.central-button{
+    width: 30%;
+}
+
 .left_padded {
     padding: 0 0 5px 30px;
     margin: 0px;
