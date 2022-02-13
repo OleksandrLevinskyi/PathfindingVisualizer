@@ -111,7 +111,7 @@
         <div class="col-md-4">
 
             <div class="btn-group w-100" role="group" aria-label="clean options">
-                <button type="button" class="btn btn-outline-primary w-25" id="clean">Clean Field</button>
+                <button type="button" class="btn btn-outline-primary w-25" id="clean">Clean Path</button>
                 <button type="button" class="btn btn-outline-primary w-25" id="reset">Reset Field</button>
                 <button type="button" class="btn btn-outline-primary w-25">Cancel Animation</button>
             </div>
@@ -153,25 +153,121 @@
                 </button>
 
                 <!-- about modal trigger -->
-                <button type="button" class="btn not_padded" data-bs-toggle="modal" data-bs-target="#about-modal">
+                <button type="button" class="btn not_padded" data-bs-toggle="modal" data-bs-target="#info-modal">
                     <img class="sized-icon" src="https://img.icons8.com/material-outlined/96/000/info.png" alt="about"/>
                 </button>
             </div>
 
             <!-- about modal -->
-            <div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="info-modal"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Pathfinder
-                                Visualizer</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Pathfinder Visualizer</h5>
                         </div>
-                        <div class="modal-body">
-                            &copy; 2022 Oleksandr Levinskyi - Pathfinding Visualizer
+                        <div id="info-slides" class="carousel carousel-dark slide not_padded" data-bs-ride="carousel">
+                            <div class="modal-body">
+                                <div class="carousel-inner p-3">
+                                    <div class="carousel-item active" data-bs-interval="20000">
+                                        <h5>Welcome!</h5>
+                                        <p>This app visualizes various pathfinding and maze building algorithms. To
+                                            learn more about the app, follow this short tutorial.</p>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="20000">
+                                        <h5>Grid + Nodes</h5>
+                                        <p>The grid represents a graph of different nodes. Top, right, bottom, and left movements can be performed from one node to another one.</p>
+                                        <p>Start (green) and End (red) nodes are draggable. If an algorithm visualization is completed, the app will re-calculate the path in real time.</p>
+                                        <p>The final path will be made yellow. If there is not solution, the report will say so.</p>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="20000">
+                                        <h5>Obstacles</h5>
+                                        <p>There are <b>two</b> obstacle types in the app:</p>
+                                        <ol>
+                                            <li>wall - no way through</li>
+                                            <li>weight - node with doubled cost to get in/out of it</li>
+                                        </ol>
+                                        To place an obstacle on the grid, press right mouse key and move around.
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="20000">
+                                        <h5>Pathfinding + Mazes</h5>
+                                        <p>There are <b>two</b> algorithm categories:</p>
+                                        <ol>
+                                            <li>to find the shortest path (Dijkstra's, A*)</li>
+                                            <li>to check if end node is reachable (BFS, DFS-recursive, DFS-iterative)
+                                            </li>
+                                        </ol>
+                                        <p>To start visualizations, press the corresponding buttons. When the animation
+                                            is running, most of the buttons and node dragging functionality are disabled.</p>
+                                        <p>You can also choose different obstacle type before generating a maze.</p>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="20000">
+                                        <h5>Grid Manipulation + Animation Speed</h5>
+                                        <p><i>Clean Path</i> button cleans a calculated path.</p>
+                                        <p><i>Reset Field</i> button cleans all obstacles and a path.</p>
+                                        <p><i>Cancel Animation</i> button terminates an animation in process.</p>
+                                        <hr/>
+                                        <p><i>Grid Dimension</i> range defines how many cells you have in a row.</p>
+                                        <p><i>Animation Delay</i> range adjusts the delay in ms for an visualization.
+                                        </p>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="20000">
+                                        <h5>Report</h5>
+                                        <p>A report gets generated during/after you start a visualization. You will be
+                                            able to see the following reported:</p>
+                                        <ul>
+                                            <li>a brief algorithm/maze description</li>
+                                            <li>only for algorithm visualizations:</li>
+                                            <ul>
+                                                <li>Cost - how much it costs to get from start to end (to influence it,
+                                                    you
+                                                    can put weighted nodes)
+                                                </li>
+                                                <li>Nodes Visited - how many nodes the final path includes</li>
+                                            </ul>
+                                        </ul>
+                                    </div>
+                                    <div class="carousel-item" data-bs-interval="20000">
+                                        <h5>Other</h5>
+                                        <p>You can switch between day/night color modes.</p>
+                                        <p>To view this tutorial again, you can click an Info button at any time.</p>
+                                        <p>Enjoy 🙂</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="carousel-control-prev w-auto" type="button" data-bs-target="#info-slides"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next w-auto" type="button" data-bs-target="#info-slides"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+
+                            <div class="carousel-indicators mb-0 mt-2">
+                                <button type="button" data-bs-target="#info-slides" data-bs-slide-to="0" class="active"
+                                        aria-current="true" aria-label="slide 1"></button>
+                                <button type="button" data-bs-target="#info-slides" data-bs-slide-to="1"
+                                        aria-label="slide 2"></button>
+                                <button type="button" data-bs-target="#info-slides" data-bs-slide-to="2"
+                                        aria-label="slide 3"></button>
+                                <button type="button" data-bs-target="#info-slides" data-bs-slide-to="3"
+                                        aria-label="slide 4"></button>
+                                <button type="button" data-bs-target="#info-slides" data-bs-slide-to="4"
+                                        aria-label="slide 5"></button>
+                                <button type="button" data-bs-target="#info-slides" data-bs-slide-to="5"
+                                        aria-label="slide 6"></button>
+                                <button type="button" data-bs-target="#info-slides" data-bs-slide-to="6"
+                                        aria-label="slide 7"></button>
+                            </div>
+
+
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <div class="modal-footer text-center">
+                            &copy; 2022 Oleksandr Levinskyi
                         </div>
                     </div>
                 </div>
