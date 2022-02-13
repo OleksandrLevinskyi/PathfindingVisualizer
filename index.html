@@ -7,12 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pathfinding Visualizations</title>
 
-    <meta name="description" content="Pathfinding Visualizations">
+    <meta name="description" content="Pathfinding Visualizer">
     <meta name="author" content="Oleksandr Levinskyi">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
             integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
             crossorigin="anonymous"></script>
@@ -27,7 +24,7 @@
 </head>
 
 <body>
-<div class="container-fluid">
+<div class="container-fluid mb-1">
 
     <!-- grid-->
     <div class="row">
@@ -57,10 +54,31 @@
         </div>
     </div>
 
-    <!--    control panel -->
+    <!-- control panel -->
     <div class="row">
         <div class="col-md-4">
-            <div class="btn-group w-75" role="group" aria-label="algorithms">
+
+            <div class="btn-group w-75" role="group" aria-label="obstacle type group">
+                <input type="radio" class="btn-check w-50" name="obstacle"
+                       id="obstacle_wall" value="wall" autocomplete="off" checked>
+                <label class="btn btn-outline-primary not_padded" for="obstacle_wall">
+                    wall
+                    <img class="sized-icon"
+                         src="https://img.icons8.com/color/48/000000/brick-wall.png"
+                         alt="wall"/>
+                </label>
+
+                <input type="radio" class="btn-check w-50" name="obstacle"
+                       id="obstacle_weight" value="weight" autocomplete="off">
+                <label class="btn btn-outline-primary not_padded" for="obstacle_weight">
+                    weight
+                    <img class="sized-icon"
+                         src="https://img.icons8.com/ios-glyphs/30/000000/weight-1.png"
+                         alt="weight"/>
+                </label>
+            </div>
+
+            <div class="btn-group w-75 mt-1" role="group" aria-label="algorithms">
                 <select class="w-50" name="algo" id="algo">
                     <!-- find path -->
                     <option value="dijkstras">Dijkstra's</option>
@@ -81,27 +99,9 @@
                     <option value="binary">Binary Maze</option>
                     <option value="random">Random Obstacles</option>
                 </select>
-                <button type="button" class="btn btn-primary" id="apply">Generate Maze</button>
+                <button type="button" class="btn btn-primary w-50" id="apply">Generate Maze</button>
             </div>
 
-            <!--            obstacle type -->
-
-            <div class="d-inline-flex">
-                <p class="heading">Obstacle Type</p>
-                <div class="form-check">
-                    <input class="form-check-input special" type="radio" name="obstacle"
-                           id="obstacle_wall" value="wall" checked>
-                    <label class="special" for="obstacle_wall"><img
-                            src="https://img.icons8.com/color/48/000000/brick-wall.png" alt="wall"/></label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input special" type="radio" name="obstacle"
-                           id="obstacle_weight" value="weight">
-                    <label class="special" for="obstacle_weight"><img
-                            src="https://img.icons8.com/ios-glyphs/30/000000/weight-1.png"
-                            alt="weight"/></label>
-                </div>
-            </div>
         </div>
 
         <div class="col-md-4">
@@ -134,23 +134,25 @@
         </div>
 
         <div class="col-md-3">
-            <!--            report -->
-            <h4>Report</h4>
-            <p class="not_padded" id="description"><b>Choose Algorithm/Maze To Animate</b></p>
+            <!--         report -->
+            <p class="heading fs-5"><b>Report</b></p>
+            <p class="not_padded fst-italic" id="description">Choose Algorithm/Maze To Animate></p>
             <p class="not_padded">Cost: <span id="cost">N/A</span></p>
             <p class="not_padded">Nodes Visited: <span id="nodes_visited">N/A</span></p>
         </div>
 
         <div class="col-md-1">
-            <!-- mode switcher -->
-            <button type="button" class="btn not_padded" id="mode">
-                <img class="sized-icon" src="https://img.icons8.com/material/48/4a90e2/moon--v1.png" alt="moon"/>
-            </button>
+            <div class="d-inline-flex flex-md-column">
+                <!-- mode switcher -->
+                <button type="button" class="btn not_padded" id="mode">
+                    <img class="sized-icon" src="https://img.icons8.com/material/48/4a90e2/moon--v1.png" alt="moon"/>
+                </button>
 
-            <!-- about modal trigger -->
-            <button type="button" class="btn not_padded" data-bs-toggle="modal" data-bs-target="#about-modal">
-                <img class="sized-icon" src="https://img.icons8.com/material-outlined/96/ffffff/info.png" alt="about"/>
-            </button>
+                <!-- about modal trigger -->
+                <button type="button" class="btn not_padded" data-bs-toggle="modal" data-bs-target="#about-modal">
+                    <img class="sized-icon" src="https://img.icons8.com/material-outlined/96/000/info.png" alt="about"/>
+                </button>
+            </div>
 
             <!-- about modal -->
             <div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -173,6 +175,7 @@
         </div>
 
     </div>
+
 </div>
 
 <script src="./public/js/app_beta.ts" type="module"></script>
