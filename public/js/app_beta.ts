@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function launch(_: any, ignorePause = false) {
         let path: string[] | undefined = [];
-        let algoType = getSelectedRadioValue("algo");
+        let algoType = getSelectedRadioValue("algo", false);
 
         enableControls(false);
 
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // function for maze generation
     async function apply(e: any) {
-        let mazeType = getSelectedRadioValue("maze");
+        let mazeType = getSelectedRadioValue("maze", false);
 
         enableControls(false);
 

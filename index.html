@@ -10,6 +10,16 @@
     <meta name="description" content="Pathfinding Visualizations">
     <meta name="author" content="Oleksandr Levinskyi">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+            integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+            integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+            crossorigin="anonymous"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="./public/css/style.css" type="text/css" rel="stylesheet">
@@ -18,6 +28,8 @@
 
 <body>
 <div class="container-fluid">
+
+    <!-- grid-->
     <div class="row">
         <div class="col-md-12 not_padded">
             <svg>
@@ -44,117 +56,91 @@
             </svg>
         </div>
     </div>
+
+    <!--    control panel -->
     <div class="row">
-        <div class="col-md-3">
-            <p class="heading text-center">Algorithms</p>
-            <div class="row">
-                <div class="col-md-6 left_padded">
-                    <h6>Find Path</h6>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="algo" id="dijkstras" value="dijkstras"
-                               checked>
-                        <label class="form-check-label" for="dijkstras">Dijkstra's</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="algo" id="a_star" value="a_star">
-                        <label class="form-check-label" for="a_star">A*</label>
-                    </div>
+        <div class="col-md-4">
+            <!--            algorithm picker -->
+            <label for="algo">Algorithm:</label>
+            <select name="algo" id="algo">
+                <!--                find path -->
+                <option value="dijkstras">Dijkstra's</option>
+                <option value="a_star">A*</option>
+                <!--                check if reachable -->
+                <option value="bfs">BFS</option>
+                <option value="dfs_iterative">DFS (Iterative)</option>
+                <option value="dfs_recursive">DFS (Recursive)</option>
+            </select>
+            <button type="button" class="btn btn-primary" id="launch">Launch</button>
+
+            <!-- maze picker -->
+            <label for="maze">Maze:</label>
+            <select name="maze" id="maze">
+                <option value="recursive_division">Recursive
+                    Division
+                </option>
+                <option value="binary">Binary Maze</option>
+                <option value="random">Random Obstacles</option>
+            </select>
+            <button type="button" class="btn btn-primary" id="apply">Apply</button>
+
+            <!--            obstacle type -->
+
+            <div class="d-inline-flex">
+                <p class="heading">Obstacle Type</p>
+                <div class="form-check">
+                    <input class="form-check-input special" type="radio" name="obstacle"
+                           id="obstacle_wall" value="wall" checked>
+                    <label class="special" for="obstacle_wall"><img
+                            src="https://img.icons8.com/color/48/000000/brick-wall.png" alt="wall"/></label>
                 </div>
-                <div class="col-md-6 left_padded">
-                    <h6>Check if Reachable</h6>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="algo" id="bfs" value="bfs">
-                        <label class="form-check-label" for="bfs">BFS</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="algo" id="dfs_iterative"
-                               value="dfs_iterative">
-                        <label class="form-check-label" for="dfs_iterative">DFS (Iterative)</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="algo" id="dfs_recursive"
-                               value="dfs_recursive">
-                        <label class="form-check-label" for="dfs_recursive">DFS (Recursive)</label>
-                    </div>
+                <div class="form-check">
+                    <input class="form-check-input special" type="radio" name="obstacle"
+                           id="obstacle_weight" value="weight">
+                    <label class="special" for="obstacle_weight"><img
+                            src="https://img.icons8.com/ios-glyphs/30/000000/weight-1.png"
+                            alt="weight"/></label>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary btn-md" id="launch">Launch</button>
+
+            <!--            mode -->
+            <div class="d-inline-flex">
+                <p class="heading">Mode</p>
+                <div class="form-check">
+                    <input class="form-check-input special" type="radio" name="mode"
+                           id="mode_day" value="day" checked>
+                    <label class="special" for="mode_day"><img
+                            src="https://img.icons8.com/color/48/000000/sun--v1.png" alt="sun"/></label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input special" type="radio" name="mode"
+                           id="mode_night" value="night">
+                    <label class="special" for="mode_night"><img
+                            src="https://img.icons8.com/material/48/4a90e2/moon--v1.png" alt="moon"/></label>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="row">
-                        <div class="col-md-6 left_padded">
-                            <p class="heading">Obstacle Type</p>
-                        </div>
-                        <div class="col-md-6 not_padded">
-                            <ul>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input special" type="radio" name="obstacle"
-                                               id="obstacle_wall" value="wall" checked>
-                                        <label class="special" for="obstacle_wall"><img
-                                                src="images/wall.png"/></label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input special" type="radio" name="obstacle"
-                                               id="obstacle_weight" value="weight">
-                                        <label class="special" for="obstacle_weight"><img
-                                                src="images/weight.png"/></label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6 left_padded">
-                            <p class="heading">Mode</p>
-                        </div>
-                        <div class="col-md-6 not_padded">
-                            <ul>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input special" type="radio" name="mode"
-                                               id="mode_day" value="day" checked>
-                                        <label class="special" for="mode_day"><img src="images/sun.png"/></label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input special" type="radio" name="mode"
-                                               id="mode_night" value="night">
-                                        <label class="special" for="mode_night"><img
-                                                src="images/moon.png"/></label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2 not_padded">
-                    <button type="button" class="btn btn-primary btn-block align-middle"
-                            id="clean">Clean<br>Field
-                    </button>
-                    <button type="button" class="btn btn-primary btn-block align-middle"
-                            id="reset">Reset<br>Field
-                    </button>
-                </div>
-                <div class="col-md-5 left_padded">
-                    <p class="heading">Grid Dimension <span class="data">(<span id="grid_dimension"></span>
-                                cells/row)</span></p>
-                    <input type="range" class="form-range" min="15" max="201" step="2" id="dimension">
-
-                    <p class="heading">Animation Delay <span class="data">(<span id="animation_delay"></span>
-                                ms)</span></p>
-                    <input type="range" min="5" max="500" step="5" id="delay">
-                </div>
+        <div class="col-md-4">
+            <div class="btn-group" role="group" aria-label="clean options">
+                <button type="button" class="btn btn-outline-primary" id="clean">Clean Field</button>
+                <button type="button" class="btn btn-outline-primary" id="reset">Reset Field</button>
+                <button type="button" class="btn btn-outline-primary">Cancel Animation</button>
             </div>
 
-            <hr/>
 
+            <p class="heading">Grid Dimension <span class="data">(<span id="grid_dimension"></span>
+                                cells/row)</span></p>
+            <input type="range" class="form-range" min="15" max="201" step="2" id="dimension">
+
+            <p class="heading">Animation Delay <span class="data">(<span id="animation_delay"></span>
+                                ms)</span></p>
+            <input type="range" min="5" max="500" step="5" id="delay">
+        </div>
+
+        <div class="col-md-4">
+            <!--            report -->
+            <h4>Report</h4>
             <p class="text-center not_padded" id="description"><b>Choose Algorithm/Maze To Animate</b></p>
             <div class="row">
                 <div class="col-md-6">
@@ -168,43 +154,35 @@
                     </p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <p class="heading text-center">Mazes</p>
-            <div class="row">
-                <div class="col-md-12 left_padded">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="maze" id="recursive_division"
-                               value="recursive_division" checked>
-                        <label class="form-check-label" for="recursive_division">Recursive
-                            Division</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="maze" id="binary" value="binary">
-                        <label class="form-check-label" for="binary">Binary Maze</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="maze" id="random" value="random">
-                        <label class="form-check-label" for="random">Random Obstacles</label>
+
+            <!-- about modal trigger -->
+            <span data-bs-toggle="modal" data-bs-target="#about-modal"><img
+                    src="https://img.icons8.com/material-outlined/24/000000/info.png" alt="about"/></span>
+
+            <!-- Modal -->
+            <div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Pathfinder
+                                Visualizer</h5>
+                        </div>
+                        <div class="modal-body">
+                            &copy; 2022 Oleksandr Levinskyi - Pathfinding Visualizer
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" id="apply">Apply</button>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <hr/>
-            <p class="text-center">&copy; 2021 Oleksandr Levinskyi - Pathfinding Visualizer</p>
-        </div>
+
     </div>
 </div>
 
-
 <script src="./public/js/app_beta.ts" type="module"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>
