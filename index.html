@@ -62,17 +62,19 @@
             <div class="btn-group-vertical w-100" role="group" aria-label="obstacle type group">
                 <input type="radio" class="btn-check w-50" name="obstacle"
                        id="obstacle_wall" value="wall" autocomplete="off" checked>
-                <label class="btn btn-outline-primary not_padded" for="obstacle_wall">
-                    <img class="sized-icon"
-                         src="https://img.icons8.com/color/48/000000/brick-wall.png"
+                <label class="btn btn-outline-primary d-inline-flex align-items-center justify-content-start p-0 ps-2"
+                       for="obstacle_wall">
+                    <img class="sized-icon me-1"
+                         src="./public/images/wall.png"
                          alt="wall"/> wall
                 </label>
 
                 <input type="radio" class="btn-check w-50" name="obstacle"
                        id="obstacle_weight" value="weight" autocomplete="off">
-                <label class="btn btn-outline-primary not_padded" for="obstacle_weight">
-                    <img class="sized-icon"
-                         src="https://img.icons8.com/ios-glyphs/30/000000/weight-1.png"
+                <label class="btn btn-outline-primary d-inline-flex align-items-center justify-content-start p-0 ps-2"
+                       for="obstacle_weight">
+                    <img class="sized-icon me-1"
+                         src="./public/images/weight.png"
                          alt="weight"/> weight
                 </label>
             </div>
@@ -117,7 +119,7 @@
             </div>
 
             <div class="d-inline-flex w-100">
-                <span class="w-50">
+                <span class="w-50 text-center">
                     <label class="heading" for="dimension">
                     Grid Dimension
                     <span class="data">
@@ -127,7 +129,7 @@
                 <input type="range" class="form-range" min="15" max="201" step="2" id="dimension">
                 </span>
 
-                <span class="w-50">
+                <span class="w-50 text-center">
                 <label class="heading" for="delay">
                     Animation Delay
                     <span class="data">(<span id="animation_delay"></span> ms)</span>
@@ -149,7 +151,8 @@
             <div class="d-flex align-items-end flex-column">
                 <!-- mode switcher -->
                 <button type="button" class="btn not_padded" id="mode">
-                    <img class="sized-icon" src="https://img.icons8.com/material/48/4a90e2/moon--v1.png" alt="moon"/>
+                    <img class="sized-icon" src="https://img.icons8.com/ios-glyphs/50/4a90e2/moon-symbol.png"
+                         alt="moon"/>
                 </button>
 
                 <!-- about modal trigger -->
@@ -176,62 +179,89 @@
                                     </div>
                                     <div class="carousel-item" data-bs-interval="20000">
                                         <h5>Grid + Nodes</h5>
-                                        <p>The grid represents a graph of different nodes. Top, right, bottom, and left movements can be performed from one node to another one.</p>
-                                        <p>Start (green) and End (red) nodes are draggable. If an algorithm visualization is completed, the app will re-calculate the path in real time.</p>
-                                        <p>The final path will be made yellow. If there is not solution, the report will say so.</p>
+                                        <p>The grid represents a graph of different nodes. Top, right, bottom, and left
+                                            movements can be performed from one node to another one.</p>
+                                        <img class="w-75 d-block m-auto" src="./public/images/tutorial/grid.gif"
+                                             alt="grid">
+                                        <p class="mt-3">Start (green) and End (red) nodes are draggable. If an algorithm
+                                            visualization is completed, the app will re-calculate the path in real
+                                            time.</p>
+                                        <p>The final path will be made yellow.</p>
                                     </div>
                                     <div class="carousel-item" data-bs-interval="20000">
                                         <h5>Obstacles</h5>
-                                        <p>There are <b>two</b> obstacle types in the app:</p>
+                                        <img class="w-25 d-block m-auto" src="./public/images/tutorial/obstacles.png"
+                                             alt="obstacles">
+                                        <p class="mb-0">There are <b>two</b> obstacle types in the app:</p>
                                         <ol>
                                             <li>wall - no way through</li>
                                             <li>weight - node with doubled cost to get in/out of it</li>
                                         </ol>
-                                        To place an obstacle on the grid, press right mouse key and move around.
+                                        <img class="w-75 d-block m-auto"
+                                             src="./public/images/tutorial/place-obstacles.gif" alt="place-obstacles">
+                                        <p class="mt-3">To place an obstacle on the grid, press right mouse key and move
+                                            around.</p>
                                     </div>
                                     <div class="carousel-item" data-bs-interval="20000">
                                         <h5>Pathfinding + Mazes</h5>
-                                        <p>There are <b>two</b> algorithm categories:</p>
+                                        <p class="mb-0">There are <b>two</b> algorithm categories:</p>
                                         <ol>
                                             <li>to find the shortest path (Dijkstra's, A*)</li>
                                             <li>to check if end node is reachable (BFS, DFS-recursive, DFS-iterative)
                                             </li>
                                         </ol>
-                                        <p>To start visualizations, press the corresponding buttons. When the animation
-                                            is running, most of the buttons and node dragging functionality are disabled.</p>
-                                        <p>You can also choose different obstacle type before generating a maze.</p>
+                                        <img class="w-75 d-block m-auto" src="./public/images/tutorial/algo-pickers.png"
+                                             alt="algo-pickers">
+                                        <p class="mt-3">To start visualizations, press the corresponding buttons. When
+                                            the animation
+                                            is running, most of the buttons and node dragging functionality are
+                                            disabled.</p>
+                                        <img class="w-75 d-block m-auto"
+                                             src="./public/images/tutorial/generate-maze.gif" alt="generate-maze">
+                                        <p class="mt-3">You can also choose different obstacle type before generating a
+                                            maze.</p>
                                     </div>
                                     <div class="carousel-item" data-bs-interval="20000">
                                         <h5>Grid Manipulation + Animation Speed</h5>
                                         <p><i>Clean Path</i> button cleans a calculated path.</p>
                                         <p><i>Reset Field</i> button cleans all obstacles and a path.</p>
                                         <p><i>Cancel Animation</i> button terminates an animation in process.</p>
-                                        <hr/>
-                                        <p><i>Grid Dimension</i> range defines how many cells you have in a row.</p>
+                                        <img class="w-75 d-block m-auto" src="./public/images/tutorial/controls.png"
+                                             alt="controls">
+                                        <p class="mt-3"><i>Grid Dimension</i> range defines how many cells you have in a
+                                            row.</p>
                                         <p><i>Animation Delay</i> range adjusts the delay in ms for an visualization.
                                         </p>
                                     </div>
                                     <div class="carousel-item" data-bs-interval="20000">
                                         <h5>Report</h5>
-                                        <p>A report gets generated during/after you start a visualization. You will be
-                                            able to see the following reported:</p>
+                                        <p>A report gets generated during/after you start a visualization.</p>
+                                        <img class="w-75 d-block m-auto" src="./public/images/tutorial/path-desc.png"
+                                             alt="path-desc">
+                                        <p class="mb-0">You will be able to see the following reported:</p>
                                         <ul>
                                             <li>a brief algorithm/maze description</li>
                                             <li>only for algorithm visualizations:</li>
                                             <ul>
-                                                <li>Cost - how much it costs to get from start to end (to influence it,
+                                                <li>
+                                                    Cost - how much it costs to get from start to end (to influence it,
                                                     you
                                                     can put weighted nodes)
                                                 </li>
                                                 <li>Nodes Visited - how many nodes the final path includes</li>
                                             </ul>
                                         </ul>
+                                        <img class="w-75 d-block m-auto ps-5 pe-5" src="./public/images/tutorial/no-path-desc.png"
+                                             alt="no-path-desc">
+                                        <p>If there is no solution, the report will say so.</p>
                                     </div>
                                     <div class="carousel-item" data-bs-interval="20000">
                                         <h5>Other</h5>
                                         <p>You can switch between day/night color modes.</p>
+                                        <img class="w-25 d-block m-auto ps-4 pe-4" src="./public/images/tutorial/others.png"
+                                             alt="obstacles">
                                         <p>To view this tutorial again, you can click an Info button at any time.</p>
-                                        <p>Enjoy 🙂</p>
+                                        <p>Enjoy :)</p>
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +297,7 @@
 
                         </div>
                         <div class="modal-footer text-center">
-                            &copy; 2022 Oleksandr Levinskyi
+                            Oleksandr Levinskyi &copy; 2022
                         </div>
                     </div>
                 </div>

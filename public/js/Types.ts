@@ -50,6 +50,6 @@ export type Descriptions = {
 }
 
 export enum MODE_IMAGE{
-    SUN= "https://img.icons8.com/color/48/000000/sun--v1.png",
-    MOON = "https://img.icons8.com/material/48/4a90e2/moon--v1.png"
+    SUN= "https://img.icons8.com/ios-filled/50/f1c40f/sun--v1.png",
+    MOON = "https://img.icons8.com/ios-glyphs/50/4a90e2/moon-symbol.png"
 }
