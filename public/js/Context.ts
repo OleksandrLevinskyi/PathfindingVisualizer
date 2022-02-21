@@ -3,6 +3,8 @@ import {UnweightedGraph} from "./Graphs/UnweightedGraph";
 import {getSelectedRadioValue} from "./utils";
 
 export class Context {
+    private static context: Context | null = null;
+
     svg;
     currArr: Array<Array<any>> = [];
     span_start: any;
@@ -28,7 +30,7 @@ export class Context {
     totalCost: number;
     totalNodesVisited: number;
 
-    constructor() {
+    private constructor() {
         this.pathSearchFinished = false;
         this.algoFinished = true;
         this.svg = document.querySelector('svg');
@@ -43,5 +45,13 @@ export class Context {
         this.currObstacle = getSelectedRadioValue("obstacle");
         this.totalCost = 0;
         this.totalNodesVisited = 0;
+    }
+
+    public static getContext() {
+        if (Context.context === null) {
+            Context.context = new Context();
+        }
+
+        return Context.context;
     }
 }

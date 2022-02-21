@@ -9,7 +9,7 @@ import {DESCRIPTIONS, NODE_COST, WEIGHTED_NODE_COST} from "./constants";
 import {MODE_IMAGE} from "./Types";
 
 document.addEventListener('DOMContentLoaded', () => {
-    let context = new Context();
+    let context = Context.getContext();
 
     document.getElementById('grid_dimension')!.innerText = String(context.colCount);
     document.getElementById('animation_delay')!.innerText = String(context.speed);
