@@ -1,6 +1,6 @@
-import {WeightedGraph} from "./Graphs/WeightedGraph";
-import {UnweightedGraph} from "./Graphs/UnweightedGraph";
-import {getSelectedRadioValue} from "./utils";
+import {WeightedGraph} from "./graphs/WeightedGraph";
+import {UnweightedGraph} from "./graphs/UnweightedGraph";
+import {getSelectedRadioValue} from "./utils/utils";
 
 export class Context {
     private static context: Context | null = null;

@@ -1,7 +1,7 @@
-import {PriorityQueue} from "../Utils/PriorityQueue";
-import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "../Types";
+import {PriorityQueue} from "../helpers/PriorityQueue";
+import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "../types";
 import {Context} from "../Context";
-import {pause} from "../utils";
+import {pause} from "../utils/utils";
 
 export class WeightedGraph {
     context: Context;

@@ -1,5 +1,5 @@
 import {Context} from "../Context";
-import {adjustAllClasses} from "../utils";
+import {adjustAllClasses} from "../utils/utils";
 
 export abstract class Maze {
     context: Context;

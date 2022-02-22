@@ -1,10 +1,10 @@
-import {Descriptions} from "./Types";
+import {Descriptions} from "./types";
 
 export const NODE_COST = 1;
 export const WEIGHTED_NODE_COST = 2;
 export const RANDOM_MAZE_FREQUENCY = 5;
 
-export const DESCRIPTIONS:Descriptions = {
+export const DESCRIPTIONS: Descriptions = {
     "DIJKSTRAS": "<b>Dijkstra's Algorithm</b> exploits BFS, checks nodes consequently",
     "A_STAR": "<b>A*</b> heads towards the target, relies on G/H/F costs",
     "BFS": "<b>Breadth-First Search</b> relies on a <i>queue</i>",

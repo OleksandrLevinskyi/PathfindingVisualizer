@@ -1,5 +1,5 @@
-import {PQNode} from "../Nodes/PQNode";
-import {ListOfGHFCosts} from "../Types";
+import {PQNode} from "../nodes/PQNode";
+import {ListOfGHFCosts} from "../types";
 
 export class PriorityQueue {
     values: Array<PQNode>;

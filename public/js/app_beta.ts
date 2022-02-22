@@ -1,3 +1,31 @@
-import {loadApp} from "./helpers";
+import {Context} from "./Context";
+import {changeGridDimension, drawGrid, regenerateGridWithNewSize, resetField} from "./utils/grid_utils";
+import {dragStart} from "./utils/draggable_utils";
+import {apply, changeAnimationDelay, changeDisplayMode, launch} from "./utils/panel_utils";
+import {cleanPath} from "./utils/path_utils";
 
-document.addEventListener('DOMContentLoaded', loadApp);
+document.addEventListener('DOMContentLoaded', () => loadApp());
+
+export const loadApp = () => {
+    const context = Context.getContext();
+
+    document.getElementById('grid_dimension')!.innerText = String(context.colCount);
+    document.getElementById('animation_delay')!.innerText = String(context.speed);
+    context.svg!.setAttribute('height', String(context.rowCount * context.cellSize));
+
+    drawGrid();
+    addEventHandlers();
+}
+
+export const addEventHandlers = () => {
+    const context = Context.getContext();
+    document.querySelector('#launch')?.addEventListener('click', launch);
+    document.querySelector('#apply')?.addEventListener('click', apply);
+    document.querySelector('#clean')?.addEventListener('click', cleanPath);
+    document.querySelector('#reset')?.addEventListener('click', resetField);
+    document.getElementById('mode')?.addEventListener('click', changeDisplayMode);
+    document.getElementById('delay')?.addEventListener("input", changeAnimationDelay);
+    document.getElementById('dimension')?.addEventListener("input", changeGridDimension);
+    document.getElementById('dimension')?.addEventListener("change", () => regenerateGridWithNewSize(drawGrid));
+    context.svg!.addEventListener('mousedown', dragStart);
+}

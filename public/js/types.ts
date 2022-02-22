@@ -49,7 +49,12 @@ export type Descriptions = {
     [key: string]: string
 }
 
-export enum MODE_IMAGE{
-    SUN= "https://img.icons8.com/ios-filled/50/f1c40f/sun--v1.png",
-    MOON = "https://img.icons8.com/ios-glyphs/50/4a90e2/moon-symbol.png"
+export enum MODE_IMAGE {
+    SUN = "https://img.icons8.com/ios-filled/50/f1c40f/sun--v1.png",
+    MOON = "https://img.icons8.com/ios-glyphs/50/4a90e2/moon-symbol.png",
+}
+
+export enum MODE {
+    SUN = 'SUN',
+    MOON = 'MOON',
 }

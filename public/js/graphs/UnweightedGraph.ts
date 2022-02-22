@@ -1,8 +1,8 @@
-import {Queue} from "../Utils/Queue";
-import {Stack} from "../Utils/Stack";
-import {UGAdjacencyList, VisitedList} from "../Types";
+import {Queue} from "../helpers/Queue";
+import {Stack} from "../helpers/Stack";
+import {UGAdjacencyList, VisitedList} from "../types";
 import {Context} from "../Context";
-import {pause} from "../utils";
+import {pause} from "../utils/utils";
 
 export class UnweightedGraph {
     context: Context;

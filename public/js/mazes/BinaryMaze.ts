@@ -1,5 +1,5 @@
 import {Maze} from "./Maze";
-import {getSelectedRadioValue, pause} from "../utils";
+import {getSelectedRadioValue, pause} from "../utils/utils";
 
 export class BinaryMaze extends Maze {
     async generate() {

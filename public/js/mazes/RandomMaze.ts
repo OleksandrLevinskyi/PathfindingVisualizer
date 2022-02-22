@@ -1,5 +1,5 @@
 import {Maze} from "./Maze";
-import {adjustAllClasses, getSelectedRadioValue, pause} from "../utils";
+import {adjustAllClasses, getSelectedRadioValue, pause} from "../utils/utils";
 import {RANDOM_MAZE_FREQUENCY} from "../constants";
 
 export class RandomMaze extends Maze {

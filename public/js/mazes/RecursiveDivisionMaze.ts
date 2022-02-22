@@ -1,7 +1,7 @@
 import {Maze} from "./Maze";
-import {Stack} from "../Utils/Stack";
-import {AdjacentNode, DIRECTION, VisitedList} from "../Types";
-import {getSelectedRadioValue, pause} from "../utils";
+import {Stack} from "../helpers/Stack";
+import {AdjacentNode, DIRECTION, VisitedList} from "../types";
+import {getSelectedRadioValue, pause} from "../utils/utils";
 
 export class RecursiveDivisionMaze extends Maze {
     async generate():Promise<void> {

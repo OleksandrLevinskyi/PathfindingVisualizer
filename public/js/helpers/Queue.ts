@@ -1,8 +1,8 @@
-import {Node} from "../Nodes/Node";
+import {Node} from "../nodes/Node";
 
-export class Stack {
-    first: Node | null;
-    last: Node | null;
+export class Queue {
+    first: Node|null;
+    last: Node|null;
     size: number;
 
     constructor() {
@@ -11,20 +11,21 @@ export class Stack {
         this.size = 0;
     }
 
-    push(val: string): Stack {
+    enqueue(val: string): Queue {
         let node: Node = new Node(val);
 
-        this.size === 0 ? this.last = node : node.next = this.first;
-        this.first = node;
+        this.size === 0 ? this.first = node : this.last!.next = node;
+        this.last = node;
         this.size++;
 
         return this;
     }
 
-    pop(): string|undefined {
+    dequeue(): string|undefined {
         if (this.size === 0) return undefined;
 
         let oldFirst: Node = this.first!;
+
         this.first = oldFirst.next;
         oldFirst.next = null;
         this.size--;
