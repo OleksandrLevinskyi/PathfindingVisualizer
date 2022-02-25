@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* overflow: scroll; */
+    /* overflow-x: hidden; */
+    font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* font-size: .9rem; */
+}
+
+body {
+    position: relative;
+    width: 100%;
+    min-width: 1140px;
+}
+
+.night_mode {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+svg {
+    margin: 0 auto 10px;
+    display: block;
+    background-color: grey;
+    width: 100%;
+}
+
+rect {
+    fill: white;
+    stroke: black;
+}
+
+rect.wall {
+    fill: #0c3547;
+}
+
+rect.weight {
+    fill: url(#gradient);
+}
+
+rect.path {
+    fill: #fffe6a;
+}
+
+rect.visited {
+    fill: #c572ff;
+}
+
+rect.path.weight {
+    fill: url(#gradient_path);
+}
+
+rect.visited.weight {
+    fill: url(#gradient_visited);
+}
+
+rect.start, rect.path.weight.start, rect.visited.weight.start {
+    fill: #54ff34;
+}
+
+rect.end, rect.path.weight.end, rect.visited.weight.end {
+    fill: #ff367a;
+}
+
+rect.draggable {
+    fill: rgba(255, 255, 255, 0);
+}
