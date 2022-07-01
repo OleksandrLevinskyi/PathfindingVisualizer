@@ -18,7 +18,7 @@
         }
 
         .grid-columns {
-            grid-template-columns: repeat(0, 0px);
+            grid-template-columns: repeat(10, 20px);
         }
 
         .square {
@@ -33,7 +33,8 @@
 <body>
 <div class="grid grid-columns"></div>
 <script>
-    window.addEventListener('resize', addStylesheet);
+    window.addEventListener('resize', () => changeStylesheet(getNewData()[0], getNewData()[1]));
+
     function drawGrid() {
         let context = {width: window.innerWidth, colCount: 30, height: window.innerHeight * 0.8};
         context.cellSize = context.width / context.colCount;
@@ -44,7 +45,7 @@
         context.currArr = new Array(context.rowCount);
         context.pathSearchFinished = false;
 
-        document.querySelector('.grid').setAttribute('style', `grid-template-columns: repeat(${context.colCount}, ${context.cellSize}px);`);
+        changeStylesheet(context.colCount, context.cellSize)
 
         for (let row = 0; row < context.rowCount; row++) {
             context.currArr[row] = new Array(context.colCount);
@@ -69,6 +70,21 @@
                 context.currArr[row][col] = rect;
             }
         }
+    }
+
+    function changeStylesheet(colCount, cellSize) {
+        let style = document.styleSheets[0];
+        let rules = style.cssRules || style.rules;
+
+        Array.from(rules).filter((e) => e.selectorText === '.grid-columns')[0].style.gridTemplateColumns = `repeat(${colCount},${cellSize}px)`;
+    }
+
+    function getNewData() {
+        let context = {width: window.innerWidth, colCount: 30, height: window.innerHeight * 0.8};
+        context.cellSize = context.width / context.colCount;
+        context.tempCount = Math.floor(context.height / context.cellSize);
+        context.rowCount = context.tempCount % 2 === 1 ? context.tempCount : context.tempCount - 1;
+        return [context.colCount, context.cellSize]
     }
 
     drawGrid();
