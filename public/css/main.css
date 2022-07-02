@@ -27,7 +27,7 @@ div.wall {
 }
 
 div.weight {
-    background: url(#gradient);
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 10%, black 10%, black 20%);
 }
 
 div.path {
@@ -39,11 +39,11 @@ div.visited {
 }
 
 div.path.weight {
-    background: url(#gradient_path);
+    background-image: repeating-linear-gradient(-45deg, #fffe6a, #fffe6a 10%, black 10%, black 20%);
 }
 
 div.visited.weight {
-    background: url(#gradient_visited);
+    background-image: repeating-linear-gradient(-45deg, #c572ff, #c572ff 10%, black 10%, black 20%);
 }
 
 div.start, div.path.weight.start, div.visited.weight.start {
