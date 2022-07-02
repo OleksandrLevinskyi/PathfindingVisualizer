@@ -13,12 +13,14 @@ export class WeightedGraph {
     }
 
     addVertex(vtx: string): void {
+        console.log('add vertex')
         if (!this.adjacencyList[vtx]) {
             this.adjacencyList[vtx] = [];
         }
     }
 
     addEdge(vtx1: string, vtx2: string, weight: number): void {
+        console.log('add edge')
         if (
             this.adjacencyList[vtx1] &&
             this.adjacencyList[vtx2] &&
@@ -48,7 +50,7 @@ export class WeightedGraph {
 
         pq.enqueue(start, distances[start]);
 
-        // set up
+        // set up distances and previous list
         for (let v in this.adjacencyList) {
             v === start ? distances[v] = 0 : distances[v] = Infinity;
             previous[v] = null;

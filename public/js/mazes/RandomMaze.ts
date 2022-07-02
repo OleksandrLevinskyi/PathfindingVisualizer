@@ -1,5 +1,5 @@
 import {Maze} from "./Maze";
-import {changeElementsClassList, getSelectedRadioButtonValue, pause} from "../utils/utils";
+import {changeElementsClassList, getCoordinates, getSelectedRadioButtonValue, pause} from "../utils/utils";
 import {RANDOM_MAZE_FREQUENCY} from "../constants";
 
 export class RandomMaze extends Maze {
@@ -15,7 +15,7 @@ export class RandomMaze extends Maze {
                 currSet.push(context.currArr[row][col].getAttribute('id'));
                 if (currSet.length % RANDOM_MAZE_FREQUENCY == 0 || col == context.colCount - 1) {
                     idx = Math.floor(Math.random() * currSet.length);
-                    coord = context.weightedGraph!.getCoordinates(currSet[idx]);
+                    coord = getCoordinates(currSet[idx]);
                     currElem = document.getElementById(currSet[idx]);
 
                     await pause(context.speed);

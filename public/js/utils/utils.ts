@@ -42,10 +42,9 @@ export const getCurrElement = (e: any) => {
     return currElem;
 }
 
-export const getAdjacentNodes = (rect: any) => {
+export const getAdjacentNodes = (node: any) => {
     const context = Context.getContext();
-    let currRow = parseInt(rect.getAttribute('row'));
-    let currCol = parseInt(rect.getAttribute('col'));
+    let [currRow, currCol] = getCoordinates(node.id)
     let adjacentNodes = [];
 
     if (currRow > 0 && context.currArr[currRow - 1][currCol] != null) adjacentNodes.push(context.currArr[currRow - 1][currCol]);

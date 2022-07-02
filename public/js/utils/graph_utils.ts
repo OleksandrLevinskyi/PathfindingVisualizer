@@ -17,6 +17,7 @@ export const buildWeightedGraph = () => {
 
     for (let node in context.weightedGraph.adjacencyList) {
         let adjacentNodes = getAdjacentNodes(document.getElementById(node));
+        console.log('adjNodes', adjacentNodes)
         for (let n of adjacentNodes) {
             if (n.classList.contains('weight') || document.getElementById(node)?.classList.contains('weight')) { // if weighted node
                 context.weightedGraph.addEdge(node, n.getAttribute('id'), WEIGHTED_NODE_COST);

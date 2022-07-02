@@ -1,12 +1,12 @@
 import {Maze} from "./Maze";
-import {getSelectedRadioButtonValue, pause} from "../utils/utils";
+import {getCoordinates, getSelectedRadioButtonValue, pause} from "../utils/utils";
 
 export class BinaryMaze extends Maze {
     async generate() {
         let context = this.context;
         const start: string = "0_0";
         let idx, next, neighbors, availNodes = [],
-            coord = context.weightedGraph!.getCoordinates(start),
+            coord = getCoordinates(start),
             currElem = document.getElementById(start);
 
         context.currObstacle = getSelectedRadioButtonValue("obstacle");
@@ -29,7 +29,7 @@ export class BinaryMaze extends Maze {
             next = neighbors[idx];
 
             if (next != undefined) {
-                coord = context.weightedGraph!.getCoordinates(next.val);
+                coord = getCoordinates(next.val);
 
                 if (next.dir == 'down') coord[0]--;
                 else if (next.dir == 'right') coord[1]--;
@@ -47,7 +47,7 @@ export class BinaryMaze extends Maze {
     getRightDownMazeNeighbors(node:string) {
         let context = this.context;
 
-        let coord = context.weightedGraph!.getCoordinates(node);
+        let coord = getCoordinates(node);
         let currRow = coord[0];
         let currCol = coord[1];
         let adjacentNodes = [];
