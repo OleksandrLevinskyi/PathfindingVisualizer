@@ -46,4 +46,7 @@ export const addStartEndNodes = (middleRow: number, gap: number) => {
     if (context.currArr[middleRow][context.colCount - gap - 1] == null) context.currArr[middleRow][context.colCount - gap - 1] = end;
 }
 
-export const isNodeStartOrEnd = (node: any) => node.classList.contains('start') || node.classList.contains('end');
+export const isNodeOverStartOrEnd = (node: any) => {
+    const context = Context.getContext();
+    return context.draggedClass === 'start' ? node.classList.contains('end') : node.classList.contains('start');
+}

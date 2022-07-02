@@ -38,12 +38,6 @@ export const drawGrid = () => {
         context.currArr[row] = new Array(context.colCount);
         for (let col = 0; col < context.colCount; col++) {
             let rect = document.createElement('div');
-            // rect.setAttribute('width', String(context.cellSize));
-            // rect.setAttribute('height', String(context.cellSize));
-            // rect.setAttribute('x', String(col * context.cellSize));
-            // rect.setAttribute('y', String(row * context.cellSize));
-            // rect.setAttribute('row', String(row));
-            // rect.setAttribute('col', String(col));
             rect.setAttribute('class', 'square');
             rect.setAttribute('id', `${row}_${col}`);
 

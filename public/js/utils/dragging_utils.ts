@@ -1,13 +1,13 @@
 import {Context} from "../Context";
 import {changeClassList, getCoordinates, getHighlightedNode} from "./utils";
 import {launch} from "./panel_utils";
-import {isNodeStartOrEnd, removeStartEndNodes} from "./start_end_nodes_utils";
+import {isNodeOverStartOrEnd, removeStartEndNodes} from "./start_end_nodes_utils";
 
-export const manipulateAWall = (nodeId: string, restoreAWall: boolean) => {
+export const manipulateAWall = (node: any, restoreAWall: boolean) => {
     const context = Context.getContext();
-    const [rowIdx, colIdx] = getCoordinates(nodeId);
+    const [rowIdx, colIdx] = getCoordinates(node.id);
 
-    context.currArr[rowIdx][colIdx] = restoreAWall ? null : nodeId;
+    context.currArr[rowIdx][colIdx] = restoreAWall ? null : node;
 }
 
 export const dragStart = (event: any) => {
@@ -38,18 +38,18 @@ export const dragEnter = (event: any) => {
         if (
             highlightedNode &&
             highlightedNode?.classList.contains('square') &&
-            !isNodeStartOrEnd(highlightedNode)
+            !isNodeOverStartOrEnd(highlightedNode)
         ) {
             context.draggedNode.classList.remove(context.draggedClass);
 
             if (context.draggedNode.classList.contains('wall')) {
-                manipulateAWall(context.draggedNode.id, true);
+                manipulateAWall(context.draggedNode, true);
             }
 
             highlightedNode.classList.add(context.draggedClass!);
             context.draggedNode = highlightedNode;
             if (highlightedNode.classList.contains('wall')) {
-                manipulateAWall(context.draggedNode.id, false);
+                manipulateAWall(context.draggedNode, false);
             }
 
             if (context.pathSearchFinished) {
@@ -68,23 +68,21 @@ export const drop = (event: any) => {
         let highlightedNode = getHighlightedNode(event);
 
         context.changeRectTypeEnabled = true;
-
         if (
             highlightedNode &&
             highlightedNode?.classList.contains('square') &&
-            !isNodeStartOrEnd(highlightedNode)
+            !isNodeOverStartOrEnd(highlightedNode)
         ) {
             removeStartEndNodes(context.draggedClass == 'start', context.draggedClass == 'end');
-
             if (context.draggedClass == 'start') {
-                context.startNodeId = highlightedNode.getAttribute('id');
+                context.startNodeId = highlightedNode.id;
                 changeClassList(highlightedNode, ['start']);
             } else if (context.draggedClass == 'end') {
-                context.endNodeId = highlightedNode.getAttribute('id');
+                context.endNodeId = highlightedNode.id;
                 changeClassList(highlightedNode, ['end']);
             }
 
-            manipulateAWall(highlightedNode.id, false);
+            manipulateAWall(highlightedNode, false);
             context.draggedNode = null;
         }
     }

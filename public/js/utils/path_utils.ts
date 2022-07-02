@@ -6,14 +6,16 @@ export const cleanPath = () => {
     const context = Context.getContext();
     for (let row = 0; row < context.rowCount; row++) {
         for (let col = 0; col < context.colCount; col++) {
-            let currElem = context.currArr[row][col];
-            if (currElem != null &&
-                !currElem.classList.contains('start') &&
-                !currElem.classList.contains('end')) {
-                if (currElem.classList.contains('weight')) {
-                    changeClassList(currElem, ['weight']);
+            let node = context.currArr[row][col];
+            if (
+                node != null &&
+                !node.classList.contains('start') &&
+                !node.classList.contains('end')
+            ) {
+                if (node.classList.contains('weight')) {
+                    changeClassList(node, ['weight']);
                 } else {
-                    changeClassList(currElem)
+                    changeClassList(node)
                 }
             }
         }
