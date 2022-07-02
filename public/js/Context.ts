@@ -32,7 +32,7 @@ export class Context {
         this.algoFinished = true;
         this.grid = document.querySelector('.grid');
         this.width = window.innerWidth;
-        this.height = window.innerHeight * .8;
+        this.height = window.innerHeight - document.getElementById('control-panel')!.offsetHeight;
         this.colCount = parseInt((document.getElementById('dimension') as HTMLButtonElement).value);
         this.cellSize = this.width / this.colCount;
         this.tempCount = Math.floor(this.height / this.cellSize);

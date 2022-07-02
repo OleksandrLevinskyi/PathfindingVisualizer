@@ -1,7 +1,7 @@
 import {PriorityQueue} from "../helpers/PriorityQueue";
 import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "../types";
 import {Context} from "../Context";
-import {pause} from "../utils/utils";
+import {getCoordinates, pause} from "../utils/utils";
 
 export class WeightedGraph {
     context: Context;
@@ -48,7 +48,7 @@ export class WeightedGraph {
 
         pq.enqueue(start, distances[start]);
 
-        // set up
+        // set up distances and previous list
         for (let v in this.adjacencyList) {
             v === start ? distances[v] = 0 : distances[v] = Infinity;
             previous[v] = null;
@@ -58,7 +58,7 @@ export class WeightedGraph {
         while (pq.values.length !== 0) {
             vtx = pq.dequeue()!;
 
-            if (vtx != context.startNode && vtx != context.endNode) {
+            if (vtx != context.startNodeId && vtx != context.endNodeId) {
                 if (!ignorePause) await pause(context.speed);
 
                 document.getElementById(vtx)?.classList.add('visited');
@@ -102,7 +102,7 @@ export class WeightedGraph {
 
             if (v === start) {
                 distances[v]['G'] = 0;
-                distances[v]['H'] = this.getDistance(v, context.endNode!);
+                distances[v]['H'] = this.getDistance(v, context.endNodeId!);
                 distances[v]['F'] = distances[v]['H'];
 
                 pq.enqueue(v, distances[v]['F']);
@@ -120,7 +120,7 @@ export class WeightedGraph {
             pq.adjustPriorityQueue(distances);
             vtx = pq.dequeue()!;
 
-            if (vtx != context.startNode && vtx != context.endNode) {
+            if (vtx != context.startNodeId && vtx != context.endNodeId) {
                 if (!ignorePause) await pause(context.speed);
 
                 document.getElementById(vtx)?.classList.add('visited');
@@ -138,7 +138,7 @@ export class WeightedGraph {
 
                 if (distance < distances[v.val]['G']) {
                     distances[v.val]['G'] = distance;
-                    distances[v.val]['H'] = this.getDistance(v.val, context.endNode!);
+                    distances[v.val]['H'] = this.getDistance(v.val, context.endNodeId!);
                     distances[v.val]['F'] = distances[v.val]['G'] + distances[v.val]['H'];
 
                     previous[v.val] = vtx;
@@ -155,18 +155,12 @@ export class WeightedGraph {
 
     // distance to the end node
     getDistance(node: string, endNode: string): number {
-        let coord1: Array<number> = this.getCoordinates(node),
-            coord2: Array<number> = this.getCoordinates(endNode),
+        let coord1: Array<number> = getCoordinates(node),
+            coord2: Array<number> = getCoordinates(endNode),
             distX: number = Math.abs(coord1[1] - coord2[1]),
             distY: number = Math.abs(coord1[0] - coord2[0]);
 
         return distX + distY;
-    }
-
-    getCoordinates(node: string): Array<number> {
-        let coords: Array<string> = node.split('_');
-
-        return [parseInt(coords[0]), parseInt(coords[1])];
     }
 
     makePath(previous: PreviousList, end: string): Array<string> {

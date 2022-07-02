@@ -1,5 +1,5 @@
 import {Maze} from "./Maze";
-import {adjustAllClasses, getSelectedRadioValue, pause} from "../utils/utils";
+import {changeClassList, getCoordinates, getSelectedRadioButtonValue, pause} from "../utils/utils";
 import {RANDOM_MAZE_FREQUENCY} from "../constants";
 
 export class RandomMaze extends Maze {
@@ -7,15 +7,15 @@ export class RandomMaze extends Maze {
         let context = this.context;
         let currSet = [], idx, coord, currElem;
 
-        context.currObstacle = getSelectedRadioValue("obstacle");
+        context.currObstacle = getSelectedRadioButtonValue("obstacle");
 
         // put walls
         for (let row = 0; row < context.rowCount; row++) {
             for (let col = 0; col < context.colCount; col++) {
-                currSet.push(context.currArr[row][col].getAttribute('id'));
+                currSet.push(context.currArr[row][col].id);
                 if (currSet.length % RANDOM_MAZE_FREQUENCY == 0 || col == context.colCount - 1) {
                     idx = Math.floor(Math.random() * currSet.length);
-                    coord = context.weightedGraph!.getCoordinates(currSet[idx]);
+                    coord = getCoordinates(currSet[idx]);
                     currElem = document.getElementById(currSet[idx]);
 
                     await pause(context.speed);
@@ -25,7 +25,7 @@ export class RandomMaze extends Maze {
                         context.currArr[coord[0]][coord[1]] = document.getElementById(`${coord[0]}_${coord[1]}`);
                     }
 
-                    adjustAllClasses(currElem as Element, [context.currObstacle]); // applied to all obstacle types
+                    changeClassList(currElem as Element, [context.currObstacle]); // applied to all obstacle types
 
                     currSet = [];
                 }

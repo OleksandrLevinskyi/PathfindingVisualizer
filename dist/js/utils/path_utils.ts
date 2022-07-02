@@ -1,19 +1,21 @@
 import {Context} from "../Context";
-import {adjustAllClasses, pause} from "./utils";
+import {changeClassList, pause} from "./utils";
 import {updateDisplayData} from "./panel_utils";
 
 export const cleanPath = () => {
     const context = Context.getContext();
     for (let row = 0; row < context.rowCount; row++) {
         for (let col = 0; col < context.colCount; col++) {
-            let currElem = context.currArr[row][col];
-            if (currElem != null &&
-                !currElem.classList.contains('start') &&
-                !currElem.classList.contains('end')) {
-                if (currElem.classList.contains('weight')) {
-                    adjustAllClasses(currElem, ['weight']);
+            let node = context.currArr[row][col];
+            if (
+                node != null &&
+                !node.classList.contains('start') &&
+                !node.classList.contains('end')
+            ) {
+                if (node.classList.contains('weight')) {
+                    changeClassList(node, ['weight']);
                 } else {
-                    adjustAllClasses(currElem)
+                    changeClassList(node)
                 }
             }
         }
@@ -26,9 +28,9 @@ export const cleanPath = () => {
 export const confirmPath = (path: Array<string>) => {
     const context = Context.getContext();
     for (let nodeId of path) {
-        if (nodeId != context.startNode && nodeId != context.endNode) {
+        if (nodeId != context.startNodeId && nodeId != context.endNodeId) {
             let node = document.getElementById(nodeId);
-            adjustAllClasses(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
+            changeClassList(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
         }
     }
 }
@@ -36,10 +38,10 @@ export const confirmPath = (path: Array<string>) => {
 export const buildPath = async (path: Array<string>, ignorePause: boolean) => {
     const context = Context.getContext();
     for (let nodeId of path) {
-        if (nodeId != context.startNode && nodeId != context.endNode) {
+        if (nodeId != context.startNodeId && nodeId != context.endNodeId) {
             let node = document.getElementById(nodeId);
             if (!ignorePause) await pause(context.speed);
-            adjustAllClasses(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
+            changeClassList(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
         }
     }
 }

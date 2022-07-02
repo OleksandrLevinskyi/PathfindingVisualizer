@@ -1,16 +1,13 @@
 import {WeightedGraph} from "./graphs/WeightedGraph";
 import {UnweightedGraph} from "./graphs/UnweightedGraph";
-import {getSelectedRadioValue} from "./utils/utils";
+import {getSelectedRadioButtonValue} from "./utils/utils";
 
 export class Context {
     private static context: Context | null = null;
 
-    svg;
+    grid;
     currArr: Array<Array<any>> = [];
-    span_start: any;
-    span_end: any;
-    dragged: any;
-    draggedNeighbor: any;
+    draggedNode: any;
     pathSearchFinished: boolean;
     algoFinished: boolean;
     width: number;
@@ -19,8 +16,8 @@ export class Context {
     cellSize: number
     tempCount: number
     rowCount: number
-    startNode: string | null = null;
-    endNode: string | null = null;
+    startNodeId: string | null = null;
+    endNodeId: string | null = null;
     weightedGraph: WeightedGraph | null = null;
     unweightedGraph: UnweightedGraph | null = null;
     draggedClass: string | null = null;
@@ -33,8 +30,8 @@ export class Context {
     private constructor() {
         this.pathSearchFinished = false;
         this.algoFinished = true;
-        this.svg = document.querySelector('svg');
-        this.width = parseInt(window.getComputedStyle(this.svg!).getPropertyValue('width'));
+        this.grid = document.querySelector('.grid');
+        this.width = window.innerWidth;
         this.height = window.innerHeight * .8;
         this.colCount = parseInt((document.getElementById('dimension') as HTMLButtonElement).value);
         this.cellSize = this.width / this.colCount;
@@ -42,7 +39,7 @@ export class Context {
         this.rowCount = this.tempCount % 2 == 1 ? this.tempCount : this.tempCount - 1;
         this.changeRectTypeEnabled = true;
         this.speed = parseInt((document.getElementById('delay') as HTMLInputElement).value);
-        this.currObstacle = getSelectedRadioValue("obstacle");
+        this.currObstacle = getSelectedRadioButtonValue("obstacle");
         this.totalCost = 0;
         this.totalNodesVisited = 0;
     }

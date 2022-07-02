@@ -1,5 +1,5 @@
 import {MODE, MODE_IMAGE} from "../types";
-import {adjustAllClasses, getSelectedRadioValue} from "./utils";
+import {changeClassList, getSelectedRadioButtonValue} from "./utils";
 import {Context} from "../Context";
 import {DESCRIPTIONS} from "../constants";
 import {RecursiveDivisionMaze} from "../mazes/RecursiveDivisionMaze";
@@ -8,7 +8,7 @@ import {RandomMaze} from "../mazes/RandomMaze";
 import {buildPath, cleanPath, confirmPath} from "./path_utils";
 import {buildUnweightedGraph, buildWeightedGraph} from "./graph_utils";
 import {resetField} from "./grid_utils";
-import {placeStartEndNodes} from "./draggable_utils";
+import {placeStartEndNodes} from "./start_end_nodes_utils";
 
 export const changeDisplayMode = (e: any) => {
     const isLightMode = e.target.alt.toUpperCase() === MODE.SUN;
@@ -16,7 +16,7 @@ export const changeDisplayMode = (e: any) => {
     e.target.alt = isLightMode ? MODE.MOON : MODE.SUN;
     e.target.src = isLightMode ? MODE_IMAGE.MOON : MODE_IMAGE.SUN;
 
-    adjustAllClasses(
+    changeClassList(
         document.querySelector('body') as HTMLElement,
         isLightMode ? [] : ['night_mode']
     );
@@ -61,7 +61,7 @@ export const updateDisplayData = (algorithmName: string | null = null, desc = ""
 export const launch = async (_: any, ignorePause = false) => {
     const context = Context.getContext();
     let path: string[] | undefined = [];
-    let algoType = getSelectedRadioValue("algo", false);
+    let algoType = getSelectedRadioButtonValue("algo", false);
 
     enableControls(false);
 
@@ -76,9 +76,9 @@ export const launch = async (_: any, ignorePause = false) => {
         buildWeightedGraph();
 
         if (algoType === 'dijkstras') {
-            path = await context.weightedGraph?.dijkstraAlgorithm(context.startNode!, context.endNode!, ignorePause);
+            path = await context.weightedGraph?.dijkstraAlgorithm(context.startNodeId!, context.endNodeId!, ignorePause);
         } else if (algoType === 'a_star') {
-            path = await context.weightedGraph?.aStar(context.startNode!, context.endNode!, ignorePause);
+            path = await context.weightedGraph?.aStar(context.startNodeId!, context.endNodeId!, ignorePause);
         }
 
         if (path == undefined) updateDisplayData(null, `<span class="text-danger"><b>No Path Exists</b><span>`);
@@ -93,14 +93,14 @@ export const launch = async (_: any, ignorePause = false) => {
         buildUnweightedGraph();
 
         if (algoType === 'bfs') {
-            path = await context.unweightedGraph?.bfs(context.startNode!, context.endNode!, ignorePause);
+            path = await context.unweightedGraph?.bfs(context.startNodeId!, context.endNodeId!, ignorePause);
         } else if (algoType === 'dfs_iterative') {
-            path = await context.unweightedGraph?.dfsIterative(context.startNode!, context.endNode!, ignorePause);
+            path = await context.unweightedGraph?.dfsIterative(context.startNodeId!, context.endNodeId!, ignorePause);
         } else if (algoType === 'dfs_recursive') {
-            path = await context.unweightedGraph?.dfsRecursive(context.startNode!, context.endNode!, ignorePause);
+            path = await context.unweightedGraph?.dfsRecursive(context.startNodeId!, context.endNodeId!, ignorePause);
         }
 
-        if (path![path!.length - 1] != context.endNode) {
+        if (path![path!.length - 1] != context.endNodeId) {
             updateDisplayData(null, '<span class="text-danger"><b>No Path Exists</b><span>');
         } else {
             confirmPath(path!);
@@ -113,7 +113,7 @@ export const launch = async (_: any, ignorePause = false) => {
 
 export const apply = async (e: any) => {
     const context = Context.getContext();
-    let mazeType = getSelectedRadioValue("maze", false);
+    let mazeType = getSelectedRadioButtonValue("maze", false);
 
     enableControls(false);
 

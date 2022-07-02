@@ -4,7 +4,7 @@ export function pause(ms: number) {
     return new Promise<number>((resolve: any) => setTimeout(resolve, ms));
 }
 
-export const getSelectedRadioValue = (name: string, isRadio: boolean = true) => {
+export const getSelectedRadioButtonValue = (name: string, isRadio: boolean = true) => {
     let buttons = document.getElementsByName(name);
 
     if (isRadio) {
@@ -19,8 +19,8 @@ export const getSelectedRadioValue = (name: string, isRadio: boolean = true) => 
     return undefined;
 }
 
-export const adjustAllClasses = (elem: Element, classesToAdd: string[] = []) => {
-    elem.classList.remove(
+export const changeClassList = (element: Element, classesToAdd: string[] = []) => {
+    element.classList.remove(
         'night_mode',
         'draggable',
         'start',
@@ -31,10 +31,10 @@ export const adjustAllClasses = (elem: Element, classesToAdd: string[] = []) => 
         'visited'
     );
 
-    elem.classList.add(...classesToAdd);
+    element.classList.add(...classesToAdd);
 }
 
-export const getCurrElement = (e: any) => {
+export const getHighlightedNode = (e: any) => {
     let x = e.clientX,
         y = e.clientY,
         currElem = document.elementFromPoint(x, y);
@@ -42,10 +42,9 @@ export const getCurrElement = (e: any) => {
     return currElem;
 }
 
-export const getAdjacentNodes = (rect: any) => {
+export const getAdjacentNodes = (node: any) => {
     const context = Context.getContext();
-    let currRow = parseInt(rect.getAttribute('row'));
-    let currCol = parseInt(rect.getAttribute('col'));
+    let [currRow, currCol] = getCoordinates(node.id)
     let adjacentNodes = [];
 
     if (currRow > 0 && context.currArr[currRow - 1][currCol] != null) adjacentNodes.push(context.currArr[currRow - 1][currCol]);
@@ -54,4 +53,10 @@ export const getAdjacentNodes = (rect: any) => {
     if (currCol < context.colCount - 1 && context.currArr[currRow][currCol + 1] != null) adjacentNodes.push(context.currArr[currRow][currCol + 1]);
 
     return adjacentNodes;
+}
+
+export const getCoordinates = (nodeId: string): Array<number> => {
+    let coords: Array<string> = nodeId.split('_');
+
+    return [parseInt(coords[0]), parseInt(coords[1])];
 }

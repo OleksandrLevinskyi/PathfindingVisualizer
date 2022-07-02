@@ -21,7 +21,6 @@ export const regenerateGridWithNewSize = (drawGrid: () => void) => {
     context.tempCount = Math.floor(context.height / context.cellSize);
     context.rowCount = context.tempCount % 2 == 1 ? context.tempCount : context.tempCount - 1;
 
-    console.log(context.rowCount, context.colCount)
     context.grid!.setAttribute('height', String(context.rowCount * context.cellSize));
 
     drawGrid();
@@ -61,7 +60,8 @@ export const changeGridStylesheet = (colCount: number, cellSize: number) => {
     let style = document.styleSheets[1];
     let rules = style.cssRules;
 
-    Array.from(rules).filter((e) => e.selectorText === '.grid-columns')[0].style.gridTemplateColumns = `repeat(${colCount},${cellSize}px)`;
+    let gridColumnsRule = Array.from(rules).filter((rule: any) => rule.selectorText === '.grid-columns')[0] as any;
+    gridColumnsRule.style.gridTemplateColumns = `repeat(${colCount},${cellSize}px)`;
 }
 
 export const resetField = (_: any, removeKeyNodes = false) => {

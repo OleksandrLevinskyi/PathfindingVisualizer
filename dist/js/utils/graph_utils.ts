@@ -10,7 +10,7 @@ export const buildWeightedGraph = () => {
     for (let row = 0; row < context.rowCount; row++) {
         for (let col = 0; col < context.colCount; col++) {
             if (context.currArr[row][col] != null) {
-                context.weightedGraph.addVertex(context.currArr[row][col].getAttribute('id'));
+                context.weightedGraph.addVertex(context.currArr[row][col].id);
             }
         }
     }
@@ -19,9 +19,9 @@ export const buildWeightedGraph = () => {
         let adjacentNodes = getAdjacentNodes(document.getElementById(node));
         for (let n of adjacentNodes) {
             if (n.classList.contains('weight') || document.getElementById(node)?.classList.contains('weight')) { // if weighted node
-                context.weightedGraph.addEdge(node, n.getAttribute('id'), WEIGHTED_NODE_COST);
+                context.weightedGraph.addEdge(node, n.id, WEIGHTED_NODE_COST);
             } else {
-                context.weightedGraph.addEdge(node, n.getAttribute('id'), NODE_COST);
+                context.weightedGraph.addEdge(node, n.id, NODE_COST);
             }
         }
     }
@@ -33,7 +33,7 @@ export const buildUnweightedGraph = () => {
     for (let row = 0; row < context.rowCount; row++) {
         for (let col = 0; col < context.colCount; col++) {
             if (context.currArr[row][col] != null) {
-                context.unweightedGraph.addVertex(context.currArr[row][col].getAttribute('id'));
+                context.unweightedGraph.addVertex(context.currArr[row][col].id);
             }
         }
     }
@@ -41,7 +41,7 @@ export const buildUnweightedGraph = () => {
     for (let node in context.unweightedGraph.adjacencyList) {
         let adjacentNodes = getAdjacentNodes(document.getElementById(node));
         for (let n of adjacentNodes) {
-            context.unweightedGraph.addEdge(node, n.getAttribute('id'));
+            context.unweightedGraph.addEdge(node, n.id);
         }
     }
 }

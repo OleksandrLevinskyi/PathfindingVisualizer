@@ -1,7 +1,7 @@
 import {Maze} from "./Maze";
 import {Stack} from "../helpers/Stack";
 import {AdjacentNode, DIRECTION, VisitedList} from "../types";
-import {getSelectedRadioValue, pause} from "../utils/utils";
+import {getCoordinates, getSelectedRadioButtonValue, pause} from "../utils/utils";
 
 export class RecursiveDivisionMaze extends Maze {
     async generate():Promise<void> {
@@ -15,10 +15,10 @@ export class RecursiveDivisionMaze extends Maze {
             idx: number,
             next,
             neighbors,
-            coord = context.weightedGraph?.getCoordinates(start),
+            coord = getCoordinates(start),
             currElem: HTMLElement | null = document.getElementById(start);
 
-        context.currObstacle = getSelectedRadioValue("obstacle");
+        context.currObstacle = getSelectedRadioButtonValue("obstacle");
 
         // put walls
         this.putObstacles();
@@ -43,7 +43,7 @@ export class RecursiveDivisionMaze extends Maze {
 
                 stack.push(curr);
 
-                coord = context.weightedGraph!.getCoordinates(next.val);
+                coord = getCoordinates(next.val);
 
                 if (next.dir == 'up') coord[0]++;
                 else if (next.dir == 'down') coord[0]--;
@@ -68,25 +68,25 @@ export class RecursiveDivisionMaze extends Maze {
 
     getAllMazeNeighbors(node: string): Array<AdjacentNode> {
         let context = this.context;
-        let coord: Array<number> = context.weightedGraph!.getCoordinates(node),
+        let coord: Array<number> = getCoordinates(node),
             currRow: number = coord[0],
             currCol: number = coord[1],
             adjacentNodes: Array<AdjacentNode> = [];
 
         if (currRow > 1 && context.currArr[currRow - 2][currCol] != null) adjacentNodes.push({
-            val: context.currArr[currRow - 2][currCol].getAttribute('id'),
+            val: context.currArr[currRow - 2][currCol].id,
             dir: DIRECTION.UP
         });
         if (currRow < context.rowCount - 2 && context.currArr[currRow + 2][currCol] != null) adjacentNodes.push({
-            val: context.currArr[currRow + 2][currCol].getAttribute('id'),
+            val: context.currArr[currRow + 2][currCol].id,
             dir: DIRECTION.DOWN
         });
         if (currCol > 1 && context.currArr[currRow][currCol - 2] != null) adjacentNodes.push({
-            val: context.currArr[currRow][currCol - 2].getAttribute('id'),
+            val: context.currArr[currRow][currCol - 2].id,
             dir: DIRECTION.LEFT
         });
         if (currCol < context.colCount - 2 && context.currArr[currRow][currCol + 2] != null) adjacentNodes.push({
-            val: context.currArr[currRow][currCol + 2].getAttribute('id'),
+            val: context.currArr[currRow][currCol + 2].id,
             dir: DIRECTION.RIGHT
         });
 
