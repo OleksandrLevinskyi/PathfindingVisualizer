@@ -55,3 +55,9 @@ export const getAdjacentNodes = (rect: any) => {
 
     return adjacentNodes;
 }
+
+export const getCoordinates = (nodeId: string): Array<number> => {
+    let coords: Array<string> = nodeId.split('_');
+
+    return [parseInt(coords[0]), parseInt(coords[1])];
+}

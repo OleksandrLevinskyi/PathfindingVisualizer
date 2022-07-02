@@ -155,10 +155,4 @@ export class UnweightedGraph {
 
         return arr;
     }
-
-    getCoordinates(node: string): Array<number> {
-        let coords: Array<string> = node.split('_');
-
-        return [parseInt(coords[0]), parseInt(coords[1])];
-    }
 }

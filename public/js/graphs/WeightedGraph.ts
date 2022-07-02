@@ -1,7 +1,7 @@
 import {PriorityQueue} from "../helpers/PriorityQueue";
 import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "../types";
 import {Context} from "../Context";
-import {pause} from "../utils/utils";
+import {getCoordinates, pause} from "../utils/utils";
 
 export class WeightedGraph {
     context: Context;
@@ -155,18 +155,12 @@ export class WeightedGraph {
 
     // distance to the end node
     getDistance(node: string, endNode: string): number {
-        let coord1: Array<number> = this.getCoordinates(node),
-            coord2: Array<number> = this.getCoordinates(endNode),
+        let coord1: Array<number> = getCoordinates(node),
+            coord2: Array<number> = getCoordinates(endNode),
             distX: number = Math.abs(coord1[1] - coord2[1]),
             distY: number = Math.abs(coord1[0] - coord2[0]);
 
         return distX + distY;
-    }
-
-    getCoordinates(node: string): Array<number> {
-        let coords: Array<string> = node.split('_');
-
-        return [parseInt(coords[0]), parseInt(coords[1])];
     }
 
     makePath(previous: PreviousList, end: string): Array<string> {

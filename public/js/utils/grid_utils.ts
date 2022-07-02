@@ -1,5 +1,5 @@
 import {Context} from "../Context";
-import {changeElementsClassList, getCurrElement, getSelectedRadioButtonValue} from "./utils";
+import {changeElementsClassList, getCoordinates, getCurrElement, getSelectedRadioButtonValue} from "./utils";
 import {dragEnter, drop, placeStartEndNodes} from "./draggable_utils";
 import {updateDisplayData} from "./panel_utils";
 import {cleanPath} from "./path_utils";
@@ -103,7 +103,7 @@ export const changeRectType = (e: any) => {
                 !currElem.classList.contains('start') &&
                 !currElem.classList.contains('end')
             ) {
-                let [row, col] = currElem.id.split('_').map((idx)=>parseInt(idx));
+                let [row, col] = getCoordinates(currElem.id);
 
                 if (!currElem.classList.contains(context.currObstacle)) {
                     if (context.currObstacle == 'wall') {
