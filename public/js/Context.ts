@@ -5,10 +5,8 @@ import {getSelectedRadioValue} from "./utils/utils";
 export class Context {
     private static context: Context | null = null;
 
-    svg;
+    grid;
     currArr: Array<Array<any>> = [];
-    span_start: any;
-    span_end: any;
     dragged: any;
     draggedNeighbor: any;
     pathSearchFinished: boolean;
@@ -19,8 +17,8 @@ export class Context {
     cellSize: number
     tempCount: number
     rowCount: number
-    startNode: string | null = null;
-    endNode: string | null = null;
+    startNodeId: string | null = null;
+    endNodeId: string | null = null;
     weightedGraph: WeightedGraph | null = null;
     unweightedGraph: UnweightedGraph | null = null;
     draggedClass: string | null = null;
@@ -33,8 +31,8 @@ export class Context {
     private constructor() {
         this.pathSearchFinished = false;
         this.algoFinished = true;
-        this.svg = document.querySelector('svg');
-        this.width = parseInt(window.getComputedStyle(this.svg!).getPropertyValue('width'));
+        this.grid = document.querySelector('.grid');
+        this.width = window.innerWidth;
         this.height = window.innerHeight * .8;
         this.colCount = parseInt((document.getElementById('dimension') as HTMLButtonElement).value);
         this.cellSize = this.width / this.colCount;

@@ -1,5 +1,5 @@
 import {Context} from "../Context";
-import {adjustAllClasses} from "../utils/utils";
+import {changeElementsClassList} from "../utils/utils";
 
 export abstract class Maze {
     context: Context;
@@ -8,7 +8,7 @@ export abstract class Maze {
         this.context = context;
     }
 
-    abstract generate():Promise<void>;
+    abstract generate(): Promise<void>;
 
     putObstacles() {
         let context = this.context;
@@ -28,10 +28,10 @@ export abstract class Maze {
         }
     }
 
-    adjustNode(row:number, col:number) {
+    adjustNode(row: number, col: number) {
         let context = this.context;
 
-        adjustAllClasses(document.getElementById(`${row}_${col}`) as Element, [context.currObstacle]); // applied to all obstacle types
+        changeElementsClassList(document.getElementById(`${row}_${col}`) as Element, [context.currObstacle]); // applied to all obstacle types
 
         if (context.currObstacle == 'wall') {
             context.currArr[row][col] = null;

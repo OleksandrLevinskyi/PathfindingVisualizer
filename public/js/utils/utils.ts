@@ -19,7 +19,7 @@ export const getSelectedRadioValue = (name: string, isRadio: boolean = true) => 
     return undefined;
 }
 
-export const adjustAllClasses = (elem: Element, classesToAdd: string[] = []) => {
+export const changeElementsClassList = (elem: Element, classesToAdd: string[] = []) => {
     elem.classList.remove(
         'night_mode',
         'draggable',

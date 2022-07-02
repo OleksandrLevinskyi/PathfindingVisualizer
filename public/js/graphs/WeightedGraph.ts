@@ -58,7 +58,7 @@ export class WeightedGraph {
         while (pq.values.length !== 0) {
             vtx = pq.dequeue()!;
 
-            if (vtx != context.startNode && vtx != context.endNode) {
+            if (vtx != context.startNodeId && vtx != context.endNodeId) {
                 if (!ignorePause) await pause(context.speed);
 
                 document.getElementById(vtx)?.classList.add('visited');
@@ -102,7 +102,7 @@ export class WeightedGraph {
 
             if (v === start) {
                 distances[v]['G'] = 0;
-                distances[v]['H'] = this.getDistance(v, context.endNode!);
+                distances[v]['H'] = this.getDistance(v, context.endNodeId!);
                 distances[v]['F'] = distances[v]['H'];
 
                 pq.enqueue(v, distances[v]['F']);
@@ -120,7 +120,7 @@ export class WeightedGraph {
             pq.adjustPriorityQueue(distances);
             vtx = pq.dequeue()!;
 
-            if (vtx != context.startNode && vtx != context.endNode) {
+            if (vtx != context.startNodeId && vtx != context.endNodeId) {
                 if (!ignorePause) await pause(context.speed);
 
                 document.getElementById(vtx)?.classList.add('visited');
@@ -138,7 +138,7 @@ export class WeightedGraph {
 
                 if (distance < distances[v.val]['G']) {
                     distances[v.val]['G'] = distance;
-                    distances[v.val]['H'] = this.getDistance(v.val, context.endNode!);
+                    distances[v.val]['H'] = this.getDistance(v.val, context.endNodeId!);
                     distances[v.val]['F'] = distances[v.val]['G'] + distances[v.val]['H'];
 
                     previous[v.val] = vtx;

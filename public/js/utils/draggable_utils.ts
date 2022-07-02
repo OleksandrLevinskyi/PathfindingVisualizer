@@ -1,5 +1,5 @@
 import {Context} from "../Context";
-import {adjustAllClasses, getCurrElement} from "./utils";
+import {changeElementsClassList, getCurrElement} from "./utils";
 import {launch} from "./panel_utils";
 
 export const dragStart = (event: any) => {
@@ -41,8 +41,8 @@ export const dragEnter = (e: any) => {
             }
 
             if (context.pathSearchFinished) {
-                if (context.draggedClass == 'start') context.startNode = currElem.getAttribute('id');
-                else if (context.draggedClass == 'end') context.endNode = currElem.getAttribute('id');
+                if (context.draggedClass == 'start') context.startNodeId = currElem.getAttribute('id');
+                else if (context.draggedClass == 'end') context.endNodeId = currElem.getAttribute('id');
 
                 launch(e, true);
             }
@@ -67,11 +67,11 @@ export const drop = (e: any) => {
             currElem.parentNode!.appendChild(context.dragged);
 
             if (context.draggedClass == 'start') {
-                context.startNode = currElem.getAttribute('id');
-                adjustAllClasses(currElem, ['start']);
+                context.startNodeId = currElem.getAttribute('id');
+                changeElementsClassList(currElem, ['start']);
             } else if (context.draggedClass == 'end') {
-                context.endNode = currElem.getAttribute('id');
-                adjustAllClasses(currElem, ['end']);
+                context.endNodeId = currElem.getAttribute('id');
+                changeElementsClassList(currElem, ['end']);
             }
 
             // currElem.classList.add(draggedClass);
@@ -86,9 +86,10 @@ export const drop = (e: any) => {
 export const placeStartEndNodes = (gap = 2) => {
     const context = Context.getContext();
     let middleRow = Math.floor(context.rowCount / 2);
-    context.startNode = `${middleRow}_${gap}`;
-    context.endNode = `${middleRow}_${context.colCount - gap - 1}`;
+    context.startNodeId = `${middleRow}_${gap}`;
+    context.endNodeId = `${middleRow}_${context.colCount - gap - 1}`;
 
+    // remove old start/end nodes
     let oldStartNodes = document.getElementsByClassName('start') as any;
     let oldEndNodes = document.getElementsByClassName('end') as any;
     let oldNodes = [...oldStartNodes, ...oldEndNodes];
@@ -97,33 +98,12 @@ export const placeStartEndNodes = (gap = 2) => {
         n.classList.remove('end');
     }
 
-    let start = document.getElementById(context.startNode);
-    adjustAllClasses(start!, ['start']);
+    // [?] set new start/end nodes
+    let start = document.getElementById(context.startNodeId);
+    changeElementsClassList(start!, ['start', 'draggable']);
     if (context.currArr[middleRow][gap] == null) context.currArr[middleRow][gap] = start;
 
-    let end = document.getElementById(context.endNode);
-    adjustAllClasses(end!, ['end']);
+    let end = document.getElementById(context.endNodeId);
+    changeElementsClassList(end!, ['end', 'draggable']);
     if (context.currArr[middleRow][context.colCount - gap - 1] == null) context.currArr[middleRow][context.colCount - gap - 1] = end;
-
-    let oldSpans = document.getElementsByClassName('draggable') as any;
-    for (let s of oldSpans) {
-        s.remove();
-    }
-
-    context.span_start = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-    adjustAllClasses(context.span_start, ['draggable']);
-    context.span_start.setAttribute('width', start!.getAttribute('width'));
-    context.span_start.setAttribute('height', start!.getAttribute('height'));
-    context.span_start.setAttribute('x', start!.getAttribute('x'));
-    context.span_start.setAttribute('y', start!.getAttribute('y'));
-
-    context.span_end = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-    adjustAllClasses(context.span_end, ['draggable']);
-    context.span_end.setAttribute('width', end!.getAttribute('width'));
-    context.span_end.setAttribute('height', end!.getAttribute('height'));
-    context.span_end.setAttribute('x', end!.getAttribute('x'));
-    context.span_end.setAttribute('y', end!.getAttribute('y'));
-
-    start!.parentNode?.appendChild(context.span_start);
-    end!.parentNode?.appendChild(context.span_end);
 }

@@ -1,10 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    /* overflow: scroll; */
-    /* overflow-x: hidden; */
     font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* font-size: .9rem; */
 }
 
 body {
@@ -25,43 +22,34 @@ svg {
     width: 100%;
 }
 
-rect {
-    fill: white;
-    stroke: black;
+div.wall {
+    background: #0c3547;
 }
 
-rect.wall {
-    fill: #0c3547;
+div.weight {
+    background: url(#gradient);
 }
 
-rect.weight {
-    fill: url(#gradient);
+div.path {
+    background: #fffe6a;
 }
 
-rect.path {
-    fill: #fffe6a;
+div.visited {
+    background: #c572ff;
 }
 
-rect.visited {
-    fill: #c572ff;
+div.path.weight {
+    background: url(#gradient_path);
 }
 
-rect.path.weight {
-    fill: url(#gradient_path);
+div.visited.weight {
+    background: url(#gradient_visited);
 }
 
-rect.visited.weight {
-    fill: url(#gradient_visited);
+div.start, div.path.weight.start, div.visited.weight.start {
+    background: #54ff34;
 }
 
-rect.start, rect.path.weight.start, rect.visited.weight.start {
-    fill: #54ff34;
-}
-
-rect.end, rect.path.weight.end, rect.visited.weight.end {
-    fill: #ff367a;
-}
-
-rect.draggable {
-    fill: rgba(255, 255, 255, 0);
+div.end, div.path.weight.end, div.visited.weight.end {
+    background: #ff367a;
 }

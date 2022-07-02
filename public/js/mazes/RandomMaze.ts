@@ -1,5 +1,5 @@
 import {Maze} from "./Maze";
-import {adjustAllClasses, getSelectedRadioValue, pause} from "../utils/utils";
+import {changeElementsClassList, getSelectedRadioValue, pause} from "../utils/utils";
 import {RANDOM_MAZE_FREQUENCY} from "../constants";
 
 export class RandomMaze extends Maze {
@@ -25,7 +25,7 @@ export class RandomMaze extends Maze {
                         context.currArr[coord[0]][coord[1]] = document.getElementById(`${coord[0]}_${coord[1]}`);
                     }
 
-                    adjustAllClasses(currElem as Element, [context.currObstacle]); // applied to all obstacle types
+                    changeElementsClassList(currElem as Element, [context.currObstacle]); // applied to all obstacle types
 
                     currSet = [];
                 }

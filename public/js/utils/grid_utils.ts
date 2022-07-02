@@ -1,6 +1,6 @@
 import {Context} from "../Context";
-import {adjustAllClasses, getCurrElement, getSelectedRadioValue} from "./utils";
-import {dragEnter, drop, placeStartEndNodes} from "./draggable_utils";
+import {changeElementsClassList, getCurrElement, getSelectedRadioValue} from "./utils";
+import {placeStartEndNodes} from "./draggable_utils";
 import {updateDisplayData} from "./panel_utils";
 import {cleanPath} from "./path_utils";
 
@@ -15,13 +15,13 @@ export const regenerateGridWithNewSize = (drawGrid: () => void) => {
     const context = Context.getContext();
     const defs = document.querySelector('defs');
 
-    context.svg!.innerHTML = `<defs>${defs?.innerHTML}</defs>`;
+    context.grid!.innerHTML = `<defs>${defs?.innerHTML}</defs>`;
 
     context.cellSize = context.width / context.colCount;
     context.tempCount = Math.floor(context.height / context.cellSize);
     context.rowCount = context.tempCount % 2 == 1 ? context.tempCount : context.tempCount - 1;
 
-    context.svg!.setAttribute('height', String(context.rowCount * context.cellSize));
+    context.grid!.setAttribute('height', String(context.rowCount * context.cellSize));
 
     drawGrid();
 }
@@ -31,26 +31,27 @@ export const drawGrid = () => {
     context.currArr = new Array(context.rowCount);
     context.pathSearchFinished = false;
 
+    changeGridStylesheet(context.colCount, context.cellSize)
+
     for (let row = 0; row < context.rowCount; row++) {
         context.currArr[row] = new Array(context.colCount);
         for (let col = 0; col < context.colCount; col++) {
-            let g = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-            let rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-            rect.setAttribute('width', String(context.cellSize));
-            rect.setAttribute('height', String(context.cellSize));
-            rect.setAttribute('x', String(col * context.cellSize));
-            rect.setAttribute('y', String(row * context.cellSize));
-            rect.setAttribute('row', String(row));
-            rect.setAttribute('col', String(col));
+            let rect = document.createElement('div');
+            // rect.setAttribute('width', String(context.cellSize));
+            // rect.setAttribute('height', String(context.cellSize));
+            // rect.setAttribute('x', String(col * context.cellSize));
+            // rect.setAttribute('y', String(row * context.cellSize));
+            // rect.setAttribute('row', String(row));
+            // rect.setAttribute('col', String(col));
+            rect.setAttribute('class', 'square');
             rect.setAttribute('id', `${row}_${col}`);
 
-            rect.addEventListener('click', changeRectType);
-            rect.addEventListener('mouseover', changeRectType);
-            rect.addEventListener("mouseenter", dragEnter);
-            rect.addEventListener("mouseup", drop);
+            // rect.addEventListener('click', changeRectType);
+            // rect.addEventListener('mouseover', changeRectType);
+            // rect.addEventListener("mouseenter", dragEnter);
+            // rect.addEventListener("mouseup", drop);
 
-            g.appendChild(rect);
-            document.querySelector('svg')!.appendChild(g);
+            document.querySelector('.grid')!.appendChild(rect);
 
             context.currArr[row][col] = rect;
         }
@@ -61,6 +62,13 @@ export const drawGrid = () => {
     updateDisplayData(null, "<b>Choose Algorithm/Maze To Animate</b>");
 }
 
+export const changeGridStylesheet = (colCount: number, cellSize: number) => {
+    let style = document.styleSheets[1];
+    let rules = style.cssRules;
+
+    Array.from(rules).filter((e) => e.selectorText === '.grid-columns')[0].style.gridTemplateColumns = `repeat(${colCount},${cellSize}px)`;
+}
+
 export const resetField = (_: any, removeKeyNodes = false) => {
     const context = Context.getContext();
     for (let row = 0; row < context.rowCount; row++) {
@@ -69,20 +77,18 @@ export const resetField = (_: any, removeKeyNodes = false) => {
             if (currElem == null) {
                 context.currArr[row][col] = document.getElementById(`${row}_${col}`);
                 currElem = context.currArr[row][col];
-                adjustAllClasses(currElem);
+                changeElementsClassList(currElem);
             } else if (currElem.classList.contains('weight')) {
-                adjustAllClasses(currElem);
+                changeElementsClassList(currElem);
             } else if (removeKeyNodes && (currElem.classList.contains('start') ||
                 currElem.classList.contains('end'))) {
-                adjustAllClasses(currElem);
+                changeElementsClassList(currElem);
                 currElem.setAttribute('draggable', 'false');
             }
         }
     }
 
     cleanPath();
-
-    // if (removeKeyNodes) placeStartEndNodes();
 }
 
 export const changeRectType = (e: any) => {
@@ -105,7 +111,7 @@ export const changeRectType = (e: any) => {
                         context.currArr[row][col] = document.getElementById(`${row}_${col}`);
                     }
 
-                    adjustAllClasses(currElem, [context.currObstacle]); // applied to all obstacle types
+                    changeElementsClassList(currElem, [context.currObstacle]); // applied to all obstacle types
                 } else {
                     currElem.classList.remove(context.currObstacle);
                     context.currArr[row][col] = document.getElementById(`${row}_${col}`);

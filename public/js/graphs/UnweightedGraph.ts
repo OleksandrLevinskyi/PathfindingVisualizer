@@ -64,7 +64,7 @@ export class UnweightedGraph {
             let next: string = queue.dequeue()!;
             arr.push(next);
 
-            if (next != context.startNode && next != context.endNode) {
+            if (next != context.startNodeId && next != context.endNodeId) {
                 if (!ignorePause) await pause(context.speed);
 
                 document.getElementById(next)?.classList.add('visited');
@@ -100,7 +100,7 @@ export class UnweightedGraph {
             next = stack.pop()!;
             arr.push(next);
 
-            if (next != context.startNode && next != context.endNode) {
+            if (next != context.startNodeId && next != context.endNodeId) {
                 if (!ignorePause) await pause(context.speed);
                 document.getElementById(next)?.classList.add('visited');
             }
@@ -133,7 +133,7 @@ export class UnweightedGraph {
             arr.push(vtx);
             visited[vtx] = true;
 
-            if (vtx != context.startNode && vtx != context.endNode) {
+            if (vtx != context.startNodeId && vtx != context.endNodeId) {
                 if (!ignorePause) await pause(context.speed);
 
                 document.getElementById(vtx)?.classList.add('visited');
