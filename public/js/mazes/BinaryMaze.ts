@@ -23,7 +23,7 @@ export class BinaryMaze extends Maze {
         }
 
         for (let node of availNodes) {
-            neighbors = this.getRightDownMazeNeighbors(node.getAttribute('id'));
+            neighbors = this.getRightDownMazeNeighbors(node.id);
 
             idx = Math.floor(Math.random() * neighbors.length);
             next = neighbors[idx];
@@ -52,8 +52,8 @@ export class BinaryMaze extends Maze {
         let currCol = coord[1];
         let adjacentNodes = [];
 
-        if (currRow < context.rowCount - 2 && context.currArr[currRow + 2][currCol] != null) adjacentNodes.push({ val: context.currArr[currRow + 2][currCol].getAttribute('id'), dir: 'down' });
-        if (currCol < context.colCount - 2 && context.currArr[currRow][currCol + 2] != null) adjacentNodes.push({ val: context.currArr[currRow][currCol + 2].getAttribute('id'), dir: 'right' });
+        if (currRow < context.rowCount - 2 && context.currArr[currRow + 2][currCol] != null) adjacentNodes.push({ val: context.currArr[currRow + 2][currCol].id, dir: 'down' });
+        if (currCol < context.colCount - 2 && context.currArr[currRow][currCol + 2] != null) adjacentNodes.push({ val: context.currArr[currRow][currCol + 2].id, dir: 'right' });
 
         return adjacentNodes;
     }

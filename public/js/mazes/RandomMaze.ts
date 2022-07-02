@@ -12,7 +12,7 @@ export class RandomMaze extends Maze {
         // put walls
         for (let row = 0; row < context.rowCount; row++) {
             for (let col = 0; col < context.colCount; col++) {
-                currSet.push(context.currArr[row][col].getAttribute('id'));
+                currSet.push(context.currArr[row][col].id);
                 if (currSet.length % RANDOM_MAZE_FREQUENCY == 0 || col == context.colCount - 1) {
                     idx = Math.floor(Math.random() * currSet.length);
                     coord = getCoordinates(currSet[idx]);

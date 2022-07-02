@@ -53,8 +53,8 @@ export const dragEnter = (event: any) => {
             }
 
             if (context.pathSearchFinished) {
-                if (context.draggedClass == 'start') context.startNodeId = highlightedNode.getAttribute('id');
-                else if (context.draggedClass == 'end') context.endNodeId = highlightedNode.getAttribute('id');
+                if (context.draggedClass == 'start') context.startNodeId = highlightedNode.id;
+                else if (context.draggedClass == 'end') context.endNodeId = highlightedNode.id;
 
                 launch(event, true);
             }

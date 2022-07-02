@@ -14,14 +14,14 @@ export const changeGridDimension = () => {
 
 export const regenerateGridWithNewSize = (drawGrid: () => void) => {
     const context = Context.getContext();
-    const defs = document.querySelector('defs');
 
-    context.grid!.innerHTML = `<defs>${defs?.innerHTML}</defs>`;
+    document.querySelector('.grid')!.innerHTML = '';
 
     context.cellSize = context.width / context.colCount;
     context.tempCount = Math.floor(context.height / context.cellSize);
     context.rowCount = context.tempCount % 2 == 1 ? context.tempCount : context.tempCount - 1;
 
+    console.log(context.rowCount, context.colCount)
     context.grid!.setAttribute('height', String(context.rowCount * context.cellSize));
 
     drawGrid();

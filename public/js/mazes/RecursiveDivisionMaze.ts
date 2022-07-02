@@ -74,19 +74,19 @@ export class RecursiveDivisionMaze extends Maze {
             adjacentNodes: Array<AdjacentNode> = [];
 
         if (currRow > 1 && context.currArr[currRow - 2][currCol] != null) adjacentNodes.push({
-            val: context.currArr[currRow - 2][currCol].getAttribute('id'),
+            val: context.currArr[currRow - 2][currCol].id,
             dir: DIRECTION.UP
         });
         if (currRow < context.rowCount - 2 && context.currArr[currRow + 2][currCol] != null) adjacentNodes.push({
-            val: context.currArr[currRow + 2][currCol].getAttribute('id'),
+            val: context.currArr[currRow + 2][currCol].id,
             dir: DIRECTION.DOWN
         });
         if (currCol > 1 && context.currArr[currRow][currCol - 2] != null) adjacentNodes.push({
-            val: context.currArr[currRow][currCol - 2].getAttribute('id'),
+            val: context.currArr[currRow][currCol - 2].id,
             dir: DIRECTION.LEFT
         });
         if (currCol < context.colCount - 2 && context.currArr[currRow][currCol + 2] != null) adjacentNodes.push({
-            val: context.currArr[currRow][currCol + 2].getAttribute('id'),
+            val: context.currArr[currRow][currCol + 2].id,
             dir: DIRECTION.RIGHT
         });
 
