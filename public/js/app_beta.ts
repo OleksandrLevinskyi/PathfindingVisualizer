@@ -26,7 +26,7 @@ export const loadApp = () => {
 export const addEventHandlers = () => {
     const context = Context.getContext();
 
-    window.addEventListener('resize', () => changeGridStylesheet(context.colCount, context.cellSize));
+    window.addEventListener('resize', changeGridStylesheet);
 
     document.querySelector('#launch')?.addEventListener('click', launch);
     document.querySelector('#apply')?.addEventListener('click', apply);

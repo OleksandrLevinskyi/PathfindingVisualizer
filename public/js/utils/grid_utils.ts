@@ -17,7 +17,7 @@ export const regenerateGridWithNewSize = (drawGrid: () => void) => {
 
     document.querySelector('.grid')!.innerHTML = '';
 
-    context.cellSize = context.width / context.colCount;
+    updateCellSize();
     context.tempCount = Math.floor(context.height / context.cellSize);
     context.rowCount = context.tempCount % 2 == 1 ? context.tempCount : context.tempCount - 1;
 
@@ -31,7 +31,7 @@ export const drawGrid = () => {
     context.currArr = new Array(context.rowCount);
     context.pathSearchFinished = false;
 
-    changeGridStylesheet(context.colCount, context.cellSize)
+    changeGridStylesheet();
 
     for (let row = 0; row < context.rowCount; row++) {
         context.currArr[row] = new Array(context.colCount);
@@ -56,12 +56,16 @@ export const drawGrid = () => {
     updateDisplayData(null, "<b>Choose Algorithm/Maze To Animate</b>");
 }
 
-export const changeGridStylesheet = (colCount: number, cellSize: number) => {
+export const changeGridStylesheet = () => {
+    const context = Context.getContext();
+
     let style = document.styleSheets[1];
     let rules = style.cssRules;
 
+    updateCellSize();
+
     let gridColumnsRule = Array.from(rules).filter((rule: any) => rule.selectorText === '.grid-columns')[0] as any;
-    gridColumnsRule.style.gridTemplateColumns = `repeat(${colCount},${cellSize}px)`;
+    gridColumnsRule.style.gridTemplateColumns = `repeat(${context.colCount},${context.cellSize}px)`;
 }
 
 export const resetField = (_: any, removeKeyNodes = false) => {
@@ -115,4 +119,9 @@ export const changeGridNodeType = (e: any) => {
             }
         }
     }
+}
+
+const updateCellSize = (context: Context = Context.getContext()) => {
+    context.width = window.innerWidth;
+    context.cellSize = context.width / context.colCount;
 }
