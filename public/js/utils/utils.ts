@@ -4,7 +4,7 @@ export function pause(ms: number) {
     return new Promise<number>((resolve: any) => setTimeout(resolve, ms));
 }
 
-export const getSelectedRadioValue = (name: string, isRadio: boolean = true) => {
+export const getSelectedRadioButtonValue = (name: string, isRadio: boolean = true) => {
     let buttons = document.getElementsByName(name);
 
     if (isRadio) {

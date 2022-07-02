@@ -1,6 +1,6 @@
 import {WeightedGraph} from "./graphs/WeightedGraph";
 import {UnweightedGraph} from "./graphs/UnweightedGraph";
-import {getSelectedRadioValue} from "./utils/utils";
+import {getSelectedRadioButtonValue} from "./utils/utils";
 
 export class Context {
     private static context: Context | null = null;
@@ -40,7 +40,7 @@ export class Context {
         this.rowCount = this.tempCount % 2 == 1 ? this.tempCount : this.tempCount - 1;
         this.changeRectTypeEnabled = true;
         this.speed = parseInt((document.getElementById('delay') as HTMLInputElement).value);
-        this.currObstacle = getSelectedRadioValue("obstacle");
+        this.currObstacle = getSelectedRadioButtonValue("obstacle");
         this.totalCost = 0;
         this.totalNodesVisited = 0;
     }

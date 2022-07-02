@@ -1,7 +1,7 @@
 import {Maze} from "./Maze";
 import {Stack} from "../helpers/Stack";
 import {AdjacentNode, DIRECTION, VisitedList} from "../types";
-import {getSelectedRadioValue, pause} from "../utils/utils";
+import {getSelectedRadioButtonValue, pause} from "../utils/utils";
 
 export class RecursiveDivisionMaze extends Maze {
     async generate():Promise<void> {
@@ -18,7 +18,7 @@ export class RecursiveDivisionMaze extends Maze {
             coord = context.weightedGraph?.getCoordinates(start),
             currElem: HTMLElement | null = document.getElementById(start);
 
-        context.currObstacle = getSelectedRadioValue("obstacle");
+        context.currObstacle = getSelectedRadioButtonValue("obstacle");
 
         // put walls
         this.putObstacles();

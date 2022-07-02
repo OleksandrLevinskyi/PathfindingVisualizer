@@ -1,6 +1,6 @@
 import {Context} from "../Context";
-import {changeElementsClassList, getCurrElement, getSelectedRadioValue} from "./utils";
-import {placeStartEndNodes} from "./draggable_utils";
+import {changeElementsClassList, getCurrElement, getSelectedRadioButtonValue} from "./utils";
+import {dragEnter, drop, placeStartEndNodes} from "./draggable_utils";
 import {updateDisplayData} from "./panel_utils";
 import {cleanPath} from "./path_utils";
 
@@ -46,10 +46,10 @@ export const drawGrid = () => {
             rect.setAttribute('class', 'square');
             rect.setAttribute('id', `${row}_${col}`);
 
-            // rect.addEventListener('click', changeRectType);
-            // rect.addEventListener('mouseover', changeRectType);
-            // rect.addEventListener("mouseenter", dragEnter);
-            // rect.addEventListener("mouseup", drop);
+            rect.addEventListener('click', changeRectType);
+            rect.addEventListener('mouseover', changeRectType);
+            rect.addEventListener("mouseenter", dragEnter);
+            rect.addEventListener("mouseup", drop);
 
             document.querySelector('.grid')!.appendChild(rect);
 
@@ -96,13 +96,14 @@ export const changeRectType = (e: any) => {
     if (e.which == 1 && context.changeRectTypeEnabled && context.algoFinished) {
         let currElem = getCurrElement(e);
 
-        context.currObstacle = getSelectedRadioValue("obstacle");
+        context.currObstacle = getSelectedRadioButtonValue("obstacle");
 
-        if (currElem?.nodeName === "rect") {
-            if (!currElem.classList.contains('start') &&
-                !currElem.classList.contains('end')) {
-                let row = parseInt(currElem.getAttribute('row')!);
-                let col = parseInt(currElem.getAttribute('col')!);
+        if (currElem?.classList.contains('square')) {
+            if (
+                !currElem.classList.contains('start') &&
+                !currElem.classList.contains('end')
+            ) {
+                let [row, col] = currElem.id.split('_').map((idx)=>parseInt(idx));
 
                 if (!currElem.classList.contains(context.currObstacle)) {
                     if (context.currObstacle == 'wall') {

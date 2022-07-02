@@ -1,5 +1,5 @@
 import {MODE, MODE_IMAGE} from "../types";
-import {changeElementsClassList, getSelectedRadioValue} from "./utils";
+import {changeElementsClassList, getSelectedRadioButtonValue} from "./utils";
 import {Context} from "../Context";
 import {DESCRIPTIONS} from "../constants";
 import {RecursiveDivisionMaze} from "../mazes/RecursiveDivisionMaze";
@@ -61,7 +61,7 @@ export const updateDisplayData = (algorithmName: string | null = null, desc = ""
 export const launch = async (_: any, ignorePause = false) => {
     const context = Context.getContext();
     let path: string[] | undefined = [];
-    let algoType = getSelectedRadioValue("algo", false);
+    let algoType = getSelectedRadioButtonValue("algo", false);
 
     enableControls(false);
 
@@ -113,7 +113,7 @@ export const launch = async (_: any, ignorePause = false) => {
 
 export const apply = async (e: any) => {
     const context = Context.getContext();
-    let mazeType = getSelectedRadioValue("maze", false);
+    let mazeType = getSelectedRadioButtonValue("maze", false);
 
     enableControls(false);
 

@@ -1,5 +1,5 @@
 import {Maze} from "./Maze";
-import {getSelectedRadioValue, pause} from "../utils/utils";
+import {getSelectedRadioButtonValue, pause} from "../utils/utils";
 
 export class BinaryMaze extends Maze {
     async generate() {
@@ -9,7 +9,7 @@ export class BinaryMaze extends Maze {
             coord = context.weightedGraph!.getCoordinates(start),
             currElem = document.getElementById(start);
 
-        context.currObstacle = getSelectedRadioValue("obstacle");
+        context.currObstacle = getSelectedRadioButtonValue("obstacle");
 
         // put walls
         this.putObstacles();

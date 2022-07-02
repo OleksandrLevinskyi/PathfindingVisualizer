@@ -1,5 +1,5 @@
 import {Maze} from "./Maze";
-import {changeElementsClassList, getSelectedRadioValue, pause} from "../utils/utils";
+import {changeElementsClassList, getSelectedRadioButtonValue, pause} from "../utils/utils";
 import {RANDOM_MAZE_FREQUENCY} from "../constants";
 
 export class RandomMaze extends Maze {
@@ -7,7 +7,7 @@ export class RandomMaze extends Maze {
         let context = this.context;
         let currSet = [], idx, coord, currElem;
 
-        context.currObstacle = getSelectedRadioValue("obstacle");
+        context.currObstacle = getSelectedRadioButtonValue("obstacle");
 
         // put walls
         for (let row = 0; row < context.rowCount; row++) {
