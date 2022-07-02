@@ -1,5 +1,5 @@
 import {MODE, MODE_IMAGE} from "../types";
-import {changeElementsClassList, getSelectedRadioButtonValue} from "./utils";
+import {changeClassList, getSelectedRadioButtonValue} from "./utils";
 import {Context} from "../Context";
 import {DESCRIPTIONS} from "../constants";
 import {RecursiveDivisionMaze} from "../mazes/RecursiveDivisionMaze";
@@ -8,7 +8,7 @@ import {RandomMaze} from "../mazes/RandomMaze";
 import {buildPath, cleanPath, confirmPath} from "./path_utils";
 import {buildUnweightedGraph, buildWeightedGraph} from "./graph_utils";
 import {resetField} from "./grid_utils";
-import {placeStartEndNodes} from "./draggable_utils";
+import {placeStartEndNodes} from "./start_end_nodes_utils";
 
 export const changeDisplayMode = (e: any) => {
     const isLightMode = e.target.alt.toUpperCase() === MODE.SUN;
@@ -16,7 +16,7 @@ export const changeDisplayMode = (e: any) => {
     e.target.alt = isLightMode ? MODE.MOON : MODE.SUN;
     e.target.src = isLightMode ? MODE_IMAGE.MOON : MODE_IMAGE.SUN;
 
-    changeElementsClassList(
+    changeClassList(
         document.querySelector('body') as HTMLElement,
         isLightMode ? [] : ['night_mode']
     );

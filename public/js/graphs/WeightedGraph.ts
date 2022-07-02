@@ -13,14 +13,12 @@ export class WeightedGraph {
     }
 
     addVertex(vtx: string): void {
-        console.log('add vertex')
         if (!this.adjacencyList[vtx]) {
             this.adjacencyList[vtx] = [];
         }
     }
 
     addEdge(vtx1: string, vtx2: string, weight: number): void {
-        console.log('add edge')
         if (
             this.adjacencyList[vtx1] &&
             this.adjacencyList[vtx2] &&

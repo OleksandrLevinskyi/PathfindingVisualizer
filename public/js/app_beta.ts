@@ -6,7 +6,7 @@ import {
     regenerateGridWithNewSize,
     resetField
 } from "./utils/grid_utils";
-import {dragStart} from "./utils/draggable_utils";
+import {dragStart} from "./utils/dragging_utils";
 import {apply, changeAnimationDelay, changeDisplayMode, launch} from "./utils/panel_utils";
 import {cleanPath} from "./utils/path_utils";
 

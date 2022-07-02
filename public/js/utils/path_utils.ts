@@ -1,5 +1,5 @@
 import {Context} from "../Context";
-import {changeElementsClassList, pause} from "./utils";
+import {changeClassList, pause} from "./utils";
 import {updateDisplayData} from "./panel_utils";
 
 export const cleanPath = () => {
@@ -11,9 +11,9 @@ export const cleanPath = () => {
                 !currElem.classList.contains('start') &&
                 !currElem.classList.contains('end')) {
                 if (currElem.classList.contains('weight')) {
-                    changeElementsClassList(currElem, ['weight']);
+                    changeClassList(currElem, ['weight']);
                 } else {
-                    changeElementsClassList(currElem)
+                    changeClassList(currElem)
                 }
             }
         }
@@ -28,7 +28,7 @@ export const confirmPath = (path: Array<string>) => {
     for (let nodeId of path) {
         if (nodeId != context.startNodeId && nodeId != context.endNodeId) {
             let node = document.getElementById(nodeId);
-            changeElementsClassList(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
+            changeClassList(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
         }
     }
 }
@@ -39,7 +39,7 @@ export const buildPath = async (path: Array<string>, ignorePause: boolean) => {
         if (nodeId != context.startNodeId && nodeId != context.endNodeId) {
             let node = document.getElementById(nodeId);
             if (!ignorePause) await pause(context.speed);
-            changeElementsClassList(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
+            changeClassList(node!, node?.classList.contains('weight') ? ['path', 'weight'] : ['path']);
         }
     }
 }

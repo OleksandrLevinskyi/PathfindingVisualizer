@@ -19,8 +19,8 @@ export const getSelectedRadioButtonValue = (name: string, isRadio: boolean = tru
     return undefined;
 }
 
-export const changeElementsClassList = (elem: Element, classesToAdd: string[] = []) => {
-    elem.classList.remove(
+export const changeClassList = (element: Element, classesToAdd: string[] = []) => {
+    element.classList.remove(
         'night_mode',
         'draggable',
         'start',
@@ -31,10 +31,10 @@ export const changeElementsClassList = (elem: Element, classesToAdd: string[] = 
         'visited'
     );
 
-    elem.classList.add(...classesToAdd);
+    element.classList.add(...classesToAdd);
 }
 
-export const getCurrElement = (e: any) => {
+export const getHighlightedNode = (e: any) => {
     let x = e.clientX,
         y = e.clientY,
         currElem = document.elementFromPoint(x, y);

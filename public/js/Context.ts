@@ -7,7 +7,7 @@ export class Context {
 
     grid;
     currArr: Array<Array<any>> = [];
-    dragged: any;
+    draggedNode: any;
     draggedNeighbor: any;
     pathSearchFinished: boolean;
     algoFinished: boolean;
