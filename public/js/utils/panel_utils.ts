@@ -1,4 +1,4 @@
-import {MODE, MODE_IMAGE} from "../types";
+import {INFO_ICON, INFO_ICON_IMAGE, MODE, MODE_IMAGE} from "../types";
 import {changeClassList, getSelectedRadioButtonValue} from "./utils";
 import {Context} from "../Context";
 import {DESCRIPTIONS} from "../constants";
@@ -13,8 +13,15 @@ import {placeStartEndNodes} from "./start_end_nodes_utils";
 export const changeDisplayMode = (e: any) => {
     const isLightMode = e.target.alt.toUpperCase() === MODE.SUN;
 
-    e.target.alt = isLightMode ? MODE.MOON : MODE.SUN;
-    e.target.src = isLightMode ? MODE_IMAGE.MOON : MODE_IMAGE.SUN;
+    // change sun/moon icon
+    const colorModeIcon = document.getElementById('color-mode-icon') as HTMLImageElement;
+    colorModeIcon.alt = isLightMode ? MODE.MOON : MODE.SUN;
+    colorModeIcon.src = isLightMode ? MODE_IMAGE.MOON : MODE_IMAGE.SUN;
+
+    // change info icon
+    const infoIcon = document.getElementById('info-icon') as HTMLImageElement;
+    infoIcon.alt = isLightMode ? INFO_ICON.DARK : INFO_ICON.LIGHT;
+    infoIcon.src = isLightMode ? INFO_ICON_IMAGE.DARK : INFO_ICON_IMAGE.LIGHT;
 
     changeClassList(
         document.querySelector('body') as HTMLElement,

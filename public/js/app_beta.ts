@@ -7,7 +7,13 @@ import {
     resetField
 } from "./utils/grid_utils";
 import {dragStart} from "./utils/dragging_utils";
-import {apply, cancelAnimation, changeAnimationDelay, changeDisplayMode, launch} from "./utils/panel_utils";
+import {
+    apply,
+    cancelAnimation,
+    changeAnimationDelay,
+    changeDisplayMode,
+    launch
+} from "./utils/panel_utils";
 import {cleanPath} from "./utils/path_utils";
 
 document.addEventListener('DOMContentLoaded', () => loadApp());

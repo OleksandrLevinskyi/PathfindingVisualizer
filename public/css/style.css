@@ -1,6 +1,6 @@
-.sized-icon{
-    width: 40px;
-    height: 40px;
+.sized-icon {
+    width: 35px;
+    height: 35px;
 }
 
 hr {
@@ -13,24 +13,6 @@ input#dimension, input#delay {
     height: 15px;
 }
 
-.central-button{
-    width: 30%;
-}
-
-.left_padded {
-    padding: 0 0 5px 30px;
-    margin: 0px;
-}
-
-.not_padded {
-    padding: 0px;
-    margin: 0px;
-}
-
-.form-check-input {
-    margin-left: -.25rem;
-}
-
 button#launch, button#apply {
     width: fit-content;
 }
@@ -40,14 +22,6 @@ button#launch, button#apply {
     background: transparent;
 }
 
-p.heading {
-    font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0;
-}
-
-span.data {
+.fs-sm {
     font-size: .9rem;
-    font-weight: 100;
 }

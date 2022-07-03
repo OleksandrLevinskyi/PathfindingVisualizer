@@ -50,11 +50,21 @@ export type Descriptions = {
 }
 
 export enum MODE_IMAGE {
-    SUN = "https://img.icons8.com/ios-filled/50/f1c40f/sun--v1.png",
-    MOON = "https://img.icons8.com/ios-glyphs/50/4a90e2/moon-symbol.png",
+    SUN = "./public/images/controls/sun.png",
+    MOON = "./public/images/controls/moon.png",
+}
+
+export enum INFO_ICON_IMAGE {
+    LIGHT = "./public/images/controls/info-light.png",
+    DARK = "./public/images/controls/info-dark.png",
 }
 
 export enum MODE {
     SUN = 'SUN',
     MOON = 'MOON',
+}
+
+export enum INFO_ICON {
+    LIGHT = 'LIGHT',
+    DARK = 'DARK',
 }

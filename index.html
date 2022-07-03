@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pathfinding Visualizations</title>
@@ -23,24 +21,23 @@
     <link href="./public/css/style.css" type="text/css" rel="stylesheet">
     <link href="./public/css/main.css" type="text/css" rel="stylesheet">
 </head>
-
 <body>
 <div class="container-fluid mb-1">
-
     <!-- grid-->
     <div class="row">
-        <div class="col-md-12 not_padded">
+        <div class="col-md-12 p-0">
             <div class="grid grid-columns"></div>
         </div>
     </div>
 
     <!-- control panel -->
     <div id="control-panel" class="row pt-3">
-        <div class="col-md-1 pe-0">
-            <div class="btn-group-vertical w-100" role="group" aria-label="obstacle type group">
+        <!-- obstacle type selection -->
+        <div class="col-md-1 d-flex justify-content-center">
+            <div class="btn-group-vertical w-auto content" role="group" aria-label="obstacle type group">
                 <input type="radio" class="btn-check w-50" name="obstacle"
                        id="obstacle_wall" value="wall" autocomplete="off" checked>
-                <label class="btn btn-outline-primary d-inline-flex align-items-center justify-content-start p-0 ps-2"
+                <label class="btn btn-outline-primary d-inline-flex align-items-center justify-content-start p-0 ps-1 pe-1"
                        for="obstacle_wall">
                     <img class="sized-icon me-1"
                          src="./public/images/wall.png"
@@ -49,7 +46,7 @@
 
                 <input type="radio" class="btn-check w-50" name="obstacle"
                        id="obstacle_weight" value="weight" autocomplete="off">
-                <label class="btn btn-outline-primary d-inline-flex align-items-center justify-content-start p-0 ps-2"
+                <label class="btn btn-outline-primary d-inline-flex align-items-center justify-content-start p-0 ps-1 pe-1"
                        for="obstacle_weight">
                     <img class="sized-icon me-1"
                          src="./public/images/weight.png"
@@ -58,7 +55,8 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+        <!-- algorithm dropdowns -->
+        <div class="col-md-3 d-flex flex-column justify-content-center">
             <div class="btn-group w-100" role="group" aria-label="algorithms">
                 <select class="w-50" name="algo" id="algo">
                     <!-- find path -->
@@ -84,20 +82,23 @@
             </div>
         </div>
 
+        <!-- grid manipulators -->
         <div class="col-md-4">
             <div class="btn-group w-100" role="group" aria-label="clean options">
                 <button type="button" class="btn btn-outline-primary w-25" id="clean">Clean Path</button>
                 <button type="button" class="btn btn-outline-primary w-25" id="reset">Reset Field</button>
-                <button type="button" class="btn btn-outline-primary w-25" id="cancel" disabled>Cancel Animation</button>
+                <button type="button" class="btn btn-outline-primary w-25" id="cancel" disabled>Cancel Animation
+                </button>
             </div>
 
             <div class="d-inline-flex w-100">
                 <span class="w-50 text-center">
                     <label class="heading" for="dimension">
                     Grid Dimension
-                    <span class="data">
+                    <span class="fw-lighter fs-sm">
                         (<span id="grid_dimension"></span> cells/row)
                     </span>
+
                     </label>
                 <input type="range" class="form-range" min="15" max="201" step="2" id="dimension">
                 </span>
@@ -105,43 +106,44 @@
                 <span class="w-50 text-center">
                 <label class="heading" for="delay">
                     Animation Delay
-                    <span class="data">(<span id="animation_delay"></span> ms)</span>
+                    <span class="fw-lighter fs-sm">
+                        (<span id="animation_delay"></span> ms)
+                    </span>
                 </label>
                 <input type="range" class="form-range" min="5" max="500" step="5" id="delay">
                 </span>
             </div>
         </div>
 
-        <div class="col-md-3 text-center">
-            <!-- report -->
-            <p class="not_padded fst-italic" id="description">Choose Algorithm/Maze To Animate></p>
-            <p class="not_padded">Cost: <span id="cost">N/A</span></p>
-            <p class="not_padded">Nodes Visited: <span id="nodes_visited">N/A</span></p>
+        <!-- report -->
+        <div class="col-md-3 d-flex flex-column justify-content-center ps-5">
+            <p class="m-0 fst-italic" id="description">Choose Algorithm/Maze To Animate></p>
+            <p class="m-0">Cost: <span id="cost">N/A</span></p>
+            <p class="m-0">Nodes Visited: <span id="nodes_visited">N/A</span></p>
         </div>
 
-        <div class="col-md-1">
-            <div class="d-flex align-items-end flex-column">
-                <!-- mode switcher -->
-                <button type="button" class="btn not_padded" id="mode">
-                    <img class="sized-icon" src="https://img.icons8.com/ios-glyphs/50/4a90e2/moon-symbol.png"
-                         alt="MOON"/>
-                </button>
+        <!-- color and modal controls -->
+        <div class="col-md-1 d-flex flex-column justify-content-center align-items-end">
+            <!-- color mode switcher -->
+            <button type="button" class="btn p-0" id="mode">
+                <img id="color-mode-icon" class="sized-icon" src="./public/images/controls/moon.png"
+                     alt="MOON"/>
+            </button>
 
-                <!-- about modal trigger -->
-                <button type="button" class="btn not_padded" data-bs-toggle="modal" data-bs-target="#info-modal">
-                    <img class="sized-icon" src="https://img.icons8.com/material-outlined/96/000/info.png" alt="about"/>
-                </button>
-            </div>
+            <!-- about modal trigger -->
+            <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#info-modal">
+                <img id="info-icon" class="sized-icon" src="./public/images/controls/info-dark.png" alt="about"/>
+            </button>
 
             <!-- about modal -->
             <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="info-modal"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                    <div class="modal-content text-black">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Pathfinder Visualizer</h5>
                         </div>
-                        <div id="info-slides" class="carousel carousel-dark slide not_padded" data-bs-ride="carousel">
+                        <div id="info-slides" class="carousel carousel-dark slide" data-bs-ride="carousel">
                             <div class="modal-body">
                                 <div class="carousel-inner p-3">
                                     <div class="carousel-item active" data-bs-interval="20000">
@@ -276,12 +278,9 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
 
 <script src="./public/js/app_beta.ts" type="module"></script>
 </body>
-
 </html>
