@@ -2,9 +2,10 @@ import {Maze} from "./Maze";
 import {Stack} from "../helpers/Stack";
 import {AdjacentNode, DIRECTION, VisitedList} from "../types";
 import {getCoordinates, getSelectedRadioButtonValue, pause} from "../utils/utils";
+import {resetField} from "../utils/grid_utils";
 
 export class RecursiveDivisionMaze extends Maze {
-    async generate():Promise<void> {
+    async generate(): Promise<void> {
         let context = this.context;
 
         const start: string = "0_0";
@@ -26,6 +27,11 @@ export class RecursiveDivisionMaze extends Maze {
         visited[curr] = true;
 
         while (true) {
+            if (context.isAnimationCancelled) {
+                resetField(null);
+                return;
+            }
+
             let unvisited: Array<AdjacentNode> = [];
 
             neighbors = this.getAllMazeNeighbors(curr);

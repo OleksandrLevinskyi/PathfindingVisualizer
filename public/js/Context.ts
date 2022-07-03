@@ -10,6 +10,7 @@ export class Context {
     draggedNode: any;
     pathSearchFinished: boolean;
     algoFinished: boolean;
+    isAnimationCancelled: boolean;
     width: number;
     height: number
     colCount: number;
@@ -30,6 +31,8 @@ export class Context {
     private constructor() {
         this.pathSearchFinished = false;
         this.algoFinished = true;
+        this.changeRectTypeEnabled = true;
+        this.isAnimationCancelled = false;
         this.grid = document.querySelector('.grid');
         this.width = window.innerWidth;
         this.height = window.innerHeight - document.getElementById('control-panel')!.offsetHeight;
@@ -37,7 +40,6 @@ export class Context {
         this.cellSize = this.width / this.colCount;
         this.tempCount = Math.floor(this.height / this.cellSize);
         this.rowCount = this.tempCount % 2 == 1 ? this.tempCount : this.tempCount - 1;
-        this.changeRectTypeEnabled = true;
         this.speed = parseInt((document.getElementById('delay') as HTMLInputElement).value);
         this.currObstacle = getSelectedRadioButtonValue("obstacle");
         this.totalCost = 0;

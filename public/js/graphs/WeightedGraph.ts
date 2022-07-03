@@ -2,6 +2,7 @@ import {PriorityQueue} from "../helpers/PriorityQueue";
 import {DistancesList, ListOfGHFCosts, PreviousList, WGAdjacencyList} from "../types";
 import {Context} from "../Context";
 import {getCoordinates, pause} from "../utils/utils";
+import {cleanPath} from "../utils/path_utils";
 
 export class WeightedGraph {
     context: Context;
@@ -56,6 +57,11 @@ export class WeightedGraph {
 
         // algorithm
         while (pq.values.length !== 0) {
+            if (context.isAnimationCancelled) {
+                cleanPath();
+                return [];
+            }
+
             vtx = pq.dequeue()!;
 
             if (vtx != context.startNodeId && vtx != context.endNodeId) {
@@ -117,6 +123,11 @@ export class WeightedGraph {
 
         // algorithm
         while (pq.values.length !== 0) {
+            if (context.isAnimationCancelled) {
+                cleanPath();
+                return [];
+            }
+
             pq.adjustPriorityQueue(distances);
             vtx = pq.dequeue()!;
 

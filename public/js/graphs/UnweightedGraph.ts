@@ -3,6 +3,7 @@ import {Stack} from "../helpers/Stack";
 import {UGAdjacencyList, VisitedList} from "../types";
 import {Context} from "../Context";
 import {pause} from "../utils/utils";
+import {cleanPath} from "../utils/path_utils";
 
 export class UnweightedGraph {
     context: Context;
@@ -61,6 +62,11 @@ export class UnweightedGraph {
         visited[start] = true;
 
         while (queue.size > 0) {
+            if (context.isAnimationCancelled) {
+                cleanPath();
+                return [];
+            }
+
             let next: string = queue.dequeue()!;
             arr.push(next);
 
@@ -97,6 +103,11 @@ export class UnweightedGraph {
         visited[start] = true;
 
         while (stack.size > 0) {
+            if (context.isAnimationCancelled) {
+                cleanPath();
+                return [];
+            }
+
             next = stack.pop()!;
             arr.push(next);
 
@@ -128,7 +139,7 @@ export class UnweightedGraph {
             found: boolean = false;
 
         async function dfs(vtx: string, adjList: UGAdjacencyList) {
-            if (!vtx) return;
+            if (context.isAnimationCancelled || !vtx) return;
 
             arr.push(vtx);
             visited[vtx] = true;
@@ -149,6 +160,11 @@ export class UnweightedGraph {
         }
 
         await dfs(start, this.adjacencyList);
+
+        if (context.isAnimationCancelled) {
+            cleanPath();
+            return [];
+        }
 
         context.pathSearchFinished = true;
         context.totalNodesVisited = arr.length;

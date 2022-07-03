@@ -7,7 +7,7 @@ import {
     resetField
 } from "./utils/grid_utils";
 import {dragStart} from "./utils/dragging_utils";
-import {apply, changeAnimationDelay, changeDisplayMode, launch} from "./utils/panel_utils";
+import {apply, cancelAnimation, changeAnimationDelay, changeDisplayMode, launch} from "./utils/panel_utils";
 import {cleanPath} from "./utils/path_utils";
 
 document.addEventListener('DOMContentLoaded', () => loadApp());
@@ -30,6 +30,7 @@ export const addEventHandlers = () => {
 
     document.querySelector('#launch')?.addEventListener('click', launch);
     document.querySelector('#apply')?.addEventListener('click', apply);
+    document.querySelector('#cancel')?.addEventListener('click', cancelAnimation);
     document.querySelector('#clean')?.addEventListener('click', cleanPath);
     document.querySelector('#reset')?.addEventListener('click', resetField);
     document.getElementById('mode')?.addEventListener('click', changeDisplayMode);

@@ -1,6 +1,7 @@
 import {Maze} from "./Maze";
 import {changeClassList, getCoordinates, getSelectedRadioButtonValue, pause} from "../utils/utils";
 import {RANDOM_MAZE_FREQUENCY} from "../constants";
+import {resetField} from "../utils/grid_utils";
 
 export class RandomMaze extends Maze {
     async generate() {
@@ -12,6 +13,11 @@ export class RandomMaze extends Maze {
         // put walls
         for (let row = 0; row < context.rowCount; row++) {
             for (let col = 0; col < context.colCount; col++) {
+                if (context.isAnimationCancelled) {
+                    resetField(null);
+                    return;
+                }
+
                 currSet.push(context.currArr[row][col].id);
                 if (currSet.length % RANDOM_MAZE_FREQUENCY == 0 || col == context.colCount - 1) {
                     idx = Math.floor(Math.random() * currSet.length);

@@ -1,5 +1,6 @@
 import {Maze} from "./Maze";
 import {getCoordinates, getSelectedRadioButtonValue, pause} from "../utils/utils";
+import {resetField} from "../utils/grid_utils";
 
 export class BinaryMaze extends Maze {
     async generate() {
@@ -23,6 +24,11 @@ export class BinaryMaze extends Maze {
         }
 
         for (let node of availNodes) {
+            if (context.isAnimationCancelled) {
+                resetField(null);
+                return;
+            }
+
             neighbors = this.getRightDownMazeNeighbors(node.id);
 
             idx = Math.floor(Math.random() * neighbors.length);

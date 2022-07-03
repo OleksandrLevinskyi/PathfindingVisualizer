@@ -37,10 +37,12 @@ export const enableControls = (enabled: boolean) => {
 
     (document.getElementById('dimension') as HTMLButtonElement).disabled = !enabled;
 
-    (document.getElementById('clean') as HTMLButtonElement).disabled = !enabled;
-    (document.getElementById('reset') as HTMLButtonElement).disabled = !enabled;
     (document.getElementById('launch') as HTMLButtonElement).disabled = !enabled;
     (document.getElementById('apply') as HTMLButtonElement).disabled = !enabled;
+
+    (document.getElementById('clean') as HTMLButtonElement).disabled = !enabled;
+    (document.getElementById('reset') as HTMLButtonElement).disabled = !enabled;
+    (document.getElementById('cancel') as HTMLButtonElement).disabled = enabled;
 
     context.algoFinished = enabled;
 }
@@ -63,6 +65,7 @@ export const launch = async (_: any, ignorePause = false) => {
     let path: string[] | undefined = [];
     let algoType = getSelectedRadioButtonValue("algo", false);
 
+    context.isAnimationCancelled = false;
     enableControls(false);
 
     cleanPath();
@@ -115,6 +118,7 @@ export const apply = async (e: any) => {
     const context = Context.getContext();
     let mazeType = getSelectedRadioButtonValue("maze", false);
 
+    context.isAnimationCancelled = false;
     enableControls(false);
 
     resetField(e, true);
@@ -139,4 +143,8 @@ export const apply = async (e: any) => {
     updateDisplayData(mazeType);
 
     enableControls(true);
+}
+
+export const cancelAnimation = (_: any, context = Context.getContext()) => {
+    context.isAnimationCancelled = true;
 }
