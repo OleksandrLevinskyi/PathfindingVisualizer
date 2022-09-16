@@ -50,13 +50,13 @@ export type Descriptions = {
 }
 
 export enum MODE_IMAGE {
-    SUN = "./public/images/controls/sun.png",
-    MOON = "./public/images/controls/moon.png",
+    SUN = "/images/controls/sun.png",
+    MOON = "/images/controls/moon.png",
 }
 
 export enum INFO_ICON_IMAGE {
-    LIGHT = "./public/images/controls/info-light.png",
-    DARK = "./public/images/controls/info-dark.png",
+    LIGHT = "/images/controls/info-light.png",
+    DARK = "/images/controls/info-dark.png",
 }
 
 export enum MODE {
