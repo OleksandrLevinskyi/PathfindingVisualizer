@@ -1,34 +1,14 @@
-## Usage
+# Pathfinding Visualizer
+Pathfinding Visualizer is an interactive application for visualizing pathfinding and maze-generation algorithms.\
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+## Instructions
+To view a tutorial with a functionality outline, press an Info button at the bottom right when in the app.
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Try It Out
+You can access this app on: https://visual-path.web.app
 
-```bash
-$ npm install # or pnpm install or yarn install
-```
-
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm dev` or `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+## Notes
+For the best user experience:
+* use Chrome browser to access the app
+* use a monitor with at least 14" diagonal
+* use your computer mouse/trackpad to interact with the grid (touchscreen will not work)
