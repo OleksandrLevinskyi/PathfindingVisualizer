@@ -1,21 +1,15 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["esnext", "DOM"],
-    "moduleResolution": "Node",
     "strict": true,
-    "sourceMap": true,
-    "resolveJsonModule": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
     "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true
-  },
-  "include": ["public"],
-  "exclude": [
-    "server.cjs"
-  ]
+    "isolatedModules": true
+  }
 }
