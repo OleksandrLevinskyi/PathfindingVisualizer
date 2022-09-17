@@ -38,11 +38,16 @@ export type AdjacentNode = {
     dir: DIRECTION
 }
 
+export enum OBSTACLE {
+    WALL = 'wall',
+    WEIGHT = 'weight',
+}
+
 export enum DIRECTION {
     UP = 'up',
     DOWN = 'down',
     RIGHT = 'right',
-    LEFT = 'left'
+    LEFT = 'left',
 }
 
 export type Descriptions = {
