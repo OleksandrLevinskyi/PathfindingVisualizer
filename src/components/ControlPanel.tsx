@@ -3,6 +3,7 @@ import ObstacleTypeSelector from "./ObstacleTypeSelector";
 import Dropdowns from "./Dropdowns";
 import CleanOptions from "./CleanOptions";
 import RangeSelector from "./RangeSelector";
+import Report from "./Report";
 
 const ControlPanel: Component = () => {
     return (
@@ -33,11 +34,7 @@ const ControlPanel: Component = () => {
                 </div>
             </div>
 
-            <div class="col-md-3 d-flex flex-column justify-content-center ps-5">
-                <p class="m-0 fst-italic" id="description">Choose Algorithm/Maze To Animate</p>
-                <p class="m-0">Cost: <span id="cost">N/A</span></p>
-                <p class="m-0">Nodes Visited: <span id="nodes_visited">N/A</span></p>
-            </div>
+            <Report/>
 
             <div class="col-md-1 d-flex flex-column justify-content-center align-items-end">
                 <button type="button" class="btn p-0" id="mode">
