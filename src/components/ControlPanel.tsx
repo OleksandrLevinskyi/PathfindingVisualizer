@@ -4,6 +4,7 @@ import Dropdowns from "./Dropdowns";
 import CleanOptions from "./CleanOptions";
 import RangeSelector from "./RangeSelector";
 import Report from "./Report";
+import ColorModeSwitch from "./ColorModeSwitch";
 
 const ControlPanel: Component = () => {
     return (
@@ -37,10 +38,7 @@ const ControlPanel: Component = () => {
             <Report/>
 
             <div class="col-md-1 d-flex flex-column justify-content-center align-items-end">
-                <button type="button" class="btn p-0" id="mode">
-                    <img id="color-mode-icon" class="sized-icon" src="/images/controls/moon.png"
-                         alt="MOON"/>
-                </button>
+                <ColorModeSwitch/>
 
                 <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#info-modal">
                     <img id="info-icon" class="sized-icon" src="/images/controls/info-dark.png"
