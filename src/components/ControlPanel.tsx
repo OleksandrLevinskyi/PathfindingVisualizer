@@ -2,6 +2,7 @@ import type {Component} from 'solid-js';
 import ObstacleTypeSelector from "./ObstacleTypeSelector";
 import Dropdowns from "./Dropdowns";
 import CleanOptions from "./CleanOptions";
+import RangeSelector from "./RangeSelector";
 
 const ControlPanel: Component = () => {
     return (
@@ -14,26 +15,21 @@ const ControlPanel: Component = () => {
                 <CleanOptions/>
 
                 <div class="d-inline-flex w-100">
-                <span class="w-50 text-center">
-                    <label class="heading" for="dimension">
-                    Grid Dimension
-                    <span class="fw-lighter fs-sm">
-                        (<span id="grid_dimension"/> cells/row)
-                    </span>
+                    <RangeSelector id={'dimension'}
+                                   title={'Grid Dimension'}
+                                   statId={'grid_dimension'}
+                                   unit={'cells/row'}
+                                   min={15}
+                                   max={201}
+                                   step={2}/>
 
-                    </label>
-                <input type="range" class="form-range" min="15" max="201" step="2" id="dimension"/>
-                </span>
-
-                <span class="w-50 text-center">
-                <label class="heading" for="delay">
-                    Animation Delay
-                    <span class="fw-lighter fs-sm">
-                        (<span id="animation_delay"/> ms)
-                    </span>
-                </label>
-                <input type="range" class="form-range" min="5" max="500" step="5" id="delay"/>
-                </span>
+                    <RangeSelector id={'delay'}
+                                   title={'Animation Delay'}
+                                   statId={'animation_delay'}
+                                   unit={'ms'}
+                                   min={5}
+                                   max={500}
+                                   step={5}/>
                 </div>
             </div>
 
