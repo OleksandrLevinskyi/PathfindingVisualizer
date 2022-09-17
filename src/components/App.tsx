@@ -1,14 +1,11 @@
 import type {Component} from 'solid-js';
 import ControlPanel from "./ControlPanel";
+import Grid from "./Grid";
 
 const App: Component = () => {
     return (
         <div class="container-fluid mb-1">
-            <div class="row">
-                <div class="col-md-12 p-0">
-                    <div class="grid grid-columns"></div>
-                </div>
-            </div>
+            <Grid/>
 
             <ControlPanel/>
         </div>
