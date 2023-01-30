@@ -3,11 +3,6 @@
     height: 35px;
 }
 
-hr {
-    margin: 5px 0;
-    background-color: grey;
-}
-
 input#dimension, input#delay {
     width: 95%;
     height: 15px;

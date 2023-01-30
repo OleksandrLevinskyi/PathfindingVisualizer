@@ -172,7 +172,7 @@ const Tutorial: Component = () => {
                         </div>
 
                         <div class="modal-footer text-center">
-                            Oleksandr Levinskyi &copy; 2022
+                            Oleksandr Levinskyi &copy; 2023
                         </div>
                     </div>
                 </div>

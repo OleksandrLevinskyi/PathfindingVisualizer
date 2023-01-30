@@ -15,13 +15,6 @@ body {
     color: white;
 }
 
-svg {
-    margin: 0 auto 10px;
-    display: block;
-    background-color: grey;
-    width: 100%;
-}
-
 div.wall {
     background: #0c3547;
 }

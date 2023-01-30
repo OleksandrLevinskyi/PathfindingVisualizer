@@ -1,14 +1,13 @@
 import {Context} from "../Context";
 
-export function pause(ms: number) {
+export function pause(ms: number): Promise<number> {
     return new Promise<number>((resolve: any) => setTimeout(resolve, ms));
 }
 
 export const getSelectedRadioButtonValue = (name: string, isRadio: boolean = true) => {
-    let buttons = document.getElementsByName(name);
+    const buttons: any = document.getElementsByName(name);
 
     if (isRadio) {
-        // @ts-ignore
         for (let b of buttons) {
             if (b.checked) return b.value;
         }
@@ -35,11 +34,10 @@ export const changeClassList = (element: Element, classesToAdd: string[] = []) =
 }
 
 export const getHighlightedNode = (e: any) => {
-    let x = e.clientX,
-        y = e.clientY,
-        currElem = document.elementFromPoint(x, y);
+    const x: number = e.clientX;
+    const y: number = e.clientY;
 
-    return currElem;
+    return document.elementFromPoint(x, y);
 }
 
 export const getAdjacentNodes = (node: any) => {
@@ -56,7 +54,7 @@ export const getAdjacentNodes = (node: any) => {
 }
 
 export const getCoordinates = (nodeId: string): Array<number> => {
-    let coords: Array<string> = nodeId.split('_');
+    const coords: Array<string> = nodeId.split('_');
 
     return [parseInt(coords[0]), parseInt(coords[1])];
 }

@@ -34,11 +34,11 @@ export const addEventHandlers = () => {
 
     window.addEventListener('resize', changeGridStylesheet);
 
-    document.querySelector('#launch')?.addEventListener('click', launch);
-    document.querySelector('#apply')?.addEventListener('click', apply);
-    document.querySelector('#cancel')?.addEventListener('click', cancelAnimation);
-    document.querySelector('#clean')?.addEventListener('click', cleanPath);
-    document.querySelector('#reset')?.addEventListener('click', resetField);
+    document.getElementById('launch')?.addEventListener('click', launch);
+    document.getElementById('apply')?.addEventListener('click', apply);
+    document.getElementById('cancel')?.addEventListener('click', cancelAnimation);
+    document.getElementById('clean')?.addEventListener('click', cleanPath);
+    document.getElementById('reset')?.addEventListener('click', resetField);
     document.getElementById('mode')?.addEventListener('click', changeDisplayMode);
     document.getElementById('delay')?.addEventListener('input', changeAnimationDelay);
     document.getElementById('dimension')?.addEventListener('input', changeGridDimension);

@@ -14,16 +14,16 @@ export class Context {
     width: number;
     height: number
     colCount: number;
-    cellSize: number
-    tempCount: number
-    rowCount: number
+    cellSize: number;
+    tempCount: number;
+    rowCount: number;
     startNodeId: string | null = null;
     endNodeId: string | null = null;
     weightedGraph: WeightedGraph | null = null;
     unweightedGraph: UnweightedGraph | null = null;
     draggedClass: string | null = null;
     changeRectTypeEnabled: boolean;
-    speed: number
+    speed: number;
     currObstacle: string;
     totalCost: number;
     totalNodesVisited: number;

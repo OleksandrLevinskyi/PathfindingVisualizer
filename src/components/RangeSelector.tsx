@@ -1,7 +1,4 @@
 import type {Component} from 'solid-js';
-import ObstacleTypeSelector from "./ObstacleTypeSelector";
-import Dropdowns from "./Dropdowns";
-import CleanOptions from "./CleanOptions";
 
 type RangeSelectorProps = {
     id: string,
