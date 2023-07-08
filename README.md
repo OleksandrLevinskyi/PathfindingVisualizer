@@ -1,5 +1,8 @@
 # Pathfinding Visualizer
-Pathfinding Visualizer is an interactive application for visualizing pathfinding and maze-generation algorithms.\
+Pathfinding Visualizer is an interactive application for visualizing pathfinding and maze-generation algorithms.
+
+## Video Demo
+https://youtu.be/TeTrSLGWGJY
 
 ## Instructions
 To view a tutorial with a functionality outline, press an Info button at the bottom right when in the app.
